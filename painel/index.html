@@ -269,6 +269,28 @@ a.mini{text-decoration:none;display:inline-block}
 .zero{color:var(--ink-mute);font-size:13.5px;padding:6px 0}
 @media (max-width:640px){ .op{flex-wrap:wrap} .op .op-a{width:100%} }
 
+/* ---- equipe ---- */
+.cargo{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(122,72,255,.12),var(--stage) 60%);
+  border:1px solid var(--edge);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+.cargo .t{font-family:"Archivo",sans-serif;font-weight:800;font-size:20px}
+.cargo .d{font-size:13px;color:var(--ink-mute);margin-top:3px}
+.cargo .v{margin-left:auto;text-align:right}
+.cargo .v b{font-family:"Archivo",sans-serif;font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;display:block}
+.cargo .v span{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+.chk{display:flex;flex-direction:column;gap:2px}
+.chk-i{display:flex;align-items:flex-start;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .15s ease}
+.chk-i:hover{background:rgba(122,72,255,.07)}
+.chk-i input{appearance:none;-webkit-appearance:none;width:18px;height:18px;flex:none;margin-top:1px;border:1px solid var(--ink-dim);border-radius:6px;cursor:pointer;position:relative;background:var(--blackout)}
+.chk-i input:checked{background:var(--gel-cyan);border-color:var(--gel-cyan)}
+.chk-i input:checked::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#04211F;font-size:12px;font-weight:800}
+.chk-i input:focus-visible{outline:2px solid var(--gel-violet);outline-offset:2px}
+.chk-i .txt{font-size:14.5px}
+.chk-i .sub{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.chk-i.ok .txt{color:var(--ink-mute);text-decoration:line-through}
+.area{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);
+  padding:16px 12px 8px;border-top:1px solid var(--edge-soft)}
+.area:first-child{border-top:0;padding-top:4px}
+
 /* ---- formulário inline ---- */
 .formline{display:grid;grid-template-columns:1fr;gap:10px;background:var(--blackout);border:1px solid var(--edge);border-radius:12px;padding:14px;margin-top:14px}
 .formline .fl-row{display:grid;grid-template-columns:1fr;gap:10px}
@@ -299,6 +321,7 @@ a.mini{text-decoration:none;display:inline-block}
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="t-agenda" aria-selected="true" data-view="agenda">Agenda</button>
       <button class="tab" role="tab" id="t-vendas" aria-selected="false" data-view="vendas">Vendas</button>
+      <button class="tab" role="tab" id="t-equipe" aria-selected="false" data-view="equipe">Equipe</button>
       <button class="tab" role="tab" id="t-custos" aria-selected="false" data-view="custos">Custos</button>
       <button class="tab" role="tab" id="t-pacotes" aria-selected="false" data-view="pacotes">Pacotes</button>
     </div>
@@ -370,6 +393,29 @@ a.mini{text-decoration:none;display:inline-block}
       <span class="hint">Convidado de hoje é cliente de amanhã. Ninguém entra aqui sem virar contato.</span>
     </div>
     <div class="panel-body"><div class="tblwrap"><table class="tbl" id="tbl-rede"></table></div></div>
+  </section>
+</div>
+
+<div class="view" id="v-equipe">
+  <div class="cargo" id="cargo"></div>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Checklist de hoje</h2>
+      <span class="hint" id="chk-hint">—</span>
+    </div>
+    <div class="panel-body"><div class="chk" id="chk"></div></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Funções do cargo</h2>
+      <span class="hint">O que é "todo dia" vira checklist automático. O que é "por sessão" aparece para cada reserva do dia.</span>
+    </div>
+    <div class="panel-body">
+      <div class="tblwrap"><table class="tbl" id="tbl-funcoes"></table></div>
+      <div class="formline" id="form-funcao"></div>
+    </div>
   </section>
 </div>
 
@@ -1266,11 +1312,155 @@ a.mini{text-decoration:none;display:inline-block}
       }).join('')+'</tbody>';
   }
 
+
+  /* ================= equipe: funções e checklist ================= */
+  var KEY_F = 'cena.funcoes.v1', KEY_CK = 'cena.checklist.v1';
+  var AREAS = ['Vendas','Operação','Espaço','Conteúdo','Financeiro'];
+  var FREQ = {dia:'todo dia', sessao:'por sessão', semana:'toda semana', mes:'todo mês'};
+
+  function seedFuncoes(){
+    return [
+      {id:'f1', titulo:'Vender os pacotes presencial e online', area:'Vendas', freq:'dia',
+       detalhe:'Responder WhatsApp e Instagram no mesmo dia, mandar orçamento e fechar.'},
+      {id:'f2', titulo:'Prospectar creators', area:'Vendas', freq:'dia',
+       detalhe:'Falar com pelo menos 5 creators ou marcas novas por dia.'},
+      {id:'f3', titulo:'Gerenciar os usos do local', area:'Operação', freq:'dia',
+       detalhe:'Agenda no painel, entrada e saída no horário, hora extra cobrada.'},
+      {id:'f4', titulo:'Limpeza do ambiente', area:'Espaço', freq:'dia',
+       detalhe:'Salas prontas antes da primeira sessão e recompostas depois de cada uso.'},
+      {id:'f5', titulo:'Confirmar as reservas de amanhã', area:'Vendas', freq:'dia',
+       detalhe:'Mensagem na véspera derruba falta e libera horário a tempo de revender.'},
+      {id:'f6', titulo:'Cobrar sinal e pagamento pendente', area:'Financeiro', freq:'dia',
+       detalhe:'Usar a lista da aba Vendas — reserva sem pagamento é horário preso sem garantia.'},
+      {id:'f7', titulo:'Abrir e fechar o estúdio', area:'Operação', freq:'dia',
+       detalhe:'Testar internet, luz e áudio na abertura; conferir chaves e desligar tudo no fim.'},
+      {id:'f8', titulo:'Preparar a sala antes do cliente chegar', area:'Operação', freq:'sessao',
+       detalhe:'Cenário montado, luz ligada e o equipamento do pacote separado.'},
+      {id:'f9', titulo:'Receber, dar o tour e explicar as regras', area:'Operação', freq:'sessao',
+       detalhe:'Horário, o que pode mexer, onde fica o camarim e como devolver a sala.'},
+      {id:'f10', titulo:'Conferir sala e equipamento na saída', area:'Operação', freq:'sessao',
+       detalhe:'Registrar avaria na hora, com a pessoa ainda presente.'},
+      {id:'f11', titulo:'Pedir avaliação e reagendar na saída', area:'Vendas', freq:'sessao',
+       detalhe:'É o momento em que o cliente está mais satisfeito — a próxima data sai fácil.'},
+      {id:'f12', titulo:'Gravar bastidores e postar nas redes do estúdio', area:'Conteúdo', freq:'dia',
+       detalhe:'Prova social diária de graça: quem grava aqui aparece gravando aqui.'},
+      {id:'f13', titulo:'Repor consumíveis e avisar o que está acabando', area:'Espaço', freq:'semana',
+       detalhe:'Café, água, pilhas, material de limpeza, papel.'},
+      {id:'f14', titulo:'Carregar baterias e limpar cartões', area:'Operação', freq:'semana',
+       detalhe:'Nada de sessão parada porque a bateria acabou.'},
+      {id:'f15', titulo:'Cadastrar clientes e contatos no painel', area:'Vendas', freq:'semana',
+       detalhe:'Quem esteve na sala vira contato — é a rede do estúdio.'},
+      {id:'f16', titulo:'Fechar o caixa e lançar no painel', area:'Financeiro', freq:'semana',
+       detalhe:'Receita e custo do período conferidos com o extrato.'},
+      {id:'f17', titulo:'Manutenção preventiva do estúdio', area:'Espaço', freq:'mes',
+       detalhe:'Limpeza do ar-condicionado, lâmpadas, filtros, pintura de retoque.'}
+    ];
+  }
+  var funcoes = carregar(KEY_F, seedFuncoes);
+  function saveF(){ try{ localStorage.setItem(KEY_F, JSON.stringify(funcoes)); }catch(e){} }
+  var feitos = {};
+  try{ var rawck = localStorage.getItem(KEY_CK); if(rawck) feitos = JSON.parse(rawck) || {}; }catch(e){}
+  function saveCK(){ try{ localStorage.setItem(KEY_CK, JSON.stringify(feitos)); }catch(e){} }
+  var editF = null;
+
+  function salarioCadastrado(){
+    var c = custos.filter(function(x){ return /funcion|colaborador|equipe/i.test(x.nome); })[0];
+    return c ? c.valor : null;
+  }
+  function itensDeHoje(){
+    var hj = iso(new Date()), itens = [];
+    funcoes.filter(function(f){ return f.freq==='dia'; })
+      .sort(function(a,b){ return AREAS.indexOf(a.area) - AREAS.indexOf(b.area); })
+      .forEach(function(f){
+        itens.push({k:'f:'+f.id, txt:f.titulo, sub:f.detalhe, area:f.area});
+      });
+    var porSessao = funcoes.filter(function(f){ return f.freq==='sessao'; });
+    bookings.filter(function(b){ return b.data===hj && b.status!=='bloqueio'; })
+      .sort(function(a,b){ return a.ini-b.ini; })
+      .forEach(function(b){
+        porSessao.forEach(function(f){
+          itens.push({k:'s:'+b.id+':'+f.id, txt:f.titulo,
+            sub:(f.freq==='sessao'&&(b.extras||[]).length&&/prepar/i.test(f.titulo) ? b.extras.join(', ') : f.detalhe),
+            area:hhmm(b.ini)+' · '+room(b.sala).nome+' · '+b.cliente});
+        });
+      });
+    return itens;
+  }
+  function renderEquipe(){
+    var sal = salarioCadastrado(), hj = iso(new Date());
+    $('cargo').innerHTML =
+      '<div><div class="t">Assistente de estúdio</div>'+
+      '<div class="d">Vende, opera as sessões e cuida do espaço · segunda a sábado</div></div>'+
+      (sal ? '<div class="v"><b>'+brl(sal)+'</b><span>por mês · vem da aba Custos</span></div>'
+           : '<div class="v"><b>—</b><span>cadastre o custo do funcionário</span></div>');
+
+    var itens = itensDeHoje();
+    var dia = feitos[hj] || {};
+    var ok = itens.filter(function(i){ return dia[i.k]; }).length;
+    $('chk-hint').textContent = itens.length
+      ? ok+' de '+itens.length+' concluídas · '+DIAS[new Date().getDay()]
+      : 'nenhuma tarefa cadastrada para hoje';
+
+    var html = '', areaAtual = '';
+    itens.forEach(function(i){
+      if(i.area !== areaAtual){ areaAtual = i.area; html += '<div class="area">'+esc(areaAtual)+'</div>'; }
+      html += '<label class="chk-i'+(dia[i.k]?' ok':'')+'">'+
+        '<input type="checkbox" data-chk="'+esc(i.k)+'"'+(dia[i.k]?' checked':'')+'>'+
+        '<span><span class="txt">'+esc(i.txt)+'</span><div class="sub">'+esc(i.sub)+'</div></span></label>';
+    });
+    $('chk').innerHTML = html || '<div class="zero">Cadastre funções "todo dia" ou "por sessão" para montar o checklist.</div>';
+
+    var ordem = {dia:0, sessao:1, semana:2, mes:3};
+    var lista = funcoes.slice().sort(function(a,b){ return ordem[a.freq]-ordem[b.freq] || a.area.localeCompare(b.area); });
+    $('tbl-funcoes').innerHTML =
+      '<thead><tr><th>Função</th><th>Área</th><th>Quando</th><th class="num">Ações</th></tr></thead><tbody>'+
+      lista.map(function(f){
+        return '<tr><td><span class="nm">'+esc(f.titulo)+'</span>'+(f.detalhe?'<div class="sub">'+esc(f.detalhe)+'</div>':'')+'</td>'+
+          '<td><span class="chip-t">'+esc(f.area)+'</span></td>'+
+          '<td><span class="chip-t'+(f.freq==='dia'||f.freq==='sessao'?' mensal':'')+'">'+FREQ[f.freq]+'</span></td>'+
+          '<td class="num"><button class="mini" data-fedit="'+f.id+'">Editar</button> '+
+            '<button class="mini del" data-fdel="'+f.id+'">Remover</button></td></tr>';
+      }).join('')+'</tbody>';
+  }
+  function renderFormFuncao(){
+    var f = editF ? funcoes.filter(function(x){ return x.id===editF; })[0] : null;
+    $('form-funcao').innerHTML =
+      '<div class="fl-row">'+
+        '<div><label for="fn-tit">Função</label><input id="fn-tit" value="'+esc(f?f.titulo:'')+'" placeholder="Conferir o estoque de café"></div>'+
+        '<div><label for="fn-area">Área</label><select id="fn-area">'+
+          AREAS.map(function(a){ return '<option'+(f&&f.area===a?' selected':'')+'>'+a+'</option>'; }).join('')+'</select></div>'+
+        '<div><label for="fn-freq">Quando</label><select id="fn-freq">'+
+          Object.keys(FREQ).map(function(k){ return '<option value="'+k+'"'+(f&&f.freq===k?' selected':'')+'>'+FREQ[k]+'</option>'; }).join('')+'</select></div>'+
+      '</div>'+
+      '<div class="fl-row" style="grid-template-columns:1fr">'+
+        '<div><label for="fn-det">Como se faz</label><input id="fn-det" value="'+esc(f?f.detalhe:'')+'" placeholder="O detalhe que evita a pergunta depois"></div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<button class="btn btn-primary" id="fn-save">'+(f?'Salvar função':'Adicionar função')+'</button>'+
+        (f ? '<button class="btn btn-ghost" id="fn-cancel">Cancelar</button>' : '')+
+      '</div>';
+    $('fn-save').addEventListener('click', salvarFuncao);
+    if($('fn-cancel')) $('fn-cancel').addEventListener('click', function(){ editF = null; renderFormFuncao(); });
+  }
+  function salvarFuncao(){
+    var t = $('fn-tit').value.trim();
+    if(!t){ $('fn-tit').focus(); return; }
+    var dados = {titulo:t, area:$('fn-area').value, freq:$('fn-freq').value, detalhe:$('fn-det').value.trim()};
+    if(editF){
+      var f = funcoes.filter(function(x){ return x.id===editF; })[0];
+      for(var k in dados) f[k] = dados[k];
+      editF = null;
+    } else {
+      dados.id = 'f'+Date.now(); funcoes.push(dados);
+    }
+    saveF(); renderFormFuncao(); renderEquipe();
+  }
+
   /* ---- troca de módulo ---- */
   var vista = 'agenda';
   function trocarVista(v){
     vista = v;
-    ['agenda','vendas','custos','pacotes'].forEach(function(k){
+    ['agenda','vendas','equipe','custos','pacotes'].forEach(function(k){
       $('v-'+k).classList.toggle('on', k===v);
       $('t-'+k).setAttribute('aria-selected', k===v ? 'true' : 'false');
     });
@@ -1278,6 +1468,7 @@ a.mini{text-decoration:none;display:inline-block}
       el.classList.toggle('off', v!=='agenda');
     });
     if(v==='vendas') renderVendas();
+    if(v==='equipe') renderEquipe();
     if(v==='custos') renderCustos();
     if(v==='pacotes') renderPacotes();
   }
@@ -1285,6 +1476,19 @@ a.mini{text-decoration:none;display:inline-block}
   document.addEventListener('click', function(e){
     var t = e.target.closest('.tab');
     if(t){ trocarVista(t.dataset.view); return; }
+    var fe = e.target.closest('[data-fedit]');
+    if(fe){ editF = fe.getAttribute('data-fedit'); renderFormFuncao(); $('fn-tit').focus(); return; }
+    var fd = e.target.closest('[data-fdel]');
+    if(fd){
+      var fid = fd.getAttribute('data-fdel');
+      var alvoF = funcoes.filter(function(x){ return x.id===fid; })[0];
+      if(alvoF && window.confirm('Remover a função "'+alvoF.titulo+'"?')){
+        funcoes = funcoes.filter(function(x){ return x.id!==fid; });
+        if(editF===fid){ editF = null; renderFormFuncao(); }
+        saveF(); renderEquipe();
+      }
+      return;
+    }
     var od = e.target.closest('[data-opdone]');
     if(od){ crm[od.getAttribute('data-opdone')] = 'feito'; saveV(); renderVendas(); return; }
     var os = e.target.closest('[data-opskip]');
@@ -1325,6 +1529,15 @@ a.mini{text-decoration:none;display:inline-block}
       }
     }
   });
+  document.addEventListener('change', function(e){
+    var c = e.target.closest('[data-chk]');
+    if(!c) return;
+    var hj = iso(new Date()), k = c.getAttribute('data-chk');
+    if(!feitos[hj]) feitos[hj] = {};
+    if(c.checked) feitos[hj][k] = 1; else delete feitos[hj][k];
+    Object.keys(feitos).forEach(function(d){ if(diasDesde(d) > 30) delete feitos[d]; });
+    saveCK(); renderEquipe();
+  });
   $('op-toggle').addEventListener('click', function(){ verResolvidas = !verResolvidas; renderVendas(); });
   $('mprev').addEventListener('click', function(){ mes = mesAdd(mes,-1); renderCustos(); });
   $('mnext').addEventListener('click', function(){ mes = mesAdd(mes, 1); renderCustos(); });
@@ -1360,9 +1573,10 @@ a.mini{text-decoration:none;display:inline-block}
     renderKpis(); renderNow(); renderGrid(); renderList();
     if(vista==='custos') renderCustos();
     if(vista==='vendas') renderVendas();
+    if(vista==='equipe') renderEquipe();
   }
   render();
-  renderFormCusto(); renderFormPacote(); renderPacotes(); renderCustos();
+  renderFormCusto(); renderFormPacote(); renderFormFuncao(); renderPacotes(); renderCustos();
   setInterval(function(){ renderNow(); }, 60000);
 })();
 </script>
