@@ -196,27 +196,103 @@ button,input,select,textarea{font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
 }
+
+/* ---- navegação entre módulos ---- */
+.tabs{display:flex;gap:3px;background:var(--stage);border:1px solid var(--edge);border-radius:999px;padding:4px}
+.tab{background:none;border:0;cursor:pointer;color:var(--ink-mute);font:inherit;font-size:13.5px;font-weight:600;padding:7px 15px;border-radius:999px;transition:color .2s ease,background .2s ease}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--stage-3);color:var(--ink)}
+.view{display:none}
+.view.on{display:block}
+.only-agenda.off{display:none}
+
+/* ---- painéis de gestão ---- */
+.panel{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);margin-bottom:18px;overflow:hidden}
+.panel-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:13px 16px;border-bottom:1px solid var(--edge)}
+.panel-head h2{font-size:15px;margin:0}
+.panel-head .hint{font-size:12.5px;color:var(--ink-mute)}
+.panel-head .right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.panel-body{padding:16px}
+.tblwrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;min-width:540px}
+.tbl th{text-align:left;font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:400;padding:0 12px 10px;white-space:nowrap}
+.tbl td{padding:11px 12px;border-top:1px solid var(--edge-soft);vertical-align:middle}
+.tbl td.num,.tbl th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tr:hover td{background:rgba(122,72,255,.055)}
+.tbl .nm{font-weight:600}
+.tbl .sub{font-size:12px;color:var(--ink-mute)}
+.tbl tfoot td{border-top:1px solid var(--edge);font-weight:700}
+.mini{background:none;border:1px solid var(--edge);color:var(--ink-soft);border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px;padding:5px 10px}
+.mini:hover{border-color:var(--ink-mute);color:var(--ink)}
+.mini.del:hover{border-color:var(--gel-rose);color:var(--gel-rose)}
+.chip-t{display:inline-block;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--edge);color:var(--ink-mute)}
+.chip-t.mensal{border-color:rgba(53,224,214,.35);color:var(--gel-cyan)}
+.chip-t.inv{border-color:rgba(255,162,58,.35);color:var(--gel-amber)}
+.chip-t.est{border-color:rgba(122,72,255,.4);color:#B49BFF}
+.chip-t.off{opacity:.55}
+
+/* ---- ponto de equilíbrio ---- */
+.be{display:grid;grid-template-columns:1fr;gap:10px}
+.be-item{display:flex;align-items:baseline;gap:12px;background:var(--blackout);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.be-item .q{font-family:"Archivo",sans-serif;font-weight:800;font-size:26px;line-height:1;font-variant-numeric:tabular-nums;min-width:64px}
+.be-item .t{font-size:13.5px;font-weight:600}
+.be-item .d{font-size:12px;color:var(--ink-mute);margin-top:2px}
+.be-item.done .q{color:var(--gel-cyan)}
+.goal{margin-bottom:14px}
+.goal .lbl{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-soft);margin-bottom:7px;font-variant-numeric:tabular-nums}
+.goal .bar{height:9px;border-radius:999px;background:var(--stage-3);overflow:hidden}
+.goal .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gel-cyan),var(--gel-rose));transition:width .6s cubic-bezier(.22,.61,.36,1)}
+.goal .bar i.ok{background:linear-gradient(90deg,var(--gel-cyan),#7CF5C4)}
+
+/* ---- formulário inline ---- */
+.formline{display:grid;grid-template-columns:1fr;gap:10px;background:var(--blackout);border:1px solid var(--edge);border-radius:12px;padding:14px;margin-top:14px}
+.formline .fl-row{display:grid;grid-template-columns:1fr;gap:10px}
+.formline label{display:block;font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:5px}
+.formline input,.formline select{width:100%;background:var(--stage);border:1px solid var(--edge);border-radius:9px;color:var(--ink);font:inherit;font-size:14px;padding:9px 11px;outline:0}
+.formline input:focus,.formline select:focus{border-color:var(--gel-violet)}
+.formline .acts{display:flex;gap:8px;flex-wrap:wrap}
+.hist{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px}
+.hist-m{flex:none;min-width:132px;background:var(--blackout);border:1px solid var(--edge);border-radius:12px;padding:11px 13px}
+.hist-m.now{border-color:var(--gel-violet)}
+.hist-m .m{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+.hist-m .r{font-family:"Archivo",sans-serif;font-weight:800;font-size:19px;margin-top:5px;font-variant-numeric:tabular-nums}
+.hist-m .d{font-size:11.5px;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.pos{color:var(--gel-cyan)}
+.neg{color:var(--gel-rose)}
+@media (min-width:760px){
+  .be{grid-template-columns:repeat(2,1fr)}
+  .formline .fl-row{grid-template-columns:2fr 1fr 1fr}
+}
+@media (min-width:1180px){
+  .be{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 
 <header class="top">
   <div class="top-in">
-    <div class="brand"><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Mapa de salas</span></div>
-    <div class="datenav">
+    <div class="brand"><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Gestão</span></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="t-agenda" aria-selected="true" data-view="agenda">Agenda</button>
+      <button class="tab" role="tab" id="t-custos" aria-selected="false" data-view="custos">Custos</button>
+      <button class="tab" role="tab" id="t-pacotes" aria-selected="false" data-view="pacotes">Pacotes</button>
+    </div>
+    <div class="datenav only-agenda">
       <button id="prev" aria-label="Dia anterior">‹</button>
       <div class="lbl" id="datelbl"><b>—</b></div>
       <button id="next" aria-label="Próximo dia">›</button>
     </div>
-    <button class="btn btn-ghost" id="hoje">Hoje</button>
+    <button class="btn btn-ghost only-agenda" id="hoje">Hoje</button>
     <div class="spacer"></div>
-    <div class="search">
+    <div class="search only-agenda">
       <span class="mono" style="color:var(--ink-dim);font-size:13px">⌕</span>
       <input id="q" type="search" placeholder="Buscar pessoa, cliente ou @">
     </div>
-    <button class="btn btn-primary" id="nova">+ Nova reserva</button>
+    <button class="btn btn-primary only-agenda" id="nova">+ Nova reserva</button>
   </div>
 </header>
 
 <main class="wrap">
+<div class="view on" id="v-agenda">
   <section class="kpis" id="kpis"></section>
 
   <section class="now">
@@ -239,6 +315,68 @@ button,input,select,textarea{font:inherit;color:inherit}
     </div>
     <div class="list" id="list"></div>
   </section>
+</div>
+
+<div class="view" id="v-custos">
+  <section class="kpis" id="ckpis"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Para o mês se pagar</h2>
+      <span class="hint" id="be-hint">—</span>
+      <div class="right">
+        <div class="datenav">
+          <button id="mprev" aria-label="Mês anterior">&lsaquo;</button>
+          <div class="lbl" id="meslbl" style="min-width:150px"><b>—</b></div>
+          <button id="mnext" aria-label="Próximo mês">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="goal">
+        <div class="lbl"><span id="goal-a">—</span><span id="goal-b">—</span></div>
+        <div class="bar"><i id="goal-bar" style="width:0"></i></div>
+      </div>
+      <div class="be" id="be"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Custos do mês</h2>
+      <span class="hint">Recorrente entra sozinho todo mês. Investimento conta só no mês em que aconteceu.</span>
+    </div>
+    <div class="panel-body">
+      <div class="tblwrap">
+        <table class="tbl" id="tbl-custos"></table>
+      </div>
+      <div class="formline" id="form-custo"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Mês a mês</h2>
+      <span class="hint">Receita reservada na agenda menos o custo de cada mês.</span>
+    </div>
+    <div class="panel-body"><div class="hist" id="hist"></div></div>
+  </section>
+</div>
+
+<div class="view" id="v-pacotes">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Pacotes e serviços</h2>
+      <span class="hint">O que estiver ativo aparece na hora de criar reserva e no cálculo do ponto de equilíbrio.</span>
+    </div>
+    <div class="panel-body">
+      <div class="tblwrap">
+        <table class="tbl" id="tbl-pacotes"></table>
+      </div>
+      <div class="formline" id="form-pacote"></div>
+    </div>
+  </section>
+</div>
 </main>
 
 <div class="scrim" id="scrim"></div>
@@ -561,7 +699,8 @@ button,input,select,textarea{font:inherit;color:inherit}
           '<textarea id="f-pess" placeholder="Um por linha: Nome — papel">'+esc((b?b.pessoas:[{n:'',p:''}]).map(function(p){ return p.n ? p.n+' — '+p.p : ''; }).filter(Boolean).join('\n'))+'</textarea>'+
           '<span class="hint">Um nome por linha. O primeiro vira o responsável pela sessão.</span></div>'+
         '<div class="two">'+
-          '<div class="field"><label for="f-pac">Pacote</label><input id="f-pac" value="'+esc(b?b.pacote:'')+'" placeholder="Meia diária 4h"></div>'+
+          '<div class="field"><label for="f-pac-sel">Pacote</label><select id="f-pac-sel">'+opcoesPacote(b)+'</select>'+
+            '<input id="f-pac" style="margin-top:8px'+(pacoteConhecido(b)?';display:none':'')+'" value="'+esc(b?b.pacote:'')+'" placeholder="Descreva o pacote"></div>'+
           '<div class="field"><label for="f-val">Valor (R$)</label><input id="f-val" type="number" min="0" step="10" value="'+(b?b.valor:'')+'"></div>'+
         '</div>'+
         '<div class="two">'+
@@ -576,6 +715,21 @@ button,input,select,textarea{font:inherit;color:inherit}
         '<button class="btn btn-ghost" id="f-cancel">Voltar</button>'+
       '</div>';
 
+    $('f-pac-sel').addEventListener('change', function(){
+      var alvo = pacotes.filter(function(x){ return x.id===this.value; }.bind(this))[0];
+      var livre = $('f-pac');
+      if(alvo){
+        livre.style.display = 'none';
+        livre.value = alvo.nome;
+        $('f-val').value = alvo.preco;
+        var ini2 = +$('f-ini').value;
+        if(alvo.horas) $('f-fim').value = Math.min(ini2 + alvo.horas, H1);
+      } else {
+        livre.style.display = '';
+        livre.value = '';
+        livre.focus();
+      }
+    });
     $('f-cancel').addEventListener('click', function(){ b ? verReserva(b.id) : fechar(); });
     $('f-save').addEventListener('click', function(){ salvar(b); });
     abrir();
@@ -623,6 +777,293 @@ button,input,select,textarea{font:inherit;color:inherit}
     verReserva(b.id);
   }
 
+
+  /* ================= custos e pacotes ================= */
+  var KEY_C = 'cena.custos.v1', KEY_P = 'cena.pacotes.v1';
+  var MESES_L = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  function seedCustos(){
+    return [
+      {id:'c1', nome:'Internet — link dedicado', valor:349,  tipo:'mensal', desde:iso(hoje).slice(0,7), estimado:true},
+      {id:'c2', nome:'Aluguel do ponto',         valor:1500, tipo:'mensal', desde:iso(hoje).slice(0,7)},
+      {id:'c3', nome:'Funcionário',              valor:2000, tipo:'mensal', desde:iso(hoje).slice(0,7)},
+      {id:'c4', nome:'Ar-condicionado (compra e instalação)', valor:3000, tipo:'unico', mes:iso(hoje).slice(0,7)}
+    ];
+  }
+  function seedPacotes(){
+    return [
+      {id:'p1', nome:'Hora avulsa',              preco:120,  horas:1, tipo:'hora',      ativo:true},
+      {id:'p2', nome:'Meia diária',              preco:390,  horas:4, tipo:'turno',     ativo:true},
+      {id:'p3', nome:'Diária',                   preco:690,  horas:8, tipo:'diaria',    ativo:true},
+      {id:'p4', nome:'Live Shopping Pro',        preco:1290, horas:4, tipo:'turno',     ativo:true},
+      {id:'p5', nome:'Mentoria 1:1',             preco:490,  horas:2, tipo:'servico',   ativo:true},
+      {id:'p6', nome:'Conteúdo do mês (assinatura)', preco:1890, horas:8, tipo:'assinatura', ativo:true}
+    ];
+  }
+  function carregar(chave, semente){
+    try{
+      var raw = localStorage.getItem(chave);
+      if(raw){ var v = JSON.parse(raw); if(Array.isArray(v) && v.length) return v; }
+    }catch(e){}
+    return semente();
+  }
+  var custos  = carregar(KEY_C, seedCustos);
+  var pacotes = carregar(KEY_P, seedPacotes);
+  function saveC(){ try{ localStorage.setItem(KEY_C, JSON.stringify(custos)); }catch(e){} }
+  function saveP(){ try{ localStorage.setItem(KEY_P, JSON.stringify(pacotes)); }catch(e){} }
+
+  var mes = iso(hoje).slice(0,7);
+  var editC = null, editP = null;
+
+  function mesRotulo(m){
+    var p = m.split('-');
+    var atual = m === iso(new Date()).slice(0,7);
+    return '<i>'+(atual?'este mês · ':'')+'</i><b>'+MESES_L[+p[1]-1]+' '+p[0]+'</b>';
+  }
+  function mesAdd(m, n){
+    var p = m.split('-'), d = new Date(+p[0], +p[1]-1+n, 1);
+    return d.getFullYear()+'-'+pad(d.getMonth()+1);
+  }
+  function diasAbertos(m){
+    var p = m.split('-'), ano = +p[0], mm = +p[1]-1, d = new Date(ano, mm+1, 0).getDate(), c = 0;
+    for(var i=1;i<=d;i++){ if(new Date(ano, mm, i).getDay() !== 0) c++; }
+    return c;                                   // segunda a sábado
+  }
+  function custosDoMes(m){
+    return custos.filter(function(c){
+      if(c.tipo === 'mensal') return (!c.desde || c.desde <= m) && (!c.ate || m <= c.ate);
+      return c.mes === m;
+    });
+  }
+  function somaCustos(m){
+    var fixo = 0, unico = 0;
+    custosDoMes(m).forEach(function(c){ if(c.tipo==='mensal') fixo += +c.valor||0; else unico += +c.valor||0; });
+    return {fixo:fixo, unico:unico, total:fixo+unico};
+  }
+  function receitaDoMes(m){
+    var r = 0, h = 0, n = 0;
+    bookings.forEach(function(b){
+      if(b.data.slice(0,7)!==m || b.status==='bloqueio') return;
+      r += +b.valor||0; h += (b.fim-b.ini); n++;
+    });
+    return {receita:r, horas:h, sessoes:n};
+  }
+  function num(n){ return Number(n).toLocaleString('pt-BR'); }
+  function umaCasa(n){ return n.toFixed(1).replace('.', ','); }
+
+  function renderCustos(){
+    var c = somaCustos(mes), v = receitaDoMes(mes);
+    var falta = Math.max(c.total - v.receita, 0);
+    var cobertura = c.total ? Math.round(v.receita / c.total * 100) : 0;
+    var res = v.receita - c.total;
+
+    $('meslbl').innerHTML = mesRotulo(mes);
+    $('ckpis').innerHTML =
+      kpi('Custo do mês', brl(c.total), c.unico ? brl(c.fixo)+' recorrente + '+brl(c.unico)+' de investimento' : 'tudo recorrente') +
+      kpi('Receita reservada', brl(v.receita), v.sessoes+(v.sessoes===1?' sessão na agenda':' sessões na agenda')) +
+      kpi('Resultado', (res<0?'− ':'')+brl(Math.abs(res)), res>=0 ? 'o mês já se paga' : 'faltam '+brl(falta)+' para empatar') +
+      kpi('Cobertura', cobertura+'%', 'do custo pago pela agenda', cobertura);
+
+    $('goal-a').textContent = brl(v.receita)+' reservados';
+    $('goal-b').textContent = falta ? 'faltam '+brl(falta)+' de '+brl(c.total) : 'meta de '+brl(c.total)+' batida';
+    var bar = $('goal-bar');
+    bar.style.width = Math.min(cobertura,100)+'%';
+    bar.className = falta ? '' : 'ok';
+
+    var dias = diasAbertos(mes);
+    $('be-hint').textContent = falta
+      ? 'faltam '+brl(falta)+' — em '+dias+' dias abertos'
+      : 'custo do mês já coberto pela agenda';
+
+    var ativos = pacotes.filter(function(p){ return p.ativo && +p.preco>0; });
+    $('be').innerHTML = ativos.length ? ativos.map(function(p){
+      var q = falta ? Math.ceil(falta / p.preco) : 0;
+      var h = q * (+p.horas||0);
+      return '<div class="be-item'+(falta?'':' done')+'">'+
+        '<div class="q">'+(falta?q:'✓')+'</div>'+
+        '<div><div class="t">'+esc(p.nome)+'</div>'+
+        '<div class="d">'+(falta
+          ? brl(p.preco)+' cada · '+h+'h no mês · '+umaCasa(h/dias)+'h por dia'
+          : 'nada a vender para fechar a conta')+'</div></div></div>';
+    }).join('') : '<div class="now-empty">Nenhum pacote ativo — cadastre um na aba Pacotes para calcular quanto precisa vender.</div>';
+
+    var linhas = custosDoMes(mes);
+    $('tbl-custos').innerHTML =
+      '<thead><tr><th>Custo</th><th>Tipo</th><th class="num">Valor</th><th class="num">Ações</th></tr></thead>'+
+      '<tbody>'+ (linhas.length ? linhas.map(function(c){
+        return '<tr><td><span class="nm">'+esc(c.nome)+'</span>'+
+            (c.estimado ? ' <span class="chip-t est">estimado</span>' : '')+'</td>'+
+          '<td>'+(c.tipo==='mensal'
+            ? '<span class="chip-t mensal">todo mês</span>'
+            : '<span class="chip-t inv">investimento</span>')+'</td>'+
+          '<td class="num">'+brl(c.valor)+'</td>'+
+          '<td class="num"><button class="mini" data-cedit="'+c.id+'">Editar</button> '+
+            '<button class="mini del" data-cdel="'+c.id+'">Remover</button></td></tr>';
+      }).join('') : '<tr><td colspan="4" style="color:var(--ink-mute)">Nenhum custo neste mês.</td></tr>')+'</tbody>'+
+      '<tfoot><tr><td>Total do mês</td><td></td><td class="num">'+brl(c.total)+'</td><td></td></tr></tfoot>';
+
+    var hist = '';
+    for(var i=-4;i<=1;i++){
+      var m = mesAdd(mes, i), cc = somaCustos(m), vv = receitaDoMes(m), rr = vv.receita - cc.total;
+      hist += '<button class="hist-m'+(i===0?' now':'')+'" data-mes="'+m+'">'+
+        '<div class="m">'+MESES_L[+m.split('-')[1]-1].slice(0,3)+' '+m.split('-')[0]+'</div>'+
+        '<div class="r '+(rr>=0?'pos':'neg')+'">'+(rr<0?'− ':'')+brl(Math.abs(rr))+'</div>'+
+        '<div class="d">'+num(vv.receita)+' − '+num(cc.total)+'</div></button>';
+    }
+    $('hist').innerHTML = hist;
+  }
+
+  function renderFormCusto(){
+    var c = editC ? custos.filter(function(x){ return x.id===editC; })[0] : null;
+    $('form-custo').innerHTML =
+      '<div class="fl-row">'+
+        '<div><label for="c-nome">Custo</label><input id="c-nome" value="'+esc(c?c.nome:'')+'" placeholder="Energia, contador, limpeza…"></div>'+
+        '<div><label for="c-valor">Valor (R$)</label><input id="c-valor" type="number" min="0" step="10" value="'+(c?c.valor:'')+'"></div>'+
+        '<div><label for="c-tipo">Tipo</label><select id="c-tipo">'+
+          '<option value="mensal"'+(c&&c.tipo==='mensal'?' selected':'')+'>Todo mês</option>'+
+          '<option value="unico"'+(c&&c.tipo==='unico'?' selected':'')+'>Investimento (só neste mês)</option>'+
+        '</select></div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<button class="btn btn-primary" id="c-save">'+(c?'Salvar custo':'Adicionar custo')+'</button>'+
+        (c ? '<button class="btn btn-ghost" id="c-cancel">Cancelar</button>' : '')+
+      '</div>';
+    $('c-save').addEventListener('click', salvarCusto);
+    if($('c-cancel')) $('c-cancel').addEventListener('click', function(){ editC = null; renderFormCusto(); });
+  }
+  function salvarCusto(){
+    var nome = $('c-nome').value.trim(), valor = +$('c-valor').value, tipo = $('c-tipo').value;
+    if(!nome || !(valor>0)){ $('c-nome').focus(); return; }
+    if(editC){
+      var c = custos.filter(function(x){ return x.id===editC; })[0];
+      c.nome = nome; c.valor = valor; c.tipo = tipo; c.estimado = false;
+      if(tipo==='unico'){ c.mes = c.mes || mes; delete c.desde; } else { c.desde = c.desde || mes; delete c.mes; }
+      editC = null;
+    } else {
+      var novo = {id:'c'+Date.now(), nome:nome, valor:valor, tipo:tipo};
+      if(tipo==='unico') novo.mes = mes; else novo.desde = mes;
+      custos.push(novo);
+    }
+    saveC(); renderFormCusto(); renderCustos();
+  }
+
+  function renderPacotes(){
+    $('tbl-pacotes').innerHTML =
+      '<thead><tr><th>Pacote</th><th>Formato</th><th class="num">Horas</th><th class="num">Preço</th><th class="num">R$/hora</th><th class="num">Ações</th></tr></thead>'+
+      '<tbody>'+ pacotes.map(function(p){
+        return '<tr><td><span class="nm">'+esc(p.nome)+'</span>'+
+            (p.ativo ? '' : ' <span class="chip-t off">pausado</span>')+'</td>'+
+          '<td><span class="chip-t">'+esc(p.tipo)+'</span></td>'+
+          '<td class="num">'+(p.horas?p.horas+'h':'—')+'</td>'+
+          '<td class="num">'+brl(p.preco)+'</td>'+
+          '<td class="num">'+(p.horas ? brl(Math.round(p.preco/p.horas)) : '—')+'</td>'+
+          '<td class="num"><button class="mini" data-ptoggle="'+p.id+'">'+(p.ativo?'Pausar':'Ativar')+'</button> '+
+            '<button class="mini" data-pedit="'+p.id+'">Editar</button> '+
+            '<button class="mini del" data-pdel="'+p.id+'">Remover</button></td></tr>';
+      }).join('')+'</tbody>';
+  }
+  function renderFormPacote(){
+    var p = editP ? pacotes.filter(function(x){ return x.id===editP; })[0] : null;
+    var tipos = ['hora','turno','diaria','servico','assinatura'];
+    $('form-pacote').innerHTML =
+      '<div class="fl-row">'+
+        '<div><label for="p-nome">Nome do pacote</label><input id="p-nome" value="'+esc(p?p.nome:'')+'" placeholder="Diária de gravação"></div>'+
+        '<div><label for="p-preco">Preço (R$)</label><input id="p-preco" type="number" min="0" step="10" value="'+(p?p.preco:'')+'"></div>'+
+        '<div><label for="p-horas">Horas incluídas</label><input id="p-horas" type="number" min="0" step="1" value="'+(p?p.horas:'')+'"></div>'+
+      '</div>'+
+      '<div class="fl-row">'+
+        '<div><label for="p-tipo">Formato</label><select id="p-tipo">'+
+          tipos.map(function(t){ return '<option value="'+t+'"'+(p&&p.tipo===t?' selected':'')+'>'+t+'</option>'; }).join('')+
+        '</select></div>'+
+      '</div>'+
+      '<div class="acts">'+
+        '<button class="btn btn-primary" id="p-save">'+(p?'Salvar pacote':'Adicionar pacote')+'</button>'+
+        (p ? '<button class="btn btn-ghost" id="p-cancel">Cancelar</button>' : '')+
+      '</div>';
+    $('p-save').addEventListener('click', salvarPacote);
+    if($('p-cancel')) $('p-cancel').addEventListener('click', function(){ editP = null; renderFormPacote(); });
+  }
+  function salvarPacote(){
+    var nome = $('p-nome').value.trim(), preco = +$('p-preco').value, horas = +$('p-horas').value || 0;
+    if(!nome || !(preco>0)){ $('p-nome').focus(); return; }
+    if(editP){
+      var p = pacotes.filter(function(x){ return x.id===editP; })[0];
+      p.nome = nome; p.preco = preco; p.horas = horas; p.tipo = $('p-tipo').value;
+      editP = null;
+    } else {
+      pacotes.push({id:'p'+Date.now(), nome:nome, preco:preco, horas:horas, tipo:$('p-tipo').value, ativo:true});
+    }
+    saveP(); renderFormPacote(); renderPacotes(); renderCustos();
+  }
+
+  function pacoteConhecido(b){
+    if(!b) return false;
+    return pacotes.some(function(p){ return p.nome === b.pacote; });
+  }
+  function opcoesPacote(b){
+    var atual = b ? b.pacote : '';
+    var opts = pacotes.filter(function(p){ return p.ativo || p.nome===atual; }).map(function(p){
+      return '<option value="'+p.id+'"'+(p.nome===atual?' selected':'')+'>'+esc(p.nome)+' — '+brl(p.preco)+(p.horas?' · '+p.horas+'h':'')+'</option>';
+    });
+    opts.push('<option value="livre"'+(pacoteConhecido(b)?'':' selected')+'>Personalizado</option>');
+    return opts.join('');
+  }
+
+  /* ---- troca de módulo ---- */
+  var vista = 'agenda';
+  function trocarVista(v){
+    vista = v;
+    ['agenda','custos','pacotes'].forEach(function(k){
+      $('v-'+k).classList.toggle('on', k===v);
+      $('t-'+k).setAttribute('aria-selected', k===v ? 'true' : 'false');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.only-agenda'), function(el){
+      el.classList.toggle('off', v!=='agenda');
+    });
+    if(v==='custos') renderCustos();
+    if(v==='pacotes') renderPacotes();
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('.tab');
+    if(t){ trocarVista(t.dataset.view); return; }
+    var hm = e.target.closest('[data-mes]');
+    if(hm){ mes = hm.getAttribute('data-mes'); renderCustos(); return; }
+    var ce = e.target.closest('[data-cedit]');
+    if(ce){ editC = ce.getAttribute('data-cedit'); renderFormCusto(); $('c-nome').focus(); return; }
+    var cd = e.target.closest('[data-cdel]');
+    if(cd){
+      var cid = cd.getAttribute('data-cdel');
+      var alvoC = custos.filter(function(x){ return x.id===cid; })[0];
+      if(alvoC && window.confirm('Remover o custo "'+alvoC.nome+'"? Ele sai do cálculo de todos os meses.')){
+        custos = custos.filter(function(x){ return x.id!==cid; });
+        if(editC===cid){ editC = null; renderFormCusto(); }
+        saveC(); renderCustos();
+      }
+      return;
+    }
+    var pt = e.target.closest('[data-ptoggle]');
+    if(pt){
+      var pid = pt.getAttribute('data-ptoggle');
+      pacotes.forEach(function(x){ if(x.id===pid) x.ativo = !x.ativo; });
+      saveP(); renderPacotes(); renderCustos(); return;
+    }
+    var pe = e.target.closest('[data-pedit]');
+    if(pe){ editP = pe.getAttribute('data-pedit'); renderFormPacote(); $('p-nome').focus(); return; }
+    var pd = e.target.closest('[data-pdel]');
+    if(pd){
+      var pid2 = pd.getAttribute('data-pdel');
+      var alvoP = pacotes.filter(function(x){ return x.id===pid2; })[0];
+      if(alvoP && window.confirm('Remover o pacote "'+alvoP.nome+'"? As reservas já feitas continuam como estão.')){
+        pacotes = pacotes.filter(function(x){ return x.id!==pid2; });
+        if(editP===pid2){ editP = null; renderFormPacote(); }
+        saveP(); renderPacotes(); renderCustos();
+      }
+    }
+  });
+  $('mprev').addEventListener('click', function(){ mes = mesAdd(mes,-1); renderCustos(); });
+  $('mnext').addEventListener('click', function(){ mes = mesAdd(mes, 1); renderCustos(); });
+
   /* ---------------- eventos ---------------- */
   document.addEventListener('click', function(e){
     var bk = e.target.closest('.bk,.li,.now-chip');
@@ -652,8 +1093,10 @@ button,input,select,textarea{font:inherit;color:inherit}
     $('datelbl').innerHTML = rotulo(parseISO(dia));
     $('boardtitle').textContent = 'Ocupação por sala · ' + parseISO(dia).getDate() + ' ' + MESES[parseISO(dia).getMonth()];
     renderKpis(); renderNow(); renderGrid(); renderList();
+    if(vista==='custos') renderCustos();
   }
   render();
+  renderFormCusto(); renderFormPacote(); renderPacotes(); renderCustos();
   setInterval(function(){ renderNow(); }, 60000);
 })();
 </script>

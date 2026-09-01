@@ -5,7 +5,7 @@ Site estático (sem build, sem dependências) publicado pelo GitHub Pages.
 | Arquivo | O que é | URL |
 |---|---|---|
 | `index.html` | Landing page pública do estúdio | `/` |
-| `painel/index.html` | Painel interno: mapa de salas, quem estará em cada sala, reservas | `/painel/` |
+| `painel/index.html` | Painel interno: agenda das salas, custos mês a mês e pacotes | `/painel/` |
 
 ## Como editar
 
@@ -22,6 +22,13 @@ Tudo abaixo é fictício e precisa virar o dado real:
 - **Contato:** `@cena.studio`, `oi@cenastudio.com.br`, CNPJ
 - **Preços e pacotes:** valores de hora, meia diária, diária, Live Shopping Pro, mentoria
 - **Painel:** clientes, telefones e a agenda semeada são inventados
+
+## Custos já cadastrados
+
+Internet R$ 349 (valor simulado de link dedicado — trocar pelo do contrato), aluguel R$ 1.500,
+funcionário R$ 2.000 e ar-condicionado R$ 3.000. O ar-condicionado entrou como **investimento**
+(compra e instalação, conta só no mês em que aconteceu) — se no seu caso for despesa mensal,
+edite o lançamento e mude o tipo para "Todo mês".
 
 ## Limite conhecido do painel
 
