@@ -185,6 +185,12 @@ section{padding:86px 0;position:relative}
 .oferta .vagas b{font-family:"Archivo",sans-serif;font-weight:900;font-size:34px;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
 .oferta .btn{align-self:flex-start}
 .oferta .cond{font-size:12.5px;color:var(--ink-mute);margin:0}
+.oferta .fx{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:11px;max-width:62ch}
+.oferta .fx li{position:relative;padding-left:20px;font-size:15px;color:var(--ink-soft);line-height:1.55;text-wrap:pretty}
+.oferta .fx li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--gel-cyan);opacity:.85}
+.oferta .fx b{color:var(--ink);font-weight:700}
+.oferta .lig{font-size:14.5px;color:var(--ink-mute);max-width:56ch}
+@media (min-width:760px){ .oferta .fx{grid-template-columns:1fr 1fr;gap:12px 30px} }
 .card .bonus{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:"DM Mono",monospace;font-size:11px;
   letter-spacing:.1em;text-transform:uppercase;color:var(--gel-cyan);border:1px solid rgba(53,224,214,.4);border-radius:999px;padding:5px 11px}
 .card .bonus::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gel-cyan)}
@@ -583,7 +589,7 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
         <span class="tagline">Assinatura</span>
         <h3>Conteúdo do mês</h3>
         <p>Quatro sessões de 3h no mês, mais 12 cortes editados e legendados. Para quem posta toda semana.</p>
-        <span class="bonus">Bônus: acesso ao FIAS</span>
+        <span class="bonus">Bônus: FIAS, nosso app de roteiros</span>
         <span class="val">R$ 1.890 · por mês</span>
       </article>
       <article class="card rv">
@@ -597,10 +603,19 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
     <div class="oferta rv">
       <span class="sel">Oferta de lançamento</span>
       <h3>Os 50 primeiros assinantes levam o FIAS junto.</h3>
-      <p>Quem fechar o <b>Conteúdo do mês</b> ganha acesso ao FIAS, nosso sistema de gestão financeira: o que entra por cliente, por campanha e por mês, sem planilha. Você grava aqui e controla o dinheiro do seu conteúdo no mesmo lugar.</p>
+      <p>Quem fechar o <b>Conteúdo do mês</b> ganha acesso ao FIAS, o nosso app de inteligência de conteúdo para quem vende gravando. Você joga um vídeo que viralizou, ele abre a estrutura por trás e usa o que funcionou para escrever o seu próximo roteiro.</p>
+      <ul class="fx">
+        <li><b>Analisar vídeo</b> — hook, cenas, ritmo e as técnicas que seguraram a pessoa até o fim.</li>
+        <li><b>Base de conhecimento</b> — o que deu certo fica salvo, geral ou por produto.</li>
+        <li><b>Roteiros com IA</b> — hooks, cenas, legendas e movimento de personagem, escritos a partir da sua base.</li>
+        <li><b>Cenas pré-gravadas</b> — banco dos clipes que você já filmou; a IA reaproveita e você regrava menos.</li>
+        <li><b>Sessão de gravação</b> — o que gravar no dia, com timer de gravação e de edição.</li>
+        <li><b>Produtos e perfis</b> — vendas, comissões e amostras por produto, e várias contas de creator no mesmo app.</li>
+      </ul>
+      <p class="lig">É o encaixe direto com o estúdio: você chega com o roteiro pronto, grava as cenas que faltam e sai com o corte na mão.</p>
       <div class="vagas"><b id="fias-vagas">50</b> <span id="fias-txt">vagas disponíveis</span></div>
       <a class="btn btn-primary" id="fias-cta" href="#simulador">Quero uma das vagas</a>
-      <p class="cond">O acesso acompanha a assinatura: enquanto ela estiver ativa, o FIAS continua liberado.</p>
+      <p class="cond">O acesso acompanha a assinatura: enquanto ela estiver ativa, o FIAS continua liberado. App em desenvolvimento — quem entrar agora acompanha as novidades primeiro.</p>
     </div>
   </div>
 </section>

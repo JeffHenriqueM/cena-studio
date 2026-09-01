@@ -21,7 +21,9 @@ Tudo abaixo é fictício e precisa virar o dado real:
 - **Endereço:** Av. Exemplo, 1200 — sala 4, Manaíra, João Pessoa — PB
 - **Contato:** `@cena.studio`, `oi@cenastudio.com.br`, CNPJ
 - **Preços e pacotes:** valores de hora, meia diária, diária, Live Shopping Pro, mentoria
-- **Oferta FIAS:** a descrição do que é o FIAS foi escrita como rascunho — revise o texto.
+- **Oferta FIAS:** o FIAS (Viral Analyst) é o app de inteligência de conteúdo para quem vende gravando —
+  analisar vídeo viral, base de conhecimento, roteiros com IA, cenas pré-gravadas, sessão de gravação,
+  produtos e perfis. O bloco da oferta no `index.html` descreve essas funções.
   O contador de vagas fica em `FIAS_TOTAL` / `FIAS_TOMADAS`, no script do `index.html`
 - **Painel:** clientes, telefones e a agenda semeada são inventados
 
