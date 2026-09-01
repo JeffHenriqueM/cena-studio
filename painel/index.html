@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Painel interno de agenda das salas.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0B0A0F">
+<title>Mapa de Salas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap">
+
+</head>
+<body>
+<style>
+:root{
+  --blackout:#0B0A0F; --stage:#16141C; --stage-2:#1E1A26; --stage-3:#241F2E;
+  --edge:#2E2838; --edge-soft:#241F2E;
+  --ink:#EDE7F2; --ink-soft:#B9B0C6; --ink-mute:#847B94; --ink-dim:#5F5870;
+  --gel-rose:#FF4D8D; --gel-cyan:#35E0D6; --gel-amber:#FFA23A; --gel-violet:#7A48FF;
+  --ok:#35E0D6; --warn:#FFA23A; --late:#FF4D8D; --off:#6B6480;
+  --r:14px; --row:54px; --head:46px; --gut:62px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--blackout);color:var(--ink);
+  font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:"Archivo","Arial Black",sans-serif;margin:0;letter-spacing:-.02em}
+.mono{font-family:"DM Mono","SFMono-Regular",Menlo,monospace}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gel-cyan);outline-offset:2px;border-radius:6px}
+
+/* ---------- barra superior ---------- */
+.top{position:sticky;top:0;z-index:40;background:rgba(11,10,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--edge)}
+.top-in{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:12px 18px;max-width:1560px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:9px;font-family:"Archivo",sans-serif;font-weight:900;font-size:17px;letter-spacing:.02em}
+.rec{width:9px;height:9px;border-radius:50%;background:var(--gel-rose);box-shadow:0 0 0 4px rgba(255,77,141,.16);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(255,77,141,.16)}50%{box-shadow:0 0 0 8px rgba(255,77,141,.05)}}
+.brand span.sep{color:var(--ink-dim);font-weight:600;margin:0 2px}
+.brand span.lbl{font-family:"DM Mono",monospace;font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+.spacer{margin-left:auto}
+.datenav{display:flex;align-items:center;gap:6px;background:var(--stage);border:1px solid var(--edge);border-radius:999px;padding:4px}
+.datenav button{background:none;border:0;cursor:pointer;color:var(--ink-soft);padding:6px 11px;border-radius:999px;line-height:1}
+.datenav button:hover{background:var(--stage-3);color:var(--ink)}
+.datenav .lbl{font-family:"DM Mono",monospace;font-size:13px;letter-spacing:.04em;padding:0 8px;white-space:nowrap;text-align:center;min-width:170px}
+.datenav .lbl b{color:var(--ink);font-weight:500}
+.datenav .lbl i{font-style:normal;color:var(--ink-mute)}
+.search{display:flex;align-items:center;gap:8px;background:var(--stage);border:1px solid var(--edge);border-radius:999px;padding:8px 14px;min-width:210px}
+.search input{background:none;border:0;outline:0;width:100%;font-size:14px}
+.search input::placeholder{color:var(--ink-dim)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:10px 17px;border:1px solid transparent;cursor:pointer;font-weight:600;font-size:14px;text-decoration:none;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+.btn-primary{background:var(--gel-rose);color:#150409}
+.btn-primary:hover{transform:translateY(-1px)}
+.btn-ghost{border-color:var(--edge);background:var(--stage);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--ink-mute)}
+.btn-danger{border-color:rgba(255,77,141,.4);background:rgba(255,77,141,.08);color:var(--gel-rose)}
+.btn-danger:hover{background:rgba(255,77,141,.16)}
+
+.wrap{max-width:1560px;margin:0 auto;padding:20px 18px 70px}
+
+/* ---------- métricas ---------- */
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+.kpi{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden}
+.kpi .k{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+.kpi .v{font-family:"Archivo",sans-serif;font-weight:800;font-size:29px;line-height:1.15;margin-top:5px;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.kpi .bar{height:4px;border-radius:999px;background:var(--stage-3);margin-top:10px;overflow:hidden}
+.kpi .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gel-cyan),var(--gel-rose));border-radius:999px;transition:width .6s cubic-bezier(.22,.61,.36,1)}
+
+/* ---------- agora ---------- */
+.now{background:linear-gradient(180deg,var(--stage-2),var(--stage));border:1px solid var(--edge);border-radius:var(--r);padding:15px 16px;margin-bottom:18px}
+.now h2{font-size:14px;letter-spacing:.01em;display:flex;align-items:center;gap:9px}
+.now h2 .rec{width:8px;height:8px}
+.now h2 em{font-style:normal;font-family:"DM Mono",monospace;font-weight:400;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);margin-left:auto}
+.now-list{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.now-chip{display:flex;flex-direction:column;gap:3px;background:var(--blackout);border:1px solid var(--edge);border-left:3px solid var(--room);border-radius:10px;padding:9px 13px;min-width:172px}
+.now-chip .r{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--room)}
+.now-chip .who{font-weight:600;font-size:14px}
+.now-chip .det{font-size:12px;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.now-empty{color:var(--ink-mute);font-size:13.5px;margin-top:10px}
+
+/* ---------- grade ---------- */
+.board{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
+.board-head{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.board-head h2{font-size:15px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.scroller{overflow-x:auto;overflow-y:hidden}
+.grid{display:none;position:relative;min-width:960px;
+  grid-template-columns:var(--gut) repeat(6,minmax(146px,1fr));
+  grid-auto-rows:var(--row)}
+.ghead{position:sticky;top:0;z-index:6;height:var(--head);background:var(--stage-2);border-bottom:1px solid var(--edge);border-left:1px solid var(--edge-soft);
+  display:flex;flex-direction:column;justify-content:center;padding:0 11px;gap:2px}
+.ghead.corner{border-left:0;background:var(--stage-2)}
+.ghead .rn{font-weight:600;font-size:13px;line-height:1.2;display:flex;align-items:center;gap:7px}
+.ghead .rn::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--room);flex:none}
+.ghead .rt{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+.hour{grid-column:1;border-top:1px solid var(--edge-soft);font-family:"DM Mono",monospace;font-size:11px;color:var(--ink-dim);
+  padding:5px 9px 0 0;text-align:right;font-variant-numeric:tabular-nums}
+.cell{border-top:1px solid var(--edge-soft);border-left:1px solid var(--edge-soft);cursor:pointer;position:relative;transition:background .15s ease}
+.cell:hover{background:rgba(122,72,255,.09)}
+.cell:hover::after{content:"+";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-dim);font-size:19px}
+.bk{position:relative;z-index:3;margin:2px 3px;border-radius:10px;padding:8px 10px;cursor:pointer;text-align:left;width:calc(100% - 6px);
+  border:1px solid var(--room);border-left:3px solid var(--room);
+  background:var(--stage-2);background:linear-gradient(180deg,color-mix(in srgb,var(--room) 26%,var(--stage-2)),var(--stage-2));
+  color:var(--ink);overflow:hidden;display:flex;flex-direction:column;gap:2px;
+  transition:transform .2s cubic-bezier(.22,.61,.36,1),box-shadow .2s ease,filter .2s ease}
+.bk:hover{transform:translateY(-2px);box-shadow:0 14px 26px -14px rgba(0,0,0,.9);filter:brightness(1.08)}
+.bk .t{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:6px}
+.bk .t .st{width:7px;height:7px;border-radius:50%;background:var(--stcolor);flex:none}
+.bk .c{font-weight:600;font-size:13.5px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk .p{font-size:11.5px;color:var(--ink-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk.dim{opacity:.22;filter:grayscale(.6)}
+.bk.hit{box-shadow:0 0 0 2px var(--gel-cyan)}
+.bk.block{border-style:dashed;background:repeating-linear-gradient(135deg,var(--stage-2),var(--stage-2) 7px,var(--stage-3) 7px,var(--stage-3) 14px)}
+.nowline{position:absolute;left:var(--gut);right:0;height:0;border-top:1.5px solid var(--gel-rose);z-index:5;pointer-events:none}
+.nowline::before{content:"agora";position:absolute;left:6px;top:-8px;background:var(--gel-rose);color:#150409;font-family:"DM Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:999px}
+
+/* ---------- lista (mobile) ---------- */
+.list{display:flex;flex-direction:column}
+.room-block{border-top:1px solid var(--edge-soft);padding:14px 16px}
+.room-block:first-child{border-top:0}
+.room-block h3{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.room-block h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--room);flex:none}
+.room-block .free{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim)}
+.room-block .items{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.li{display:flex;gap:12px;align-items:flex-start;background:var(--blackout);border:1px solid var(--edge);border-left:3px solid var(--room);border-radius:10px;padding:11px 13px;cursor:pointer;text-align:left;width:100%;color:var(--ink)}
+.li:hover{border-color:var(--ink-dim)}
+.li .hh{font-family:"DM Mono",monospace;font-size:12px;color:var(--ink-soft);font-variant-numeric:tabular-nums;flex:none;padding-top:1px}
+.li .b{flex:1;min-width:0}
+.li .b .c{font-weight:600;font-size:14px}
+.li .b .p{font-size:12.5px;color:var(--ink-mute)}
+.li .st{width:8px;height:8px;border-radius:50%;background:var(--stcolor);flex:none;margin-top:6px}
+.li.dim{opacity:.28}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:999px;border:1px solid var(--stcolor);color:var(--stcolor);background:rgba(255,255,255,.05);background:color-mix(in srgb,var(--stcolor) 12%,transparent)}
+
+/* ---------- gaveta ---------- */
+.scrim{position:fixed;inset:0;background:rgba(5,4,8,.66);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:50}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;z-index:51;background:var(--stage);border:1px solid var(--edge);display:flex;flex-direction:column;
+  left:0;right:0;bottom:0;max-height:88vh;border-radius:20px 20px 0 0;
+  transform:translateY(102%);transition:transform .38s cubic-bezier(.22,.61,.36,1)}
+.drawer.on{transform:none}
+.dr-head{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 14px;border-bottom:1px solid var(--edge)}
+.dr-head .grab{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:40px;height:4px;border-radius:999px;background:var(--edge)}
+.dr-head h2{font-size:21px;line-height:1.15}
+.dr-head .sub{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--room,var(--ink-mute));margin-top:5px}
+.x{margin-left:auto;background:var(--stage-3);border:0;color:var(--ink-soft);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:17px;line-height:1;flex:none}
+.x:hover{background:var(--edge);color:var(--ink)}
+.dr-body{padding:18px 20px 26px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}
+.rowline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.fact{background:var(--blackout);border:1px solid var(--edge);border-radius:11px;padding:11px 13px}
+.fact .k{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-mute)}
+.fact .v{font-size:14.5px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums}
+.block-title{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:9px}
+.people{display:flex;flex-direction:column;gap:7px}
+.person{display:flex;align-items:center;gap:11px;background:var(--blackout);border:1px solid var(--edge);border-radius:10px;padding:9px 12px}
+.person .av{width:30px;height:30px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+  font-family:"DM Mono",monospace;font-size:11.5px;color:#150409;background:var(--room,var(--gel-cyan))}
+.person .nm{font-weight:600;font-size:14px}
+.person .rl{font-size:12px;color:var(--ink-mute)}
+.person .tag{margin-left:auto;font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--edge);border-radius:999px;padding:3px 8px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag-i{font-size:12.5px;color:var(--ink-soft);background:var(--blackout);border:1px solid var(--edge);border-radius:999px;padding:5px 11px}
+.notes{font-size:14px;color:var(--ink-soft);background:var(--blackout);border:1px solid var(--edge);border-left:3px solid var(--gel-amber);border-radius:10px;padding:11px 13px}
+.dr-actions{display:flex;gap:9px;flex-wrap:wrap;border-top:1px solid var(--edge);padding-top:16px}
+
+/* formulário */
+.form{display:grid;grid-template-columns:1fr;gap:13px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-mute)}
+.field input,.field select,.field textarea{background:var(--blackout);border:1px solid var(--edge);border-radius:10px;padding:11px 12px;font-size:14.5px;outline:0}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gel-cyan)}
+.field textarea{resize:vertical;min-height:64px}
+.field .hint{font-size:12px;color:var(--ink-dim)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.err{background:rgba(255,77,141,.1);border:1px solid rgba(255,77,141,.45);color:#FFC2D8;border-radius:10px;padding:10px 13px;font-size:13.5px}
+
+@media (min-width:640px){
+  .kpis{grid-template-columns:repeat(4,1fr)}
+}
+@media (min-width:900px){
+  .grid{display:grid}
+  .list{display:none}
+  .drawer{left:auto;top:0;bottom:0;right:0;width:min(460px,100%);max-height:none;border-radius:0;border-right:0;transform:translateX(102%)}
+  .drawer.on{transform:none}
+  .dr-head .grab{display:none}
+  .wrap{padding:24px 22px 70px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Mapa de salas</span></div>
+    <div class="datenav">
+      <button id="prev" aria-label="Dia anterior">‹</button>
+      <div class="lbl" id="datelbl"><b>—</b></div>
+      <button id="next" aria-label="Próximo dia">›</button>
+    </div>
+    <button class="btn btn-ghost" id="hoje">Hoje</button>
+    <div class="spacer"></div>
+    <div class="search">
+      <span class="mono" style="color:var(--ink-dim);font-size:13px">⌕</span>
+      <input id="q" type="search" placeholder="Buscar pessoa, cliente ou @">
+    </div>
+    <button class="btn btn-primary" id="nova">+ Nova reserva</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
+
+  <section class="now">
+    <h2><span class="rec"></span> Quem está no estúdio agora <em id="nowtime">—</em></h2>
+    <div id="nowbox"></div>
+  </section>
+
+  <section class="board">
+    <div class="board-head">
+      <h2 id="boardtitle">Ocupação por sala</h2>
+      <div class="legend">
+        <span><i style="background:var(--ok)"></i>Confirmado</span>
+        <span><i style="background:var(--warn)"></i>Sinal pago</span>
+        <span><i style="background:var(--late)"></i>Aguardando</span>
+        <span><i style="background:var(--off)"></i>Bloqueio</span>
+      </div>
+    </div>
+    <div class="scroller">
+      <div class="grid" id="grid"></div>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drtitle">
+  <div class="dr-head">
+    <span class="grab"></span>
+    <div>
+      <h2 id="drtitle">—</h2>
+      <div class="sub" id="drsub">—</div>
+    </div>
+    <button class="x" id="drclose" aria-label="Fechar">✕</button>
+  </div>
+  <div class="dr-body" id="drbody"></div>
+</aside>
+
+<script>
+(function(){
+  "use strict";
+
+  var ROOMS = [
+    {id:'s1', nome:'Parede Gel',        tipo:'Reels / clipes', cor:'#FF4D8D', cap:6},
+    {id:'s2', nome:'Cozinha Clean',     tipo:'UGC / receitas', cor:'#FFA23A', cap:5},
+    {id:'s3', nome:'Canto Live Shopping',tipo:'Live commerce', cor:'#35E0D6', cap:4},
+    {id:'s4', nome:'Fundo Infinito',    tipo:'Still / produto',cor:'#FFFFFF', cap:8},
+    {id:'s5', nome:'Sofá & Estante',    tipo:'Podcast',        cor:'#7A48FF', cap:6},
+    {id:'s6', nome:'Closet Espelhado',  tipo:'Moda / try-on',  cor:'#B9B0C6', cap:4}
+  ];
+  var H0 = 8, H1 = 22;                       // grade das 08h às 22h
+  var STATUS = {
+    confirmado:{lbl:'Confirmado', cor:'#35E0D6'},
+    sinal:     {lbl:'Sinal pago', cor:'#FFA23A'},
+    aguardando:{lbl:'Aguardando', cor:'#FF4D8D'},
+    bloqueio:  {lbl:'Bloqueio',   cor:'#6B6480'}
+  };
+  var KEY = 'cena.salas.v1';
+
+  /* ---------------- datas ---------------- */
+  function iso(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function addDays(base, n){ var d = new Date(base); d.setDate(d.getDate()+n); return d; }
+  function parseISO(s){ var p = s.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  var DIAS = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  var MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  function rotulo(d){
+    var hoje = iso(new Date());
+    var pre = iso(d)===hoje ? 'hoje · ' : (iso(d)===iso(addDays(new Date(),1)) ? 'amanhã · ' : '');
+    return '<i>'+pre+'</i><b>'+DIAS[d.getDay()]+', '+d.getDate()+' '+MESES[d.getMonth()]+'</b>';
+  }
+  function hhmm(h){ return pad(Math.floor(h))+':'+pad(Math.round((h%1)*60)); }
+  function brl(n){ return 'R$ ' + Number(n).toLocaleString('pt-BR'); }
+
+  /* ---------------- dados ---------------- */
+  var hoje = new Date();
+  function seed(){
+    var d0 = iso(hoje), d1 = iso(addDays(hoje,1)), d2 = iso(addDays(hoje,2));
+    return [
+      {id:'b1', data:d0, sala:'s1', ini:9, fim:13, cliente:'Marina Coelho', arroba:'@marinacoelho', fone:'5583991110001',
+       pacote:'Meia diária 4h', valor:390, status:'confirmado', extras:['Kit câmera 4K','Ring light RGB'],
+       pessoas:[{n:'Marina Coelho',p:'Creator responsável'},{n:'Duda Farias',p:'Produção'},{n:'Rafa Lins',p:'Maquiagem'}],
+       equipe:'Léo (operação)', obs:'Chega 30min antes para montar figurino. Levar o fundo rosa gel.'},
+      {id:'b2', data:d0, sala:'s3', ini:10, fim:14, cliente:'Loja Verão Norte', arroba:'@veraonorte', fone:'5583991110002',
+       pacote:'Live Shopping Pro 4h', valor:1290, status:'confirmado', extras:['2 câmeras','Switcher','Moderação'],
+       pessoas:[{n:'Camila Beltrão',p:'Apresentadora'},{n:'Igor Sales',p:'Sócio da loja'},{n:'Bea Nunes',p:'Social media'}],
+       equipe:'Léo (switcher) + Tati (moderação)', obs:'Live começa 10h30 no TikTok Shop. Testar link dedicado às 9h45.'},
+      {id:'b3', data:d0, sala:'s2', ini:14, fim:16, cliente:'Chef Bruno Aguiar', arroba:'@chefbrunoaguiar', fone:'5583991110003',
+       pacote:'Hora avulsa (2h)', valor:240, status:'sinal', extras:['Operador de câmera'],
+       pessoas:[{n:'Bruno Aguiar',p:'Creator responsável'},{n:'Pri Vasconcelos',p:'Assistente'}],
+       equipe:'Tati (operação)', obs:'Precisa da cooktop ligada e da bancada livre.'},
+      {id:'b4', data:d0, sala:'s5', ini:15, fim:19, cliente:'Podcast Fora do Script', arroba:'@foradoscript', fone:'5583991110004',
+       pacote:'Meia diária 4h', valor:390, status:'confirmado', extras:['4 lapelas','Edição de cortes'],
+       pessoas:[{n:'Higor Menezes',p:'Host'},{n:'Lud Carvalho',p:'Co-host'},{n:'Convidado: Dr. Sérgio Paiva',p:'Entrevistado'},{n:'Tico',p:'Editor'}],
+       equipe:'Léo (áudio)', obs:'Gravam 2 episódios seguidos. Café e água na sala.'},
+      {id:'b5', data:d0, sala:'s6', ini:17, fim:20, cliente:'Ateliê Rúbia', arroba:'@atelierubia', fone:'5583991110005',
+       pacote:'Hora avulsa (3h)', valor:360, status:'aguardando', extras:['Teleprompter'],
+       pessoas:[{n:'Rúbia Tavares',p:'Creator responsável'},{n:'Nina Sá',p:'Modelo'}],
+       equipe:'—', obs:'Sinal ainda não caiu. Cobrar até as 12h ou liberar o horário.'},
+      {id:'b6', data:d0, sala:'s4', ini:8, fim:10, cliente:'Manutenção da luz', arroba:'', fone:'',
+       pacote:'Bloqueio interno', valor:0, status:'bloqueio', extras:[],
+       pessoas:[{n:'Léo Ferraz',p:'Equipe CENA'}],
+       equipe:'Léo', obs:'Troca dos difusores do softbox principal.'},
+      {id:'b7', data:d0, sala:'s4', ini:11, fim:13, cliente:'Skin Lab', arroba:'@skinlab.br', fone:'5583991110007',
+       pacote:'Hora avulsa (2h)', valor:240, status:'confirmado', extras:['Mesa still'],
+       pessoas:[{n:'Aline Furtado',p:'Diretora de arte'},{n:'Wesley Prado',p:'Fotógrafo'}],
+       equipe:'—', obs:'Fotos de 12 SKUs, fundo branco.'},
+      {id:'b8', data:d1, sala:'s1', ini:8, fim:16, cliente:'Agência Meia-Noite', arroba:'@agenciameianoite', fone:'5583991110008',
+       pacote:'Diária 8h', valor:690, status:'confirmado', extras:['Kit câmera 4K','Operador de câmera','Edição de cortes'],
+       pessoas:[{n:'Talita Rangel',p:'Atendimento'},{n:'Pedro Aquino',p:'Diretor'},{n:'Sam Oliveira',p:'Creator contratado'}],
+       equipe:'Léo (dia inteiro)', obs:'Banco de conteúdo do trimestre para 3 clientes.'},
+      {id:'b9', data:d1, sala:'s3', ini:19, fim:22, cliente:'Duo Perfumaria', arroba:'@duoperfumaria', fone:'5583991110009',
+       pacote:'Live Shopping Pro 3h', valor:990, status:'sinal', extras:['2 câmeras','Moderação'],
+       pessoas:[{n:'Sabrina Melo',p:'Apresentadora'},{n:'Jonas Duarte',p:'Dono'}],
+       equipe:'Tati (moderação)', obs:'Horário noturno — acréscimo de R$ 40/h já embutido.'},
+      {id:'b10', data:d2, sala:'s2', ini:9, fim:11, cliente:'Mentoria — Júlia Prado', arroba:'@juliaprado', fone:'5583991110010',
+       pacote:'Mentoria 1:1 (2h)', valor:490, status:'confirmado', extras:[],
+       pessoas:[{n:'Júlia Prado',p:'Mentorada'},{n:'Jeff',p:'Mentor CENA'}],
+       equipe:'Jeff', obs:'Roteiro + primeira gravação guiada.'}
+    ];
+  }
+  var bookings = load();
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){ var v = JSON.parse(raw); if(Array.isArray(v) && v.length) return v; }
+    }catch(e){}
+    return seed();
+  }
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(bookings)); }catch(e){}
+  }
+
+  /* ---------------- estado ---------------- */
+  var dia = iso(hoje);
+  var busca = '';
+  var $ = function(id){ return document.getElementById(id); };
+  function room(id){ for(var i=0;i<ROOMS.length;i++){ if(ROOMS[i].id===id) return ROOMS[i]; } return ROOMS[0]; }
+  function doDia(){ return bookings.filter(function(b){ return b.data===dia; }); }
+  function nomes(b){
+    return (b.pessoas||[]).map(function(p){ return p.n; }).join(' ');
+  }
+  function bate(b){
+    if(!busca) return true;
+    var t = (b.cliente+' '+(b.arroba||'')+' '+nomes(b)+' '+(b.equipe||'')).toLowerCase();
+    return t.indexOf(busca) > -1;
+  }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function iniciais(n){
+    var p = String(n).replace(/^Convidado:\s*/,'').trim().split(/\s+/);
+    return ((p[0]||'')[0] + (p.length>1 ? (p[p.length-1]||'')[0] : '')).toUpperCase();
+  }
+
+  /* ---------------- métricas ---------------- */
+  function renderKpis(){
+    var lista = doDia();
+    var sessoes = lista.filter(function(b){ return b.status!=='bloqueio'; });
+    var horas = 0, receita = 0, pendente = 0;
+    sessoes.forEach(function(b){ horas += (b.fim-b.ini); receita += b.valor||0; if(b.status!=='confirmado') pendente += b.valor||0; });
+    var capacidade = ROOMS.length * (H1-H0);
+    var ocup = Math.round(horas/capacidade*100);
+    var pessoas = 0;
+    sessoes.forEach(function(b){ pessoas += (b.pessoas||[]).length; });
+
+    $('kpis').innerHTML =
+      kpi('Sessões no dia', sessoes.length, sessoes.length===1?'1 sala em uso':(new Set(sessoes.map(function(b){return b.sala;}))).size+' salas em uso') +
+      kpi('Pessoas esperadas', pessoas, 'clientes e convidados somados') +
+      kpi('Ocupação', ocup+'%', horas+'h de '+capacidade+'h disponíveis', ocup) +
+      kpi('A receber', brl(receita), pendente ? brl(pendente)+' ainda não confirmado' : 'tudo confirmado');
+  }
+  function kpi(k,v,s,bar){
+    return '<div class="kpi"><div class="k">'+esc(k)+'</div><div class="v">'+esc(v)+'</div><div class="s">'+esc(s)+'</div>'+
+      (bar!=null ? '<div class="bar"><i style="width:'+Math.min(bar,100)+'%"></i></div>' : '')+'</div>';
+  }
+
+  /* ---------------- agora ---------------- */
+  function renderNow(){
+    var agora = new Date();
+    var h = agora.getHours() + agora.getMinutes()/60;
+    $('nowtime').textContent = iso(agora)===dia ? hhmm(agora.getHours()+agora.getMinutes()/60) : 'visualizando outro dia';
+    var box = $('nowbox');
+    if(iso(agora)!==dia){
+      box.innerHTML = '<p class="now-empty">Você está vendo '+DIAS[parseISO(dia).getDay()]+', '+parseISO(dia).getDate()+' '+MESES[parseISO(dia).getMonth()]+
+        '. Volte para hoje para ver quem está no estúdio neste momento.</p>';
+      return;
+    }
+    var ativos = bookings.filter(function(b){ return b.data===dia && h>=b.ini && h<b.fim; });
+    if(!ativos.length){
+      box.innerHTML = '<p class="now-empty">Nenhuma sala ocupada agora. Próxima sessão: '+proxima(h)+'</p>';
+      return;
+    }
+    box.innerHTML = '<div class="now-list">' + ativos.map(function(b){
+      var r = room(b.sala);
+      var gente = (b.pessoas||[]).length;
+      return '<button class="now-chip" data-id="'+b.id+'" style="--room:'+r.cor+'">'+
+        '<span class="r">'+esc(r.nome)+'</span>'+
+        '<span class="who">'+esc(b.cliente)+'</span>'+
+        '<span class="det">'+gente+' pessoa'+(gente===1?'':'s')+' · sai '+hhmm(b.fim)+'</span>'+
+      '</button>';
+    }).join('') + '</div>';
+  }
+  function proxima(h){
+    var f = doDia().filter(function(b){ return b.ini>h; }).sort(function(a,b){ return a.ini-b.ini; })[0];
+    return f ? esc(f.cliente)+' às '+hhmm(f.ini)+' na '+esc(room(f.sala).nome)+'.' : 'nenhuma até o fim do dia.';
+  }
+
+  /* ---------------- grade ---------------- */
+  function renderGrid(){
+    var g = $('grid');
+    var html = '<div class="ghead corner"></div>';
+    ROOMS.forEach(function(r){
+      html += '<div class="ghead" style="--room:'+r.cor+'"><span class="rn">'+esc(r.nome)+'</span><span class="rt">'+esc(r.tipo)+' · até '+r.cap+'</span></div>';
+    });
+    for(var h=H0; h<H1; h++){
+      var linha = (h-H0)+2;
+      html += '<div class="hour" style="grid-row:'+linha+'">'+pad(h)+':00</div>';
+      for(var c=0;c<ROOMS.length;c++){
+        html += '<div class="cell" data-sala="'+ROOMS[c].id+'" data-hora="'+h+'" style="grid-column:'+(c+2)+';grid-row:'+linha+'" title="Marcar '+esc(ROOMS[c].nome)+' às '+pad(h)+':00"></div>';
+      }
+    }
+    doDia().forEach(function(b){
+      var ri = ROOMS.map(function(r){return r.id;}).indexOf(b.sala);
+      if(ri<0) return;
+      var r = ROOMS[ri], st = STATUS[b.status]||STATUS.confirmado;
+      var a = Math.max(b.ini,H0)-H0+2, z = Math.min(b.fim,H1)-H0+2;
+      if(z<=a) return;
+      var gente = (b.pessoas||[]).length;
+      html += '<button class="bk'+(b.status==='bloqueio'?' block':'')+(bate(b)?'':' dim')+(busca&&bate(b)?' hit':'')+'" data-id="'+b.id+'" '+
+        'style="grid-column:'+(ri+2)+';grid-row:'+a+'/'+z+';--room:'+r.cor+';--stcolor:'+st.cor+'">'+
+        '<span class="t"><i class="st"></i>'+hhmm(b.ini)+'–'+hhmm(b.fim)+'</span>'+
+        '<span class="c">'+esc(b.cliente)+'</span>'+
+        '<span class="p">'+(b.status==='bloqueio' ? esc(b.pacote) : gente+' pessoa'+(gente===1?'':'s')+' · '+esc(b.pacote))+'</span>'+
+      '</button>';
+    });
+    g.innerHTML = html;
+
+    var agora = new Date();
+    if(iso(agora)===dia){
+      var h2 = agora.getHours()+agora.getMinutes()/60;
+      if(h2>=H0 && h2<=H1){
+        var top = 46 + (h2-H0)*54;
+        var line = document.createElement('div');
+        line.className = 'nowline';
+        line.style.top = top+'px';
+        g.appendChild(line);
+      }
+    }
+  }
+
+  /* ---------------- lista (mobile) ---------------- */
+  function renderList(){
+    var lista = doDia();
+    $('list').innerHTML = ROOMS.map(function(r){
+      var itens = lista.filter(function(b){ return b.sala===r.id; }).sort(function(a,b){ return a.ini-b.ini; });
+      var livres = (H1-H0) - itens.reduce(function(s,b){ return s + (b.fim-b.ini); }, 0);
+      return '<div class="room-block" style="--room:'+r.cor+'">'+
+        '<h3>'+esc(r.nome)+'</h3>'+
+        '<div class="free">'+(itens.length ? itens.length+(itens.length===1?' sessão':' sessões')+' · '+livres+'h livres' : 'sala livre o dia todo')+'</div>'+
+        (itens.length ? '<div class="items">'+itens.map(function(b){
+          var st = STATUS[b.status]||STATUS.confirmado;
+          var gente = (b.pessoas||[]).length;
+          return '<button class="li'+(bate(b)?'':' dim')+'" data-id="'+b.id+'" style="--stcolor:'+st.cor+'">'+
+            '<span class="hh">'+hhmm(b.ini)+'<br>'+hhmm(b.fim)+'</span>'+
+            '<span class="st"></span>'+
+            '<span class="b"><span class="c">'+esc(b.cliente)+'</span><br>'+
+            '<span class="p">'+(b.status==='bloqueio'? esc(b.pacote) : gente+' pessoa'+(gente===1?'':'s')+' · '+esc(b.pacote))+'</span></span>'+
+          '</button>';
+        }).join('')+'</div>' : '')+
+      '</div>';
+    }).join('');
+  }
+
+  /* ---------------- gaveta ---------------- */
+  var drawer = $('drawer'), scrim = $('scrim'), lastFocus = null;
+  function abrir(){ drawer.classList.add('on'); scrim.classList.add('on'); }
+  function fechar(){ drawer.classList.remove('on'); scrim.classList.remove('on'); if(lastFocus && lastFocus.focus) lastFocus.focus(); }
+  scrim.addEventListener('click', fechar);
+  $('drclose').addEventListener('click', fechar);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') fechar(); });
+
+  function verReserva(id){
+    var b = bookings.filter(function(x){ return x.id===id; })[0];
+    if(!b) return;
+    var r = room(b.sala), st = STATUS[b.status]||STATUS.confirmado;
+    $('drtitle').textContent = b.cliente;
+    var sub = $('drsub'); sub.style.setProperty('--room', r.cor);
+    sub.textContent = r.nome + ' · ' + hhmm(b.ini) + '–' + hhmm(b.fim);
+    var gente = (b.pessoas||[]).length;
+
+    $('drbody').innerHTML =
+      '<div class="rowline">'+
+        '<span class="pill" style="--stcolor:'+st.cor+'">'+esc(st.lbl)+'</span>'+
+        (b.arroba ? '<span class="tag-i">'+esc(b.arroba)+'</span>' : '')+
+      '</div>'+
+      '<div class="facts">'+
+        fact('Sala', r.nome) + fact('Horário', hhmm(b.ini)+'–'+hhmm(b.fim)+' ('+(b.fim-b.ini)+'h)') +
+        fact('Pacote', b.pacote) + fact('Valor', b.valor ? brl(b.valor) : '—') +
+      '</div>'+
+      '<div><div class="block-title">Quem estará na sala ('+gente+' de '+r.cap+' lugares)</div>'+
+        '<div class="people" style="--room:'+r.cor+'">'+
+        (b.pessoas||[]).map(function(p,i){
+          return '<div class="person"><span class="av">'+esc(iniciais(p.n))+'</span>'+
+            '<span><span class="nm">'+esc(p.n)+'</span><br><span class="rl">'+esc(p.p)+'</span></span>'+
+            (i===0 && b.status!=='bloqueio' ? '<span class="tag">Responsável</span>' : '')+'</div>';
+        }).join('')+
+        '</div></div>'+
+      (b.equipe && b.equipe!=='—' ? '<div><div class="block-title">Equipe CENA escalada</div><div class="tags"><span class="tag-i">'+esc(b.equipe)+'</span></div></div>' : '')+
+      ((b.extras||[]).length ? '<div><div class="block-title">Equipamento reservado</div><div class="tags">'+
+        b.extras.map(function(x){ return '<span class="tag-i">'+esc(x)+'</span>'; }).join('')+'</div></div>' : '')+
+      (b.obs ? '<div><div class="block-title">Observações</div><div class="notes">'+esc(b.obs)+'</div></div>' : '')+
+      '<div class="dr-actions">'+
+        (b.fone ? '<a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/'+esc(b.fone)+'?text='+encodeURIComponent('Oi, '+b.cliente.split(' ')[0]+'! Aqui é do CENA — confirmando sua sessão na '+r.nome+' das '+hhmm(b.ini)+' às '+hhmm(b.fim)+'.')+'">Falar no WhatsApp</a>' : '')+
+        '<button class="btn btn-ghost" data-edit="'+b.id+'">Editar</button>'+
+        '<button class="btn btn-danger" data-del="'+b.id+'">Cancelar reserva</button>'+
+      '</div>';
+    abrir();
+  }
+  function fact(k,v){ return '<div class="fact"><div class="k">'+esc(k)+'</div><div class="v">'+esc(v)+'</div></div>'; }
+
+  function editar(id, presetSala, presetHora){
+    var b = id ? bookings.filter(function(x){ return x.id===id; })[0] : null;
+    $('drtitle').textContent = b ? 'Editar reserva' : 'Nova reserva';
+    $('drsub').textContent = parseISO(dia).getDate()+' '+MESES[parseISO(dia).getMonth()];
+    var ini = b ? b.ini : (presetHora!=null ? presetHora : 9);
+    var fim = b ? b.fim : Math.min(ini+2, H1);
+    $('drbody').innerHTML =
+      '<div id="formerr"></div>'+
+      '<div class="form">'+
+        '<div class="field"><label for="f-cli">Cliente / responsável</label><input id="f-cli" value="'+esc(b?b.cliente:'')+'" placeholder="Nome de quem reservou"></div>'+
+        '<div class="two">'+
+          '<div class="field"><label for="f-sala">Sala</label><select id="f-sala">'+
+            ROOMS.map(function(r){ var sel=(b?b.sala:presetSala)===r.id?' selected':''; return '<option value="'+r.id+'"'+sel+'>'+esc(r.nome)+'</option>'; }).join('')+
+          '</select></div>'+
+          '<div class="field"><label for="f-status">Status</label><select id="f-status">'+
+            Object.keys(STATUS).map(function(k){ var sel=(b?b.status:'aguardando')===k?' selected':''; return '<option value="'+k+'"'+sel+'>'+STATUS[k].lbl+'</option>'; }).join('')+
+          '</select></div>'+
+        '</div>'+
+        '<div class="two">'+
+          '<div class="field"><label for="f-ini">Entra</label><select id="f-ini">'+horas(ini)+'</select></div>'+
+          '<div class="field"><label for="f-fim">Sai</label><select id="f-fim">'+horas(fim,1)+'</select></div>'+
+        '</div>'+
+        '<div class="field"><label for="f-pess">Quem estará na sala</label>'+
+          '<textarea id="f-pess" placeholder="Um por linha: Nome — papel">'+esc((b?b.pessoas:[{n:'',p:''}]).map(function(p){ return p.n ? p.n+' — '+p.p : ''; }).filter(Boolean).join('\n'))+'</textarea>'+
+          '<span class="hint">Um nome por linha. O primeiro vira o responsável pela sessão.</span></div>'+
+        '<div class="two">'+
+          '<div class="field"><label for="f-pac">Pacote</label><input id="f-pac" value="'+esc(b?b.pacote:'')+'" placeholder="Meia diária 4h"></div>'+
+          '<div class="field"><label for="f-val">Valor (R$)</label><input id="f-val" type="number" min="0" step="10" value="'+(b?b.valor:'')+'"></div>'+
+        '</div>'+
+        '<div class="two">'+
+          '<div class="field"><label for="f-eq">Equipe CENA</label><input id="f-eq" value="'+esc(b?b.equipe:'')+'" placeholder="Léo (operação)"></div>'+
+          '<div class="field"><label for="f-fone">WhatsApp</label><input id="f-fone" value="'+esc(b?b.fone:'')+'" placeholder="5583999999999"></div>'+
+        '</div>'+
+        '<div class="field"><label for="f-ext">Equipamento (separado por vírgula)</label><input id="f-ext" value="'+esc((b&&b.extras?b.extras.join(', '):''))+'"></div>'+
+        '<div class="field"><label for="f-obs">Observações</label><textarea id="f-obs" placeholder="O que a equipe precisa saber antes de a pessoa chegar">'+esc(b?b.obs:'')+'</textarea></div>'+
+      '</div>'+
+      '<div class="dr-actions">'+
+        '<button class="btn btn-primary" id="f-save">'+(b?'Salvar alterações':'Criar reserva')+'</button>'+
+        '<button class="btn btn-ghost" id="f-cancel">Voltar</button>'+
+      '</div>';
+
+    $('f-cancel').addEventListener('click', function(){ b ? verReserva(b.id) : fechar(); });
+    $('f-save').addEventListener('click', function(){ salvar(b); });
+    abrir();
+    $('f-cli').focus();
+  }
+  function horas(sel, fim){
+    var out = '';
+    for(var h=(fim?H0+1:H0); h<=(fim?H1:H1-1); h++){
+      out += '<option value="'+h+'"'+(h===sel?' selected':'')+'>'+pad(h)+':00</option>';
+    }
+    return out;
+  }
+  function salvar(b){
+    var cliente = $('f-cli').value.trim();
+    var sala = $('f-sala').value, ini = +$('f-ini').value, fim = +$('f-fim').value;
+    var erro = '';
+    if(!cliente) erro = 'Diga quem reservou — sem nome a reserva não entra na escala.';
+    else if(fim<=ini) erro = 'O horário de saída precisa ser depois da entrada.';
+    else {
+      var choque = bookings.filter(function(x){
+        return x.data===dia && x.sala===sala && (!b || x.id!==b.id) && ini < x.fim && fim > x.ini;
+      })[0];
+      if(choque) erro = 'A '+room(sala).nome+' já está com '+choque.cliente+' das '+hhmm(choque.ini)+' às '+hhmm(choque.fim)+'.';
+    }
+    if(erro){ $('formerr').innerHTML = '<div class="err">'+esc(erro)+'</div>'; return; }
+
+    var pessoas = $('f-pess').value.split('\n').map(function(l){
+      l = l.trim(); if(!l) return null;
+      var p = l.split(/\s+[—–-]\s+/);
+      return {n:p[0].trim(), p:(p[1]||'Convidado').trim()};
+    }).filter(Boolean);
+
+    var dados = {
+      data:dia, sala:sala, ini:ini, fim:fim, cliente:cliente,
+      arroba:(b&&b.arroba)||'', fone:$('f-fone').value.trim(),
+      pacote:$('f-pac').value.trim() || (fim-ini)+'h avulsas',
+      valor:+$('f-val').value || 0, status:$('f-status').value,
+      extras:$('f-ext').value.split(',').map(function(s){ return s.trim(); }).filter(Boolean),
+      pessoas:pessoas.length?pessoas:[{n:cliente,p:'Responsável'}],
+      equipe:$('f-eq').value.trim() || '—', obs:$('f-obs').value.trim()
+    };
+    if(b){ for(var k in dados) b[k] = dados[k]; }
+    else { dados.id = 'b'+Date.now(); bookings.push(dados); b = dados; }
+    save(); render();
+    verReserva(b.id);
+  }
+
+  /* ---------------- eventos ---------------- */
+  document.addEventListener('click', function(e){
+    var bk = e.target.closest('.bk,.li,.now-chip');
+    if(bk && bk.dataset.id){ lastFocus = bk; verReserva(bk.dataset.id); return; }
+    var cell = e.target.closest('.cell');
+    if(cell){ lastFocus = cell; editar(null, cell.dataset.sala, +cell.dataset.hora); return; }
+    var ed = e.target.closest('[data-edit]');
+    if(ed){ editar(ed.getAttribute('data-edit')); return; }
+    var del = e.target.closest('[data-del]');
+    if(del){
+      var id = del.getAttribute('data-del');
+      var alvo = bookings.filter(function(x){ return x.id===id; })[0];
+      if(alvo && window.confirm('Cancelar a reserva de '+alvo.cliente+'? Isso libera a sala.')){
+        bookings = bookings.filter(function(x){ return x.id!==id; });
+        save(); render(); fechar();
+      }
+    }
+  });
+  $('prev').addEventListener('click', function(){ dia = iso(addDays(parseISO(dia),-1)); render(); });
+  $('next').addEventListener('click', function(){ dia = iso(addDays(parseISO(dia),1)); render(); });
+  $('hoje').addEventListener('click', function(){ dia = iso(new Date()); render(); });
+  $('nova').addEventListener('click', function(){ lastFocus = $('nova'); editar(null, 's1', 9); });
+  $('q').addEventListener('input', function(){ busca = this.value.trim().toLowerCase(); renderGrid(); renderList(); });
+
+  /* ---------------- render ---------------- */
+  function render(){
+    $('datelbl').innerHTML = rotulo(parseISO(dia));
+    $('boardtitle').textContent = 'Ocupação por sala · ' + parseISO(dia).getDate() + ' ' + MESES[parseISO(dia).getMonth()];
+    renderKpis(); renderNow(); renderGrid(); renderList();
+  }
+  render();
+  setInterval(function(){ renderNow(); }, 60000);
+})();
+</script>
+
+</body>
+</html>

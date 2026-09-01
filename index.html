@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estudio de gravacao por hora para creators, marcas e live shopping.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0B0A0F">
+<title>Cena Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
+
+</head>
+<body>
+<style>
+:root{
+  --blackout:#0B0A0F;
+  --stage:#16141C;
+  --stage-2:#1E1A26;
+  --edge:#2E2838;
+  --ink:#EDE7F2;
+  --ink-soft:#B9B0C6;
+  --ink-mute:#847B94;
+  --gel-rose:#FF4D8D;
+  --gel-cyan:#35E0D6;
+  --gel-amber:#FFA23A;
+  --maxw:1140px;
+  --r:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--blackout);
+  color:var(--ink);
+  font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%}
+a{color:inherit}
+::selection{background:var(--gel-rose);color:#12060B}
+
+/* grão de filme sobre tudo */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:60;opacity:.32;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 22px}
+
+h1,h2,h3,.display{
+  font-family:Archivo,"Arial Black",Arial,sans-serif;
+  font-weight:800;
+  font-stretch:112%;
+  letter-spacing:-.022em;
+  line-height:.96;
+  text-wrap:balance;
+  margin:0;
+}
+.eyebrow{
+  font-family:"DM Mono",ui-monospace,Menlo,monospace;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);
+  display:flex;align-items:center;gap:10px;margin:0 0 18px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--gel-rose);flex:none}
+p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
+
+/* ---------- NAV ---------- */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(11,10,15,.72);
+  border-bottom:1px solid rgba(46,40,56,.7);
+}
+.nav-in{display:flex;align-items:center;gap:24px;height:66px}
+.nav-in .logo{margin-right:auto}
+.logo{display:flex;align-items:center;gap:10px;font-family:Archivo,Arial,sans-serif;font-weight:900;font-stretch:112%;letter-spacing:-.02em;font-size:20px;text-decoration:none}
+.rec{width:9px;height:9px;border-radius:50%;background:var(--gel-rose);box-shadow:0 0 0 0 rgba(255,77,141,.6);animation:rec 2.4s ease-out infinite}
+@keyframes rec{0%{box-shadow:0 0 0 0 rgba(255,77,141,.55)}70%{box-shadow:0 0 0 9px rgba(255,77,141,0)}100%{box-shadow:0 0 0 0 rgba(255,77,141,0)}}
+.nav-links{display:none;gap:26px;align-items:center;font-size:14.5px;color:var(--ink-soft)}
+.nav-links a{text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 22px;border-radius:999px;border:0;cursor:pointer;
+  font-family:"Instrument Sans",sans-serif;font-weight:600;font-size:15px;line-height:1;
+  text-decoration:none;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn-primary{background:var(--gel-rose);color:#150409;box-shadow:0 10px 34px -12px rgba(255,77,141,.85)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(255,77,141,.95)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--edge)}
+.btn-ghost:hover{border-color:var(--ink-mute);transform:translateY(-2px)}
+.btn-sm{padding:10px 16px;font-size:14px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:2px solid var(--gel-cyan);outline-offset:3px;border-radius:6px;
+}
+
+/* ---------- HERO: light wash ---------- */
+.hero{position:relative;overflow:hidden;padding:96px 0 72px}
+.wash{position:absolute;inset:-20% -10% auto -10%;height:130%;pointer-events:none}
+.wash i{position:absolute;display:block;border-radius:50%;filter:blur(70px);opacity:.55;animation:breathe 11s ease-in-out infinite}
+.w1{width:64vw;height:64vw;max-width:820px;max-height:820px;left:-14vw;top:-24vw;background:radial-gradient(circle at 50% 50%,rgba(255,77,141,.95),rgba(255,77,141,0) 66%)}
+.w2{width:56vw;height:56vw;max-width:720px;max-height:720px;right:-12vw;top:-6vw;background:radial-gradient(circle at 50% 50%,rgba(53,224,214,.62),rgba(53,224,214,0) 66%);animation-delay:-4s}
+.w3{width:46vw;height:46vw;max-width:560px;max-height:560px;left:32vw;top:26vw;background:radial-gradient(circle at 50% 50%,rgba(255,162,58,.42),rgba(255,162,58,0) 68%);animation-delay:-7.5s}
+@keyframes breathe{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(2%,-3%,0) scale(1.09)}}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(44px,9.2vw,104px);max-width:14ch}
+.hero h1 em{font-style:normal;color:var(--gel-rose)}
+.hero p.lead{font-size:clamp(17px,2.3vw,20px);margin-top:26px;color:var(--ink-soft)}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:44px}
+.tag{
+  font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 13px;border-radius:999px;border:1px solid var(--edge);color:var(--ink-soft);background:rgba(22,20,28,.6)
+}
+
+/* faixa de status do estúdio */
+.strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:rgba(22,20,28,.55);overflow:hidden}
+.strip-in{display:flex;gap:34px;padding:16px 0;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-mute);white-space:nowrap;animation:slide 34s linear infinite}
+.strip-in span{display:flex;align-items:center;gap:10px;flex:none}
+.strip-in span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gel-cyan)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+section{padding:86px 0;position:relative}
+.sec-head{margin-bottom:44px}
+.sec-head h2{font-size:clamp(30px,5vw,48px)}
+.sec-head p{margin-top:16px}
+
+/* ---------- CENÁRIOS ---------- */
+.sets{display:grid;grid-template-columns:1fr;gap:16px}
+.set{
+  position:relative;overflow:hidden;border-radius:var(--r);border:1px solid var(--edge);
+  background:var(--stage);min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:22px;transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s ease;
+}
+.sets .set:hover{transform:translateY(-4px);border-color:#463C55}
+.set-light{position:absolute;inset:0;opacity:var(--lit,.9);transition:opacity .5s ease,transform 1.2s cubic-bezier(.22,.61,.36,1)}
+.set{--lit:.9}
+.set:hover{--lit:1}
+.set h3{font-size:23px;position:relative}
+.set .kicker{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);position:relative;margin-bottom:8px}
+.set .desc{font-size:14.5px;color:var(--ink-soft);position:relative;margin:10px 0 0;max-width:34ch}
+.set .best{position:absolute;top:18px;right:18px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:rgba(11,10,15,.6);border:1px solid var(--edge);color:var(--ink)}
+.set.tall{min-height:330px}
+.s1 .set-light{background:radial-gradient(120% 90% at 15% 8%,rgba(255,77,141,.5),transparent 62%),radial-gradient(100% 80% at 95% 30%,rgba(122,72,255,.34),transparent 60%),linear-gradient(180deg,rgba(11,10,15,.15),rgba(11,10,15,.9))}
+.s2 .set-light{background:radial-gradient(110% 80% at 80% 0%,rgba(255,255,255,.2),transparent 58%),radial-gradient(90% 70% at 10% 40%,rgba(255,162,58,.24),transparent 60%),linear-gradient(180deg,rgba(11,10,15,.2),rgba(11,10,15,.92))}
+.s3 .set-light{background:radial-gradient(100% 80% at 50% 0%,rgba(53,224,214,.4),transparent 60%),radial-gradient(80% 70% at 90% 80%,rgba(255,77,141,.22),transparent 62%),linear-gradient(180deg,rgba(11,10,15,.2),rgba(11,10,15,.92))}
+.s4 .set-light{background:radial-gradient(120% 100% at 50% -10%,rgba(255,255,255,.34),transparent 55%),linear-gradient(180deg,rgba(11,10,15,.25),rgba(11,10,15,.94))}
+.s5 .set-light{background:radial-gradient(90% 80% at 20% 10%,rgba(255,162,58,.42),transparent 60%),radial-gradient(90% 70% at 100% 60%,rgba(255,77,141,.3),transparent 62%),linear-gradient(180deg,rgba(11,10,15,.2),rgba(11,10,15,.92))}
+.s6 .set-light{background:radial-gradient(100% 90% at 70% 10%,rgba(122,72,255,.42),transparent 60%),radial-gradient(80% 70% at 0% 70%,rgba(53,224,214,.24),transparent 62%),linear-gradient(180deg,rgba(11,10,15,.2),rgba(11,10,15,.92))}
+
+/* ---------- PACOTES ---------- */
+.plans{display:grid;grid-template-columns:1fr;gap:16px}
+.plan{
+  border:1px solid var(--edge);border-radius:var(--r);background:var(--stage);padding:26px 24px 24px;
+  display:flex;flex-direction:column;position:relative;
+}
+.plan.featured{background:linear-gradient(180deg,rgba(255,77,141,.1),rgba(22,20,28,1) 42%);border-color:rgba(255,77,141,.5)}
+.plan .flag{position:absolute;top:-11px;left:24px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:var(--gel-rose);color:#150409;padding:5px 11px;border-radius:999px}
+.plan h3{font-size:21px}
+.plan .dur{font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px}
+.price{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:40px;letter-spacing:-.03em;margin:18px 0 4px;font-variant-numeric:tabular-nums}
+.price small{font-family:"DM Mono",monospace;font-size:13px;font-weight:400;color:var(--ink-mute);letter-spacing:.04em;margin-left:4px}
+.plan ul{list-style:none;padding:0;margin:18px 0 24px;display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--ink-soft)}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--gel-cyan);margin-top:8px}
+.plan.featured li::before{background:var(--gel-rose)}
+.plan .btn{margin-top:auto;width:100%}
+
+/* ---------- SIMULADOR ---------- */
+.calc{
+  border:1px solid var(--edge);border-radius:24px;background:linear-gradient(180deg,var(--stage-2),var(--stage));
+  padding:28px 22px;display:grid;grid-template-columns:1fr;gap:26px;
+}
+.calc-field{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.calc-field label,.calc legend{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding:0}
+select,input[type=range]{width:100%}
+select{
+  appearance:none;background:var(--blackout);color:var(--ink);border:1px solid var(--edge);border-radius:12px;
+  padding:13px 15px;font-family:"Instrument Sans",sans-serif;font-size:15px;cursor:pointer;
+}
+.hours-row{display:flex;align-items:baseline;gap:10px}
+.hours-val{font-family:Archivo,Arial,sans-serif;font-weight:800;font-size:30px;font-variant-numeric:tabular-nums}
+.hours-unit{font-family:"DM Mono",monospace;font-size:13px;color:var(--ink-mute)}
+input[type=range]{appearance:none;height:4px;border-radius:99px;background:linear-gradient(90deg,var(--gel-rose) var(--fill,30%),var(--edge) var(--fill,30%));margin:6px 0}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:var(--ink);border:4px solid var(--gel-rose);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--ink);border:4px solid var(--gel-rose);cursor:pointer}
+fieldset{border:0;padding:0;margin:0}
+.addons{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.addon{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--edge);border-radius:12px;
+  background:rgba(11,10,15,.5);cursor:pointer;font-size:14.5px;transition:border-color .2s ease,background .2s ease;
+}
+.addon:hover{border-color:#463C55}
+.addon input{accent-color:var(--gel-rose);width:17px;height:17px;flex:none;cursor:pointer}
+.addon .p{margin-left:auto;font-family:"DM Mono",monospace;font-size:13px;color:var(--ink-mute);font-variant-numeric:tabular-nums}
+.addon:has(input:checked){border-color:rgba(255,77,141,.55);background:rgba(255,77,141,.07)}
+.total{border-top:1px dashed var(--edge);padding-top:22px;display:flex;flex-direction:column;gap:6px}
+.total .rows{display:flex;flex-direction:column;gap:7px;font-family:"DM Mono",monospace;font-size:13px;color:var(--ink-mute);margin-bottom:14px}
+.total .rows div{display:flex;justify-content:space-between;gap:16px;font-variant-numeric:tabular-nums}
+.total .big{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:clamp(38px,7vw,54px);letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.total .note{font-size:13px;color:var(--ink-mute);margin:10px 0 18px}
+
+/* ---------- EXTRAS / MENTORIA ---------- */
+.cards{display:grid;grid-template-columns:1fr;gap:16px}
+.card{border:1px solid var(--edge);border-radius:var(--r);background:var(--stage);padding:24px;display:flex;flex-direction:column;gap:10px}
+.card .tagline{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gel-cyan)}
+.card h3{font-size:20px}
+.card p{font-size:15px;margin:0}
+.card .val{font-family:"DM Mono",monospace;font-size:15px;color:var(--ink);margin-top:8px;font-variant-numeric:tabular-nums}
+
+/* ---------- PASSOS ---------- */
+.steps{display:grid;grid-template-columns:1fr;gap:2px;border:1px solid var(--edge);border-radius:var(--r);overflow:hidden;background:var(--edge)}
+.step{background:var(--stage);padding:28px 24px;display:flex;flex-direction:column;gap:10px}
+.step .n{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--gel-rose)}
+.step h3{font-size:19px}
+.step p{font-size:15px;margin:0}
+
+/* ---------- FAQ ---------- */
+.faq{display:flex;flex-direction:column;border-top:1px solid var(--edge)}
+details{border-bottom:1px solid var(--edge)}
+summary{
+  list-style:none;cursor:pointer;padding:22px 40px 22px 0;position:relative;
+  font-family:Archivo,Arial,sans-serif;font-weight:600;font-stretch:110%;font-size:18px;letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:6px;top:20px;font-family:"DM Mono",monospace;font-size:20px;color:var(--gel-rose);transition:transform .25s ease}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 22px;font-size:15.5px;margin:0}
+
+/* ---------- CTA FINAL + RODAPÉ ---------- */
+.final{position:relative;overflow:hidden;border-radius:26px;border:1px solid rgba(255,77,141,.35);padding:56px 26px;text-align:center;background:var(--stage)}
+.final .set-light{background:radial-gradient(90% 120% at 20% 0%,rgba(255,77,141,.42),transparent 62%),radial-gradient(80% 110% at 90% 100%,rgba(53,224,214,.28),transparent 62%)}
+.final h2{font-size:clamp(30px,6.4vw,54px);position:relative}
+.final p{position:relative;margin:18px auto 30px}
+.final .btn{position:relative}
+footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;color:var(--ink-mute);font-size:14.5px}
+.foot{display:flex;flex-direction:column;gap:26px}
+.foot a{text-decoration:none;color:var(--ink-soft)}
+.foot a:hover{color:var(--ink)}
+.foot .col{display:flex;flex-direction:column;gap:9px}
+.foot .col b{color:var(--ink);font-weight:600;font-size:13px;font-family:"DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+.legal{margin-top:34px;font-size:13px;font-family:"DM Mono",monospace;color:#5F5870}
+
+/* revelação no scroll */
+.rv{opacity:0;transform:translateY(30px) scale(.982);filter:blur(7px);
+  transition:opacity .85s cubic-bezier(.22,.61,.36,1),transform .85s cubic-bezier(.22,.61,.36,1),filter .7s ease;
+  transition-delay:var(--d,0ms);will-change:opacity,transform,filter}
+.rv.in{opacity:1;transform:none;filter:blur(0);will-change:auto}
+/* a cabeça de seção entra em duas camadas: etiqueta primeiro, título depois */
+.sec-head.rv .eyebrow{opacity:0;transform:translateX(-14px);transition:opacity .6s ease .05s,transform .6s cubic-bezier(.22,.61,.36,1) .05s}
+.sec-head.rv.in .eyebrow{opacity:1;transform:none}
+.sec-head.rv h2{opacity:0;transform:translateY(14px);transition:opacity .8s ease .16s,transform .8s cubic-bezier(.22,.61,.36,1) .16s}
+.sec-head.rv.in h2{opacity:1;transform:none}
+/* a luz do cenário acende depois que o card chega */
+.set.rv:not(.in){--lit:0}
+.set.rv:not(.in) .set-light{transform:scale(1.09)}
+
+@media (min-width:640px){
+  .sets{grid-template-columns:repeat(2,1fr)}
+  .plans{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .addons{grid-template-columns:repeat(2,1fr)}
+  .foot{flex-direction:row;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .calc{padding:34px}
+}
+@media (min-width:900px){
+  .nav-links{display:flex}
+  .sets{grid-template-columns:repeat(3,1fr)}
+  .set.wide{grid-column:span 2}
+  .plans{grid-template-columns:repeat(4,1fr)}
+  .cards{grid-template-columns:repeat(4,1fr)}
+  .steps{grid-template-columns:repeat(3,1fr)}
+  .calc{grid-template-columns:1.15fr .85fr;gap:44px;padding:40px}
+  .total{border-top:0;border-left:1px dashed var(--edge);padding:0 0 0 40px;justify-content:center}
+  section{padding:110px 0}
+  .hero{padding:130px 0 96px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::after,*::before{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;transition-delay:0ms !important}
+  .rv,.sec-head.rv .eyebrow,.sec-head.rv h2{opacity:1;transform:none;filter:none}
+  .set.rv:not(.in){--lit:.9}
+  .set.rv:not(.in) .set-light{transform:none}
+}
+</style>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#topo"><span class="rec"></span>CENA<span style="color:var(--gel-rose)">.</span></a>
+    <nav class="nav-links">
+      <a href="#cenarios">Cenários</a>
+      <a href="#pacotes">Pacotes</a>
+      <a href="#simulador">Monte sua sessão</a>
+      <a href="#extras">Mentoria</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#simulador">Reservar</a>
+  </div>
+</header>
+
+<div class="hero" id="topo">
+  <div class="wash" aria-hidden="true"><i class="w1"></i><i class="w2"></i><i class="w3"></i></div>
+  <div class="wrap">
+    <p class="eyebrow">Estúdio de gravação · João Pessoa, PB</p>
+    <h1>Seu conteúdo merece <em>uma parede melhor</em> que a do seu quarto.</h1>
+    <p class="lead">Seis cenários prontos, luz montada e internet dedicada para live shopping. Você chega, liga a câmera e grava. Aluguel por hora, por turno ou pelo dia.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#simulador">Montar minha sessão</a>
+      <a class="btn btn-ghost" href="#cenarios">Ver os cenários</a>
+    </div>
+    <div class="tags">
+      <span class="tag">Live shopping</span>
+      <span class="tag">Reels &amp; TikTok</span>
+      <span class="tag">Podcast</span>
+      <span class="tag">Foto de produto</span>
+      <span class="tag">UGC</span>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="strip-in" aria-hidden="true">
+    <span>Wi-Fi dedicado 600 mega</span><span>Iluminação montada</span><span>Fundo infinito 3m</span><span>Ar-condicionado</span><span>Camarim com espelho</span><span>Estacionamento na porta</span>
+    <span>Wi-Fi dedicado 600 mega</span><span>Iluminação montada</span><span>Fundo infinito 3m</span><span>Ar-condicionado</span><span>Camarim com espelho</span><span>Estacionamento na porta</span>
+  </div>
+</div>
+
+<section id="cenarios">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Cenários</p>
+      <h2>Seis sets no mesmo endereço.</h2>
+      <p>Cada canto do estúdio tem uma luz própria e já montada. Troque de cenário no meio da sessão sem pagar nada a mais — o tempo é seu.</p>
+    </div>
+    <div class="sets">
+      <article class="set s1 tall wide rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">Reels</span>
+        <p class="kicker">Set 01 · gel rosa + roxo</p>
+        <h3>Parede Gel</h3>
+        <p class="desc">Parede lisa com luz colorida controlável no celular. Troca de cor entre uma tomada e outra — 16 cores calibradas para pele.</p>
+      </article>
+      <article class="set s2 tall rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">UGC</span>
+        <p class="kicker">Set 02 · luz natural</p>
+        <h3>Cozinha Clean</h3>
+        <p class="desc">Bancada branca, prateleira estilizada e janela ampla. O cenário que mais entrega vídeo de review de produto.</p>
+      </article>
+      <article class="set s3 rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">Live</span>
+        <p class="kicker">Set 03 · ciano + rosa</p>
+        <h3>Canto Live Shopping</h3>
+        <p class="desc">Bancada de apresentação, arara e TV de retorno para acompanhar os comentários ao vivo.</p>
+      </article>
+      <article class="set s4 rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">Produto</span>
+        <p class="kicker">Set 04 · 5600K</p>
+        <h3>Fundo Infinito</h3>
+        <p class="desc">Ciclorama branco de 3 metros com softbox de topo. Também disponível em preto e verde (chroma).</p>
+      </article>
+      <article class="set s5 rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">Podcast</span>
+        <p class="kicker">Set 05 · âmbar 3200K</p>
+        <h3>Sofá &amp; Estante</h3>
+        <p class="desc">Dois lugares, tratamento acústico e mesa baixa. Cabe entrevista, corte de podcast e conversa de câmera na mão.</p>
+      </article>
+      <article class="set s6 rv">
+        <div class="set-light" aria-hidden="true"></div>
+        <span class="best">Moda</span>
+        <p class="kicker">Set 06 · espelho + LED</p>
+        <h3>Closet Espelhado</h3>
+        <p class="desc">Espelho de corpo inteiro com moldura de LED, arara e banqueta. Feito para provador e transição de look.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="pacotes">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Pacotes</p>
+      <h2>Pague pelo tempo que você usa.</h2>
+      <p>Todos os pacotes já incluem os seis cenários, iluminação montada, Wi-Fi dedicado e camarim. Sem taxa de limpeza, sem surpresa.</p>
+    </div>
+    <div class="plans">
+      <article class="plan rv">
+        <h3>Hora avulsa</h3>
+        <p class="dur">Mínimo 2 horas</p>
+        <div class="price">R$ 120<small>/hora</small></div>
+        <ul>
+          <li>Acesso a todos os cenários</li>
+          <li>Ring light e tripé inclusos</li>
+          <li>Camarim e espelho</li>
+        </ul>
+        <a class="btn btn-ghost" href="#simulador">Reservar horas</a>
+      </article>
+      <article class="plan featured rv">
+        <span class="flag">Mais reservado</span>
+        <h3>Meia diária</h3>
+        <p class="dur">4 horas · manhã ou tarde</p>
+        <div class="price">R$ 390</div>
+        <ul>
+          <li>Tudo da hora avulsa</li>
+          <li>Kit de iluminação RGB liberado</li>
+          <li>Café e água inclusos</li>
+          <li>30 min extras de montagem</li>
+        </ul>
+        <a class="btn btn-primary" href="#simulador">Reservar turno</a>
+      </article>
+      <article class="plan rv">
+        <h3>Diária</h3>
+        <p class="dur">8 horas · estúdio exclusivo</p>
+        <div class="price">R$ 690</div>
+        <ul>
+          <li>Estúdio inteiro só para você</li>
+          <li>Kit de iluminação completo</li>
+          <li>Teleprompter incluso</li>
+          <li>Armazenamento do material do dia</li>
+        </ul>
+        <a class="btn btn-ghost" href="#simulador">Reservar dia</a>
+      </article>
+      <article class="plan rv">
+        <h3>Live Shopping Pro</h3>
+        <p class="dur">4 horas · com operação</p>
+        <div class="price">R$ 1.290</div>
+        <ul>
+          <li>Duas câmeras e switcher</li>
+          <li>Operador durante a live</li>
+          <li>Link dedicado de upload</li>
+          <li>Moderador de comentários</li>
+        </ul>
+        <a class="btn btn-ghost" href="#simulador">Falar sobre a live</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="simulador">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Monte sua sessão</p>
+      <h2>Escolha o tempo, o cenário e o que vai levar de equipamento.</h2>
+      <p>O valor aparece na hora. Quando estiver do jeito que você quer, o botão abre o WhatsApp já com o resumo escrito.</p>
+    </div>
+
+    <div class="calc rv">
+      <div>
+        <div class="calc-field">
+          <label for="f-plano">Formato</label>
+          <select id="f-plano">
+            <option value="hora" data-base="0" data-hours="0">Hora avulsa — R$ 120/h</option>
+            <option value="meia" data-base="390" data-hours="4" selected>Meia diária — 4h por R$ 390</option>
+            <option value="dia" data-base="690" data-hours="8">Diária — 8h por R$ 690</option>
+            <option value="live" data-base="1290" data-hours="4">Live Shopping Pro — 4h com operação</option>
+          </select>
+        </div>
+
+        <div class="calc-field" id="wrap-horas">
+          <label for="f-horas">Quantas horas</label>
+          <div class="hours-row"><span class="hours-val" id="out-horas">2</span><span class="hours-unit" id="out-horas-unit">horas · mínimo 2</span></div>
+          <input type="range" id="f-horas" min="2" max="8" step="1" value="2">
+        </div>
+
+        <div class="calc-field">
+          <label for="f-set">Cenário principal</label>
+          <select id="f-set">
+            <option>Parede Gel</option>
+            <option>Cozinha Clean</option>
+            <option>Canto Live Shopping</option>
+            <option>Fundo Infinito</option>
+            <option>Sofá &amp; Estante</option>
+            <option>Closet Espelhado</option>
+            <option>Ainda não sei — decido no dia</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend>Equipamento e apoio</legend>
+          <div class="addons">
+            <label class="addon"><input type="checkbox" data-price="120" data-label="Kit câmera 4K"> Kit câmera 4K <span class="p">+120</span></label>
+            <label class="addon"><input type="checkbox" data-price="60" data-label="Iluminação RGB extra"> Iluminação RGB extra <span class="p">+60</span></label>
+            <label class="addon"><input type="checkbox" data-price="80" data-label="Teleprompter"> Teleprompter <span class="p">+80</span></label>
+            <label class="addon"><input type="checkbox" data-price="50" data-label="Lapelas sem fio (2)"> Lapelas sem fio (2) <span class="p">+50</span></label>
+            <label class="addon"><input type="checkbox" data-price="240" data-label="Operador de câmera"> Operador de câmera <span class="p">+240</span></label>
+            <label class="addon"><input type="checkbox" data-price="180" data-label="Edição de 6 cortes"> Edição de 6 cortes <span class="p">+180</span></label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="total">
+        <div class="rows" id="out-rows"></div>
+        <p class="eyebrow" style="margin:0 0 6px">Total estimado</p>
+        <div class="big" id="out-total">R$ 390</div>
+        <p class="note">Sinal de 30% para confirmar a data. O restante você paga no dia, em Pix ou cartão.</p>
+        <a class="btn btn-primary" id="out-wa" href="#" target="_blank" rel="noopener">Enviar no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="extras">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Além do espaço</p>
+      <h2>Quem grava aqui também aprende aqui.</h2>
+      <p>Estúdio resolve a imagem. O que vem antes e depois — roteiro, oferta, corte — a gente também faz junto.</p>
+    </div>
+    <div class="cards">
+      <article class="card rv">
+        <span class="tagline">Mentoria 1:1</span>
+        <h3>Sua primeira live que vende</h3>
+        <p>Duas horas comigo montando oferta, roteiro e ritmo de live. Sai com o script da primeira transmissão pronto.</p>
+        <span class="val">R$ 490 · 2h</span>
+      </article>
+      <article class="card rv">
+        <span class="tagline">Workshop</span>
+        <h3>Turma de Live Shopping</h3>
+        <p>Meio período, até 8 pessoas, gravando de verdade nos sets. Cada um sai com uma live simulada gravada.</p>
+        <span class="val">R$ 290 · por pessoa</span>
+      </article>
+      <article class="card rv">
+        <span class="tagline">Assinatura</span>
+        <h3>Conteúdo do mês</h3>
+        <p>Quatro sessões de 3h no mês, mais 12 cortes editados e legendados. Para quem posta toda semana.</p>
+        <span class="val">R$ 1.890 · por mês</span>
+      </article>
+      <article class="card rv">
+        <span class="tagline">Avulso</span>
+        <h3>Edição de cortes</h3>
+        <p>Corte vertical, legenda queimada, capa e trilha. Entrega em até 3 dias úteis, do material gravado aqui ou não.</p>
+        <span class="val">R$ 45 · por corte</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="como">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Da reserva à gravação em três passos.</h2>
+    </div>
+    <div class="steps rv">
+      <div class="step">
+        <span class="n">PASSO 01</span>
+        <h3>Monte a sessão</h3>
+        <p>Escolha o formato, o cenário e o equipamento aqui no site. O resumo chega pronto no nosso WhatsApp.</p>
+      </div>
+      <div class="step">
+        <span class="n">PASSO 02</span>
+        <h3>Confirme a data</h3>
+        <p>A gente responde com os horários livres. Um Pix de 30% trava o horário no seu nome.</p>
+      </div>
+      <div class="step">
+        <span class="n">PASSO 03</span>
+        <h3>Chegue e grave</h3>
+        <p>Luz montada, cenários limpos e Wi-Fi testado antes de você entrar. É só ligar a câmera.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Dúvidas</p>
+      <h2>O que perguntam antes de reservar.</h2>
+    </div>
+    <div class="faq rv">
+      <details open>
+        <summary>Preciso levar câmera?</summary>
+        <p>Não necessariamente. A maioria grava com o próprio celular — temos tripés, suportes e ring light inclusos em qualquer pacote. Se quiser qualidade de câmera dedicada, o Kit câmera 4K sai por R$ 120 na sessão, com cartão de memória e bateria extra.</p>
+      </details>
+      <details>
+        <summary>Posso levar mais gente comigo?</summary>
+        <p>Pode. O estúdio comporta até 8 pessoas com conforto. Acima disso, avise antes para a gente liberar o segundo ambiente e reforçar o ar-condicionado.</p>
+      </details>
+      <details>
+        <summary>A internet aguenta live?</summary>
+        <p>Aguenta. São 600 mega em link dedicado, com cabo de rede disponível em todos os sets e roteador de backup em 4G. Testamos a velocidade antes de cada live agendada.</p>
+      </details>
+      <details>
+        <summary>E se eu precisar remarcar?</summary>
+        <p>Remarcação sem custo até 48h antes do horário. Dentro de 48h, o sinal vira crédito para usar em até 60 dias. Cancelamento no dia não tem devolução do sinal.</p>
+      </details>
+      <details>
+        <summary>Dá para gravar de madrugada?</summary>
+        <p>Dá. O horário padrão é das 8h às 21h, mas horários fora disso são liberados sob consulta com acréscimo de R$ 40 por hora.</p>
+      </details>
+      <details>
+        <summary>Vocês gravam para mim?</summary>
+        <p>Sim — o Operador de câmera pode ser adicionado a qualquer sessão por R$ 240, ou você contrata o pacote Live Shopping Pro, que já vem com duas câmeras, switcher e moderação dos comentários.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="final rv">
+      <div class="set-light" aria-hidden="true"></div>
+      <h2>A luz já está montada.<br>Falta você.</h2>
+      <p>Responda em um minuto quantas horas você precisa e a gente confirma a data hoje mesmo.</p>
+      <a class="btn btn-primary" href="#simulador">Montar minha sessão</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="logo" href="#topo" style="margin-bottom:6px"><span class="rec"></span>CENA<span style="color:var(--gel-rose)">.</span></a>
+        <span>Espaço de gravação para creators<br>e live commerce.</span>
+      </div>
+      <div class="col">
+        <b>Endereço</b>
+        <span>Av. Exemplo, 1200 — sala 4<br>Manaíra, João Pessoa — PB</span>
+      </div>
+      <div class="col">
+        <b>Horário</b>
+        <span>Segunda a sábado, 8h às 21h<br>Fora do horário sob consulta</span>
+      </div>
+      <div class="col">
+        <b>Contato</b>
+        <a href="#" id="foot-wa">WhatsApp (83) 99999-9999</a>
+        <a href="#">@cena.studio</a>
+        <a href="mailto:oi@cenastudio.com.br">oi@cenastudio.com.br</a>
+      </div>
+    </div>
+    <p class="legal">Cena Studio · CNPJ 00.000.000/0001-00 · Valores válidos para 2026</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var PHONE = "5583999999999"; // trocar pelo número real
+
+  var plano = document.getElementById('f-plano');
+  var horas = document.getElementById('f-horas');
+  var wrapHoras = document.getElementById('wrap-horas');
+  var outHoras = document.getElementById('out-horas');
+  var outUnit = document.getElementById('out-horas-unit');
+  var setSel = document.getElementById('f-set');
+  var rows = document.getElementById('out-rows');
+  var outTotal = document.getElementById('out-total');
+  var wa = document.getElementById('out-wa');
+  var addons = Array.prototype.slice.call(document.querySelectorAll('.addon input'));
+  var HORA = 120;
+
+  function brl(n){ return 'R$ ' + n.toLocaleString('pt-BR'); }
+
+  function fillRange(){
+    var pct = (horas.value - horas.min) / (horas.max - horas.min) * 100;
+    horas.style.setProperty('--fill', pct + '%');
+  }
+
+  function update(){
+    var opt = plano.options[plano.selectedIndex];
+    var base = Number(opt.dataset.base);
+    var fixedHours = Number(opt.dataset.hours);
+    var isHora = plano.value === 'hora';
+    wrapHoras.style.display = isHora ? '' : 'none';
+
+    var qtdHoras = isHora ? Number(horas.value) : fixedHours;
+    var valorBase = isHora ? qtdHoras * HORA : base;
+    var linhas = [];
+    linhas.push([opt.textContent.split(' — ')[0] + (isHora ? ' (' + qtdHoras + 'h)' : ''), valorBase]);
+
+    var total = valorBase;
+    addons.forEach(function(a){
+      if(a.checked){
+        var v = Number(a.dataset.price);
+        total += v;
+        linhas.push([a.dataset.label, v]);
+      }
+    });
+
+    outHoras.textContent = qtdHoras;
+    outUnit.textContent = (qtdHoras === 1 ? 'hora' : 'horas') + ' · mínimo 2';
+    fillRange();
+
+    rows.innerHTML = linhas.map(function(l){
+      return '<div><span>' + l[0] + '</span><span>' + brl(l[1]) + '</span></div>';
+    }).join('');
+    outTotal.textContent = brl(total);
+
+    var msg = 'Oi! Quero reservar o estúdio.\n\n'
+      + '• Formato: ' + opt.textContent.split(' — ')[0] + '\n'
+      + '• Duração: ' + qtdHoras + 'h\n'
+      + '• Cenário: ' + setSel.value + '\n'
+      + '• Extras: ' + (linhas.length > 1 ? linhas.slice(1).map(function(l){return l[0];}).join(', ') : 'nenhum') + '\n'
+      + '• Total estimado: ' + brl(total) + '\n\n'
+      + 'Quais datas vocês têm livres?';
+    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
+  }
+
+  [plano, horas, setSel].forEach(function(el){
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  });
+  addons.forEach(function(a){ a.addEventListener('change', update); });
+  update();
+
+  var footWa = document.getElementById('foot-wa');
+  if(footWa){ footWa.href = 'https://wa.me/' + PHONE; footWa.target = '_blank'; footWa.rel = 'noopener'; }
+
+  // grades revelam item a item, em cascata, em vez de o bloco inteiro de uma vez
+  document.querySelectorAll('.sets,.plans,.cards,.steps,.faq').forEach(function(grid){
+    grid.classList.remove('rv','in');
+    var i = 0;
+    Array.prototype.forEach.call(grid.children, function(child){
+      child.classList.add('rv');
+      child.style.setProperty('--d', Math.min(i, 5) * 80 + 'ms');
+      i++;
+    });
+  });
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var el = e.target;
+          el.classList.add('in');
+          io.unobserve(el);
+          // devolve o elemento ao seu estado normal depois da entrada,
+          // para o hover voltar a usar a transição curta do próprio card
+          setTimeout(function(){ el.classList.remove('rv','in'); el.style.removeProperty('--d'); },
+                     1500 + parseInt(el.style.getPropertyValue('--d') || 0, 10));
+        }
+      });
+    }, {rootMargin: '0px 0px -10% 0px', threshold: .12});
+    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+
+</body>
+</html>
