@@ -246,6 +246,21 @@ button,input,select,textarea{font:inherit;color:inherit}
 .goal .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gel-cyan),var(--gel-rose));transition:width .6s cubic-bezier(.22,.61,.36,1)}
 .goal .bar i.ok{background:linear-gradient(90deg,var(--gel-cyan),#7CF5C4)}
 
+/* ---- oportunidades de venda ---- */
+.op{display:flex;gap:14px;align-items:flex-start;background:var(--blackout);border:1px solid var(--edge);border-left:3px solid var(--optone,var(--gel-violet));border-radius:12px;padding:13px 15px;margin-bottom:10px}
+.op.feito{opacity:.5}
+.op .op-b{flex:1;min-width:0}
+.op .t{font-weight:600;font-size:15px}
+.op .d{font-size:13.5px;color:var(--ink-soft);margin-top:3px}
+.op .why{font-size:12.5px;color:var(--ink-mute);margin-top:6px}
+.op .op-a{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.op-tag{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--optone,var(--gel-violet));border:1px solid var(--optone,var(--gel-violet));border-radius:999px;padding:3px 9px;flex:none;opacity:.9}
+.op-wa{border-color:rgba(53,224,214,.45);color:var(--gel-cyan)}
+.op-wa:hover{border-color:var(--gel-cyan);background:rgba(53,224,214,.1)}
+a.mini{text-decoration:none;display:inline-block}
+.zero{color:var(--ink-mute);font-size:13.5px;padding:6px 0}
+@media (max-width:640px){ .op{flex-wrap:wrap} .op .op-a{width:100%} }
+
 /* ---- formulário inline ---- */
 .formline{display:grid;grid-template-columns:1fr;gap:10px;background:var(--blackout);border:1px solid var(--edge);border-radius:12px;padding:14px;margin-top:14px}
 .formline .fl-row{display:grid;grid-template-columns:1fr;gap:10px}
@@ -275,6 +290,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     <div class="brand"><a class="volta" href="../" title="Voltar para o site">&lsaquo;</a><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Gestão</span></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="t-agenda" aria-selected="true" data-view="agenda">Agenda</button>
+      <button class="tab" role="tab" id="t-vendas" aria-selected="false" data-view="vendas">Vendas</button>
       <button class="tab" role="tab" id="t-custos" aria-selected="false" data-view="custos">Custos</button>
       <button class="tab" role="tab" id="t-pacotes" aria-selected="false" data-view="pacotes">Pacotes</button>
     </div>
@@ -316,6 +332,35 @@ button,input,select,textarea{font:inherit;color:inherit}
       <div class="grid" id="grid"></div>
     </div>
     <div class="list" id="list"></div>
+  </section>
+</div>
+
+<div class="view" id="v-vendas">
+  <section class="kpis" id="vkpis"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Oportunidades</h2>
+      <span class="hint">Sai da própria agenda: quem já esteve aqui, quem sumiu e quem ainda não pagou.</span>
+      <div class="right"><button class="mini" id="op-toggle">Mostrar resolvidas</button></div>
+    </div>
+    <div class="panel-body" id="ops"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Clientes</h2>
+      <span class="hint">Quem já reservou, quanto trouxe e há quanto tempo não aparece.</span>
+    </div>
+    <div class="panel-body"><div class="tblwrap"><table class="tbl" id="tbl-clientes"></table></div></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Rede — quem já passou pelo estúdio</h2>
+      <span class="hint">Convidado de hoje é cliente de amanhã. Ninguém entra aqui sem virar contato.</span>
+    </div>
+    <div class="panel-body"><div class="tblwrap"><table class="tbl" id="tbl-rede"></table></div></div>
   </section>
 </div>
 
@@ -471,6 +516,18 @@ button,input,select,textarea{font:inherit;color:inherit}
        pacote:'Live Shopping Pro 3h', valor:990, status:'sinal', extras:['2 câmeras','Moderação'],
        pessoas:[{n:'Sabrina Melo',p:'Apresentadora'},{n:'Jonas Duarte',p:'Dono'}],
        equipe:'Tati (moderação)', obs:'Horário noturno — acréscimo de R$ 40/h já embutido.'},
+      {id:'b11', data:iso(addDays(hoje,-35)), sala:'s1', ini:14, fim:18, cliente:'Marina Coelho', arroba:'@marinacoelho', fone:'5583991110001',
+       pacote:'Meia diária 4h', valor:390, status:'confirmado', extras:['Ring light RGB'],
+       pessoas:[{n:'Marina Coelho',p:'Creator responsável'},{n:'Duda Farias',p:'Produção'}],
+       equipe:'Léo (operação)', obs:'Primeira gravação do banco de conteúdo.'},
+      {id:'b12', data:iso(addDays(hoje,-20)), sala:'s3', ini:10, fim:14, cliente:'Loja Verão Norte', arroba:'@veraonorte', fone:'5583991110002',
+       pacote:'Live Shopping Pro 4h', valor:1290, status:'confirmado', extras:['2 câmeras','Moderação'],
+       pessoas:[{n:'Camila Beltrão',p:'Apresentadora'},{n:'Igor Sales',p:'Sócio da loja'}],
+       equipe:'Léo (switcher)', obs:'Live de lançamento da coleção.'},
+      {id:'b13', data:iso(addDays(hoje,-42)), sala:'s5', ini:9, fim:17, cliente:'Studio Rosa Comunicação', arroba:'@studiorosa', fone:'5583991110013',
+       pacote:'Diária 8h', valor:690, status:'confirmado', extras:['Kit câmera 4K','Operador de câmera'],
+       pessoas:[{n:'Rosa Menezes',p:'Diretora'},{n:'Duda Farias',p:'Produção'},{n:'Caio Bezerra',p:'Cliente da agência'}],
+       equipe:'Tati (operação)', obs:'Gravação institucional para cliente da agência.'},
       {id:'b10', data:d2, sala:'s2', ini:9, fim:11, cliente:'Mentoria — Júlia Prado', arroba:'@juliaprado', fone:'5583991110010',
        pacote:'Mentoria 1:1 (2h)', valor:490, status:'confirmado', extras:[],
        pessoas:[{n:'Júlia Prado',p:'Mentorada'},{n:'Jeff',p:'Mentor CENA'}],
@@ -1011,17 +1068,191 @@ button,input,select,textarea{font:inherit;color:inherit}
     return opts.join('');
   }
 
+
+  /* ================= vendas e rede ================= */
+  var KEY_V = 'cena.vendas.v1';
+  var crm = {};
+  try{ var rawv = localStorage.getItem(KEY_V); if(rawv) crm = JSON.parse(rawv) || {}; }catch(e){}
+  function saveV(){ try{ localStorage.setItem(KEY_V, JSON.stringify(crm)); }catch(e){} }
+  var verResolvidas = false;
+
+  function diasDesde(d){
+    return Math.round((new Date(iso(new Date())) - parseISO(d)) / 86400000);
+  }
+  function haQuanto(d){ return d===0 ? 'hoje' : (d===1 ? 'ontem' : 'há '+d+' dias'); }
+  function primeiro(n){ return String(n).replace(/^Convidado:\s*/,'').trim().split(/\s+/)[0]; }
+  function wa(fone, texto){
+    return fone ? '<a class="mini op-wa" target="_blank" rel="noopener" href="https://wa.me/'+esc(fone)+
+      '?text='+encodeURIComponent(texto)+'">WhatsApp</a>' : '<span class="chip-t">sem telefone</span>';
+  }
+
+  /* agrega a agenda inteira em clientes e em pessoas */
+  function clientes(){
+    var mapa = {};
+    bookings.forEach(function(b){
+      if(b.status==='bloqueio') return;
+      var c = mapa[b.cliente] || (mapa[b.cliente] = {nome:b.cliente, fone:b.fone||'', arroba:b.arroba||'',
+        sessoes:0, receita:0, ultima:null, futura:null, pacotes:[], pendente:0});
+      c.sessoes++; c.receita += +b.valor||0;
+      if(!c.fone && b.fone) c.fone = b.fone;
+      if(c.pacotes.indexOf(b.pacote)<0) c.pacotes.push(b.pacote);
+      if(b.status!=='confirmado') c.pendente += +b.valor||0;
+      var d = diasDesde(b.data);
+      if(d >= 0){ if(!c.ultima || b.data > c.ultima) c.ultima = b.data; }
+      else { if(!c.futura || b.data < c.futura) c.futura = b.data; }
+    });
+    return Object.keys(mapa).map(function(k){ return mapa[k]; })
+      .sort(function(a,b){ return b.receita - a.receita; });
+  }
+  function rede(){
+    var mapa = {};
+    bookings.forEach(function(b){
+      if(b.status==='bloqueio') return;
+      (b.pessoas||[]).forEach(function(pe){
+        if(/equipe cena|mentor cena/i.test(pe.p)) return;
+        var chave = pe.n.replace(/^Convidado:\s*/,'').trim().toLowerCase();
+        var r = mapa[chave] || (mapa[chave] = {nome:pe.n.replace(/^Convidado:\s*/,'').trim(), papel:pe.p,
+          vezes:0, com:[], ultima:b.data, ehCliente:false, fone:''});
+        r.vezes++;
+        if(b.data > r.ultima) r.ultima = b.data;
+        if(r.com.indexOf(b.cliente)<0) r.com.push(b.cliente);
+        if(pe.n.trim().toLowerCase() === b.cliente.trim().toLowerCase()){ r.ehCliente = true; r.fone = b.fone||r.fone; }
+      });
+    });
+    return Object.keys(mapa).map(function(k){ return mapa[k]; })
+      .sort(function(a,b){ return b.vezes - a.vezes || (b.ultima<a.ultima?-1:1); });
+  }
+
+  /* regras que viram oportunidade */
+  function oportunidades(){
+    var out = [], cs = clientes();
+
+    bookings.forEach(function(b){
+      if(b.status==='bloqueio' || b.status==='confirmado') return;
+      if(diasDesde(b.data) > 0) return;                       // já passou, não adianta cobrar sinal
+      out.push({
+        id:'sinal:'+b.id, tom:'#FFA23A', tag:'a confirmar', prio:1,
+        titulo:b.cliente+' — '+brl(b.valor)+' ainda em aberto',
+        desc:room(b.sala).nome+' · '+parseISO(b.data).getDate()+' '+MESES[parseISO(b.data).getMonth()]+' · '+hhmm(b.ini)+'–'+hhmm(b.fim),
+        why:b.status==='aguardando' ? 'Sem sinal pago — o horário está preso sem garantia.' : 'Sinal pago, falta fechar o restante.',
+        fone:b.fone,
+        msg:'Oi, '+primeiro(b.cliente)+'! Aqui é do CENA. Sua sessão na '+room(b.sala).nome+' está reservada para '+
+            parseISO(b.data).getDate()+'/'+pad(parseISO(b.data).getMonth()+1)+' às '+hhmm(b.ini)+'. Consigo confirmar o pagamento hoje?'
+      });
+    });
+
+    cs.forEach(function(c){
+      if(c.futura || !c.ultima) return;
+      var d = diasDesde(c.ultima);
+      if(d < 30) return;
+      out.push({
+        id:'reativar:'+c.nome, tom:'#FF4D8D', tag:'sumiu', prio:2,
+        titulo:c.nome+' não volta há '+d+' dias',
+        desc:c.sessoes+(c.sessoes===1?' sessão':' sessões')+' · '+brl(c.receita)+' já gastos · último: '+c.pacotes[c.pacotes.length-1],
+        why:'Cliente que já conhece o estúdio custa muito menos que um novo.',
+        fone:c.fone,
+        msg:'Oi, '+primeiro(c.nome)+'! Aqui é do CENA. Faz um tempo que você não grava com a gente — quer que eu segure um horário fixo pra você este mês?'
+      });
+    });
+
+    cs.forEach(function(c){
+      if(c.sessoes < 3) return;
+      if(c.pacotes.join(' ').toLowerCase().indexOf('assinatura') > -1) return;
+      var assin = pacotes.filter(function(p){ return p.ativo && p.tipo==='assinatura'; })[0];
+      out.push({
+        id:'assinatura:'+c.nome, tom:'#35E0D6', tag:'recorrência', prio:2,
+        titulo:c.nome+' já veio '+c.sessoes+' vezes avulso',
+        desc:brl(c.receita)+' no total · média de '+brl(Math.round(c.receita/c.sessoes))+' por sessão',
+        why:assin ? 'Vale propor '+assin.nome+' ('+brl(assin.preco)+'): receita fixa pra você, preço melhor pra ele.'
+                  : 'Vale propor um pacote mensal — receita fixa em vez de venda avulsa.',
+        fone:c.fone,
+        msg:'Oi, '+primeiro(c.nome)+'! Aqui é do CENA. Como você tem gravado direto com a gente, montei um valor de pacote mensal que sai melhor que o avulso. Te mando?'
+      });
+    });
+
+    rede().forEach(function(r){
+      if(r.ehCliente || r.vezes < 2) return;
+      out.push({
+        id:'lead:'+r.nome, tom:'#7A48FF', tag:'já esteve aqui', prio:3,
+        titulo:r.nome+' esteve '+r.vezes+' vezes no estúdio, sempre como convidado',
+        desc:r.papel+' · veio com '+r.com.join(', '),
+        why:'Conhece a estrutura, já gravou aqui e nunca reservou em nome próprio.',
+        fone:r.fone,
+        msg:'Oi, '+primeiro(r.nome)+'! Aqui é do CENA. Você já gravou aqui algumas vezes acompanhando outras pessoas — se quiser fazer seu próprio conteúdo, te mostro os horários e valores.'
+      });
+    });
+
+    return out.sort(function(a,b){ return a.prio - b.prio; });
+  }
+
+  function renderVendas(){
+    var cs = clientes(), rd = rede(), ops = oportunidades();
+    var receita = 0, sessoes = 0;
+    cs.forEach(function(c){ receita += c.receita; sessoes += c.sessoes; });
+    var abertas = ops.filter(function(o){ return !crm[o.id]; });
+    var frios = cs.filter(function(c){ return !c.futura && c.ultima && diasDesde(c.ultima) >= 30; }).length;
+
+    $('vkpis').innerHTML =
+      kpi('Pessoas na rede', rd.length, 'passaram pelo estúdio como cliente ou convidado') +
+      kpi('Clientes', cs.length, frios ? frios+(frios===1?' sem voltar há 30 dias':' sem voltar há 30 dias') : 'todos com sessão recente') +
+      kpi('Ticket médio', sessoes ? brl(Math.round(receita/sessoes)) : 'R$ 0', sessoes+(sessoes===1?' sessão registrada':' sessões registradas')) +
+      kpi('Oportunidades abertas', abertas.length, abertas.length ? 'esperando um contato seu' : 'nada pendente');
+
+    var lista = verResolvidas ? ops : abertas;
+    $('op-toggle').textContent = verResolvidas ? 'Esconder resolvidas' : 'Mostrar resolvidas ('+(ops.length-abertas.length)+')';
+    $('ops').innerHTML = lista.length ? lista.map(function(o){
+      var st = crm[o.id];
+      return '<div class="op'+(st?' feito':'')+'" style="--optone:'+o.tom+'">'+
+        '<span class="op-tag">'+esc(st==='descartado'?'dispensada':(st==='feito'?'falei':o.tag))+'</span>'+
+        '<div class="op-b">'+
+          '<div class="t">'+esc(o.titulo)+'</div>'+
+          '<div class="d">'+esc(o.desc)+'</div>'+
+          '<div class="why">'+esc(o.why)+'</div>'+
+        '</div>'+
+        '<div class="op-a">'+
+          (st ? '<button class="mini" data-opundo="'+esc(o.id)+'">Reabrir</button>'
+              : wa(o.fone, o.msg)+
+                '<button class="mini" data-opdone="'+esc(o.id)+'">Já falei</button>'+
+                '<button class="mini del" data-opskip="'+esc(o.id)+'">Dispensar</button>')+
+        '</div></div>';
+    }).join('') : '<div class="zero">Nenhuma oportunidade aberta — sua agenda está em dia.</div>';
+
+    $('tbl-clientes').innerHTML =
+      '<thead><tr><th>Cliente</th><th class="num">Sessões</th><th class="num">Receita</th><th>Última vez</th><th class="num">Ações</th></tr></thead><tbody>'+
+      (cs.length ? cs.map(function(c){
+        var quando = c.futura ? 'agendado para '+parseISO(c.futura).getDate()+' '+MESES[parseISO(c.futura).getMonth()]
+                  : (c.ultima ? haQuanto(diasDesde(c.ultima)) : '—');
+        var frio = !c.futura && c.ultima && diasDesde(c.ultima) >= 30;
+        return '<tr><td><span class="nm">'+esc(c.nome)+'</span>'+(c.arroba?'<div class="sub">'+esc(c.arroba)+'</div>':'')+'</td>'+
+          '<td class="num">'+c.sessoes+'</td>'+
+          '<td class="num">'+brl(c.receita)+(c.pendente?'<div class="sub">'+brl(c.pendente)+' em aberto</div>':'')+'</td>'+
+          '<td>'+esc(quando)+(frio?' <span class="chip-t inv">frio</span>':'')+'</td>'+
+          '<td class="num">'+wa(c.fone, 'Oi, '+primeiro(c.nome)+'! Aqui é do CENA.')+'</td></tr>';
+      }).join('') : '<tr><td colspan="5" class="zero">Nenhum cliente ainda.</td></tr>')+'</tbody>';
+
+    $('tbl-rede').innerHTML =
+      '<thead><tr><th>Pessoa</th><th>Papel</th><th>Veio com</th><th class="num">Vezes</th><th>Última</th></tr></thead><tbody>'+
+      rd.map(function(r){
+        return '<tr><td><span class="nm">'+esc(r.nome)+'</span>'+(r.ehCliente?' <span class="chip-t mensal">cliente</span>':'')+'</td>'+
+          '<td class="sub">'+esc(r.papel)+'</td>'+
+          '<td class="sub">'+esc(r.com.join(', '))+'</td>'+
+          '<td class="num">'+r.vezes+'</td>'+
+          '<td class="sub">'+parseISO(r.ultima).getDate()+' '+MESES[parseISO(r.ultima).getMonth()]+'</td></tr>';
+      }).join('')+'</tbody>';
+  }
+
   /* ---- troca de módulo ---- */
   var vista = 'agenda';
   function trocarVista(v){
     vista = v;
-    ['agenda','custos','pacotes'].forEach(function(k){
+    ['agenda','vendas','custos','pacotes'].forEach(function(k){
       $('v-'+k).classList.toggle('on', k===v);
       $('t-'+k).setAttribute('aria-selected', k===v ? 'true' : 'false');
     });
     Array.prototype.forEach.call(document.querySelectorAll('.only-agenda'), function(el){
       el.classList.toggle('off', v!=='agenda');
     });
+    if(v==='vendas') renderVendas();
     if(v==='custos') renderCustos();
     if(v==='pacotes') renderPacotes();
   }
@@ -1029,6 +1260,12 @@ button,input,select,textarea{font:inherit;color:inherit}
   document.addEventListener('click', function(e){
     var t = e.target.closest('.tab');
     if(t){ trocarVista(t.dataset.view); return; }
+    var od = e.target.closest('[data-opdone]');
+    if(od){ crm[od.getAttribute('data-opdone')] = 'feito'; saveV(); renderVendas(); return; }
+    var os = e.target.closest('[data-opskip]');
+    if(os){ crm[os.getAttribute('data-opskip')] = 'descartado'; saveV(); renderVendas(); return; }
+    var ou = e.target.closest('[data-opundo]');
+    if(ou){ delete crm[ou.getAttribute('data-opundo')]; saveV(); renderVendas(); return; }
     var hm = e.target.closest('[data-mes]');
     if(hm){ mes = hm.getAttribute('data-mes'); renderCustos(); return; }
     var ce = e.target.closest('[data-cedit]');
@@ -1063,6 +1300,7 @@ button,input,select,textarea{font:inherit;color:inherit}
       }
     }
   });
+  $('op-toggle').addEventListener('click', function(){ verResolvidas = !verResolvidas; renderVendas(); });
   $('mprev').addEventListener('click', function(){ mes = mesAdd(mes,-1); renderCustos(); });
   $('mnext').addEventListener('click', function(){ mes = mesAdd(mes, 1); renderCustos(); });
 
@@ -1096,6 +1334,7 @@ button,input,select,textarea{font:inherit;color:inherit}
     $('boardtitle').textContent = 'Ocupação por sala · ' + parseISO(dia).getDate() + ' ' + MESES[parseISO(dia).getMonth()];
     renderKpis(); renderNow(); renderGrid(); renderList();
     if(vista==='custos') renderCustos();
+    if(vista==='vendas') renderVendas();
   }
   render();
   renderFormCusto(); renderFormPacote(); renderPacotes(); renderCustos();

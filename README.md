@@ -5,7 +5,7 @@ Site estático (sem build, sem dependências) publicado pelo GitHub Pages.
 | Arquivo | O que é | URL |
 |---|---|---|
 | `index.html` | Landing page pública do estúdio | `/` |
-| `painel/index.html` | Painel interno: agenda das salas, custos mês a mês e pacotes | `/painel/` |
+| `painel/index.html` | Painel interno: agenda, vendas/rede, custos mês a mês e pacotes | `/painel/` |
 
 ## Como editar
 
