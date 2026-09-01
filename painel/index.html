@@ -41,6 +41,8 @@ button,input,select,textarea{font:inherit;color:inherit}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(255,77,141,.16)}50%{box-shadow:0 0 0 8px rgba(255,77,141,.05)}}
 .brand span.sep{color:var(--ink-dim);font-weight:600;margin:0 2px}
 .brand span.lbl{font-family:"DM Mono",monospace;font-weight:400;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+.brand a.volta{color:var(--ink-dim);text-decoration:none;font-family:"DM Mono",monospace;font-weight:400;font-size:12px;margin-right:2px}
+.brand a.volta:hover{color:var(--ink)}
 .spacer{margin-left:auto}
 .datenav{display:flex;align-items:center;gap:6px;background:var(--stage);border:1px solid var(--edge);border-radius:999px;padding:4px}
 .datenav button{background:none;border:0;cursor:pointer;color:var(--ink-soft);padding:6px 11px;border-radius:999px;line-height:1}
@@ -270,7 +272,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 <header class="top">
   <div class="top-in">
-    <div class="brand"><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Gestão</span></div>
+    <div class="brand"><a class="volta" href="../" title="Voltar para o site">&lsaquo;</a><span class="rec"></span>CENA<span class="sep">/</span><span class="lbl">Gestão</span></div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" id="t-agenda" aria-selected="true" data-view="agenda">Agenda</button>
       <button class="tab" role="tab" id="t-custos" aria-selected="false" data-view="custos">Custos</button>
