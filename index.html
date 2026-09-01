@@ -171,6 +171,27 @@ section{padding:86px 0;position:relative}
 .plan.featured li::before{background:var(--gel-rose)}
 .plan .btn{margin-top:auto;width:100%}
 
+/* oferta de lançamento — bônus FIAS */
+.oferta{position:relative;overflow:hidden;margin-top:26px;border:1px solid rgba(53,224,214,.42);border-radius:var(--r);
+  background:linear-gradient(135deg,rgba(53,224,214,.12),rgba(122,72,255,.1) 55%,rgba(22,20,28,1));
+  padding:26px 22px;display:flex;flex-direction:column;gap:14px}
+.oferta::after{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(53,224,214,.35),rgba(53,224,214,0) 68%);pointer-events:none}
+.oferta .sel{align-self:flex-start;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gel-cyan);border:1px solid rgba(53,224,214,.5);border-radius:999px;padding:5px 12px}
+.oferta h3{font-size:clamp(23px,3.4vw,34px);max-width:20ch}
+.oferta p{margin:0;max-width:56ch}
+.oferta .vagas{display:flex;align-items:baseline;gap:10px;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute)}
+.oferta .vagas b{font-family:"Archivo",sans-serif;font-weight:900;font-size:34px;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.oferta .btn{align-self:flex-start}
+.oferta .cond{font-size:12.5px;color:var(--ink-mute);margin:0}
+.card .bonus{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:"DM Mono",monospace;font-size:11px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gel-cyan);border:1px solid rgba(53,224,214,.4);border-radius:999px;padding:5px 11px}
+.card .bonus::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gel-cyan)}
+@media (min-width:900px){
+  .oferta{padding:34px 32px;gap:16px}
+}
+
 /* ---------- SIMULADOR ---------- */
 .calc{
   border:1px solid var(--edge);border-radius:24px;background:linear-gradient(180deg,var(--stage-2),var(--stage));
@@ -562,6 +583,7 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
         <span class="tagline">Assinatura</span>
         <h3>Conteúdo do mês</h3>
         <p>Quatro sessões de 3h no mês, mais 12 cortes editados e legendados. Para quem posta toda semana.</p>
+        <span class="bonus">Bônus: acesso ao FIAS</span>
         <span class="val">R$ 1.890 · por mês</span>
       </article>
       <article class="card rv">
@@ -570,6 +592,15 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
         <p>Corte vertical, legenda queimada, capa e trilha. Entrega em até 3 dias úteis, do material gravado aqui ou não.</p>
         <span class="val">R$ 45 · por corte</span>
       </article>
+    </div>
+
+    <div class="oferta rv">
+      <span class="sel">Oferta de lançamento</span>
+      <h3>Os 50 primeiros assinantes levam o FIAS junto.</h3>
+      <p>Quem fechar o <b>Conteúdo do mês</b> ganha acesso ao FIAS, nosso sistema de gestão financeira: o que entra por cliente, por campanha e por mês, sem planilha. Você grava aqui e controla o dinheiro do seu conteúdo no mesmo lugar.</p>
+      <div class="vagas"><b id="fias-vagas">50</b> <span id="fias-txt">vagas disponíveis</span></div>
+      <a class="btn btn-primary" id="fias-cta" href="#simulador">Quero uma das vagas</a>
+      <p class="cond">O acesso acompanha a assinatura: enquanto ela estiver ativa, o FIAS continua liberado.</p>
     </div>
   </div>
 </section>
@@ -680,6 +711,20 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
 <script>
 (function(){
   var PHONE = "5583999999999"; // trocar pelo número real
+
+  /* Oferta FIAS: atualize só este número conforme as assinaturas forem fechando. */
+  var FIAS_TOTAL = 50, FIAS_TOMADAS = 0;
+  (function(){
+    var restam = Math.max(FIAS_TOTAL - FIAS_TOMADAS, 0);
+    var n = document.getElementById('fias-vagas'), t = document.getElementById('fias-txt'), cta = document.getElementById('fias-cta');
+    if(!n) return;
+    n.textContent = restam;
+    t.textContent = restam === 0 ? 'vagas — todas preenchidas'
+                  : restam === 1 ? 'última vaga'
+                  : restam === FIAS_TOTAL ? 'vagas disponíveis'
+                  : 'das ' + FIAS_TOTAL + ' vagas ainda abertas';
+    if(restam === 0 && cta){ cta.textContent = 'Entrar na lista de espera'; }
+  })();
 
   var plano = document.getElementById('f-plano');
   var horas = document.getElementById('f-horas');

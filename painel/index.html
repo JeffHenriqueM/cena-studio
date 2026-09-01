@@ -246,6 +246,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 .goal .bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gel-cyan),var(--gel-rose));transition:width .6s cubic-bezier(.22,.61,.36,1)}
 .goal .bar i.ok{background:linear-gradient(90deg,var(--gel-cyan),#7CF5C4)}
 
+/* ---- oferta FIAS ---- */
+.fias{display:flex;align-items:center;gap:16px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(53,224,214,.1),rgba(122,72,255,.08) 60%,var(--stage));
+  border:1px solid rgba(53,224,214,.35);border-radius:var(--r);padding:14px 18px;margin-bottom:18px}
+.fias .n{font-family:"Archivo",sans-serif;font-weight:900;font-size:30px;line-height:1;font-variant-numeric:tabular-nums;color:var(--gel-cyan)}
+.fias .t{font-weight:600;font-size:14.5px}
+.fias .d{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.fias .quem{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+
 /* ---- oportunidades de venda ---- */
 .op{display:flex;gap:14px;align-items:flex-start;background:var(--blackout);border:1px solid var(--edge);border-left:3px solid var(--optone,var(--gel-violet));border-radius:12px;padding:13px 15px;margin-bottom:10px}
 .op.feito{opacity:.5}
@@ -337,6 +345,7 @@ a.mini{text-decoration:none;display:inline-block}
 
 <div class="view" id="v-vendas">
   <section class="kpis" id="vkpis"></section>
+  <div class="fias" id="fias"></div>
 
   <section class="panel">
     <div class="panel-head">
@@ -1071,6 +1080,7 @@ a.mini{text-decoration:none;display:inline-block}
 
   /* ================= vendas e rede ================= */
   var KEY_V = 'cena.vendas.v1';
+  var FIAS_TOTAL = 50;                       // bônus anunciado no site: 50 primeiros assinantes
   var crm = {};
   try{ var rawv = localStorage.getItem(KEY_V); if(rawv) crm = JSON.parse(rawv) || {}; }catch(e){}
   function saveV(){ try{ localStorage.setItem(KEY_V, JSON.stringify(crm)); }catch(e){} }
@@ -1191,6 +1201,21 @@ a.mini{text-decoration:none;display:inline-block}
     cs.forEach(function(c){ receita += c.receita; sessoes += c.sessoes; });
     var abertas = ops.filter(function(o){ return !crm[o.id]; });
     var frios = cs.filter(function(c){ return !c.futura && c.ultima && diasDesde(c.ultima) >= 30; }).length;
+
+    var nomesAssin = pacotes.filter(function(p){ return p.tipo==='assinatura'; }).map(function(p){ return p.nome.toLowerCase(); });
+    var assinantes = cs.filter(function(c){
+      var t = c.pacotes.join(' ').toLowerCase();
+      if(t.indexOf('assinatura') > -1) return true;
+      return nomesAssin.some(function(n){ return t.indexOf(n) > -1; });
+    });
+    var restam = Math.max(FIAS_TOTAL - assinantes.length, 0);
+    $('fias').innerHTML =
+      '<div class="n">'+restam+'</div>'+
+      '<div><div class="t">'+(restam ? 'vagas do bônus FIAS ainda abertas' : 'bônus FIAS esgotado')+'</div>'+
+      '<div class="d">'+assinantes.length+' de '+FIAS_TOTAL+' assinantes com acesso liberado · o site anuncia esse mesmo limite</div></div>'+
+      (assinantes.length ? '<div class="quem">'+assinantes.slice(0,6).map(function(c){
+        return '<span class="chip-t mensal">'+esc(c.nome)+'</span>'; }).join('')+
+        (assinantes.length>6 ? '<span class="chip-t">+'+(assinantes.length-6)+'</span>' : '')+'</div>' : '');
 
     $('vkpis').innerHTML =
       kpi('Pessoas na rede', rd.length, 'passaram pelo estúdio como cliente ou convidado') +

@@ -21,6 +21,8 @@ Tudo abaixo é fictício e precisa virar o dado real:
 - **Endereço:** Av. Exemplo, 1200 — sala 4, Manaíra, João Pessoa — PB
 - **Contato:** `@cena.studio`, `oi@cenastudio.com.br`, CNPJ
 - **Preços e pacotes:** valores de hora, meia diária, diária, Live Shopping Pro, mentoria
+- **Oferta FIAS:** a descrição do que é o FIAS foi escrita como rascunho — revise o texto.
+  O contador de vagas fica em `FIAS_TOTAL` / `FIAS_TOMADAS`, no script do `index.html`
 - **Painel:** clientes, telefones e a agenda semeada são inventados
 
 ## Custos já cadastrados
