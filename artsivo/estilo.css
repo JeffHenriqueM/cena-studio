@@ -1,3 +1,11 @@
+/* ---------------------------------------------------------------------------
+   TEMA
+   O site nasce escuro — é a identidade. O claro existe porque muita gente
+   prefere, e é montado trocando só os valores abaixo: nenhuma cor é escrita
+   direto nas regras.
+   Três estados: sem escolha (segue o aparelho), claro forçado, escuro forçado.
+   O botão no topo grava a escolha; `radar.js` cuida disso.
+--------------------------------------------------------------------------- */
 :root{
   --void:#0A0A0C;
   --panel:#141417;
@@ -10,8 +18,87 @@
   --red:#E4262C;
   --red-hot:#FF3B41;
   --steel:#4A4A55;
+
+  /* superfícies e traços que dependem do tema */
+  --nav-bg:rgba(10,10,12,.78);
+  --nav-edge:rgba(43,43,50,.8);
+  --glass:rgba(20,20,23,.7);
+  --sunk:rgba(10,10,12,.55);
+  --field:var(--void);
+  --rule:rgba(43,43,50,.7);
+  --grid-line:rgba(60,60,70,.16);
+  --shine:rgba(255,255,255,.07);
+  --glow:rgba(228,38,44,.42);
+  --shadow:rgba(0,0,0,.6);
+  --marca-a:#D9D9DE;
+  --ph:#5C5C68;
+  --legal:#6E6E79;
+
   --maxw:1140px;
   --r:16px;
+  color-scheme:dark;
+}
+
+/* claro pela preferência do aparelho — a menos que a pessoa tenha escolhido escuro */
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --void:#F7F6F4;
+    --panel:#FFFFFF;
+    --panel-2:#F1EFEC;
+    --edge:#E3E0DB;
+    --edge-2:#C9C5BF;
+    --ink:#17161A;
+    --ink-soft:#4C4B53;
+    --ink-mute:#6A6874;
+    --red:#CE1F26;
+    --red-hot:#E4262C;
+    --steel:#8B8994;
+
+    --nav-bg:rgba(247,246,244,.84);
+    --nav-edge:rgba(0,0,0,.10);
+    --glass:rgba(255,255,255,.72);
+    --sunk:rgba(0,0,0,.035);
+    --field:#FFFFFF;
+    --rule:rgba(0,0,0,.11);
+    --grid-line:rgba(0,0,0,.06);
+    --shine:rgba(0,0,0,.045);
+    --glow:rgba(228,38,44,.16);
+    --shadow:rgba(20,18,16,.20);
+    --marca-a:#1A191E;
+    --ph:#9A98A2;
+    --legal:#6C6A76;
+    color-scheme:light;
+  }
+}
+
+/* claro escolhido no botão — vale mesmo com o aparelho no escuro */
+:root[data-theme="light"]{
+  --void:#F7F6F4;
+  --panel:#FFFFFF;
+  --panel-2:#F1EFEC;
+  --edge:#E3E0DB;
+  --edge-2:#C9C5BF;
+  --ink:#17161A;
+  --ink-soft:#4C4B53;
+  --ink-mute:#6A6874;
+  --red:#CE1F26;
+  --red-hot:#E4262C;
+  --steel:#8B8994;
+
+  --nav-bg:rgba(247,246,244,.84);
+  --nav-edge:rgba(0,0,0,.10);
+  --glass:rgba(255,255,255,.72);
+  --sunk:rgba(0,0,0,.035);
+  --field:#FFFFFF;
+  --rule:rgba(0,0,0,.11);
+  --grid-line:rgba(0,0,0,.06);
+  --shine:rgba(0,0,0,.045);
+  --glow:rgba(228,38,44,.16);
+  --shadow:rgba(20,18,16,.20);
+  --marca-a:#1A191E;
+  --ph:#9A98A2;
+  --legal:#6C6A76;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 body{
@@ -46,12 +133,12 @@ p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
 
 /* ---------- NAV ---------- */
 header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
-  background:rgba(10,10,12,.78);border-bottom:1px solid rgba(43,43,50,.8)}
+  background:var(--nav-bg);border-bottom:1px solid var(--nav-edge)}
 .nav-in{display:flex;align-items:center;gap:24px;height:68px}
 .nav-in .marca{margin-right:auto}
 .marca{display:inline-flex;align-items:baseline;gap:1px;text-decoration:none;
   font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:900;font-stretch:112%;letter-spacing:-.03em;font-size:23px;line-height:1}
-.marca .a{color:#D9D9DE}
+.marca .a{color:var(--marca-a)}
 .marca .b{color:var(--red)}
 .marca .sub{font-family:"DM Mono",monospace;font-weight:400;font-size:9.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--ink-mute);margin-left:8px;align-self:center}
@@ -74,9 +161,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .hero{position:relative;overflow:hidden;padding:88px 0 68px}
 .hero-bg{position:absolute;inset:0;pointer-events:none}
 .hero-bg .glow{position:absolute;left:-10vw;top:-26vw;width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;
-  background:radial-gradient(circle at 50% 50%,rgba(228,38,44,.42),rgba(228,38,44,0) 66%);filter:blur(30px)}
+  background:radial-gradient(circle at 50% 50%,var(--glow),rgba(228,38,44,0) 66%);filter:blur(30px)}
 .hero-bg .grid{position:absolute;inset:0;opacity:.5;
-  background-image:linear-gradient(rgba(60,60,70,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(60,60,70,.16) 1px,transparent 1px);
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
   background-size:64px 64px;
   -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%);
   mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%)}
@@ -87,10 +174,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,su
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:44px}
 .tag{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-  padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:rgba(20,20,23,.7)}
+  padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:var(--glass)}
 
 /* faixa corrida */
-.strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:rgba(20,20,23,.7);overflow:hidden}
+.strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:var(--glass);overflow:hidden}
 .strip-in{display:flex;gap:34px;padding:15px 0;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink-mute);white-space:nowrap;animation:slide 36s linear infinite}
 .strip-in span{display:flex;align-items:center;gap:10px;flex:none}
@@ -115,13 +202,13 @@ section{padding:84px 0;position:relative}
 .item h3{font-size:21px}
 .item .desc{font-size:14.5px;color:var(--ink-soft);margin:0;line-height:1.55;text-wrap:pretty}
 .item .lista{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
-.item .lista li{font-size:12.5px;color:var(--ink-soft);border:1px solid var(--edge);border-radius:5px;padding:5px 9px;background:rgba(10,10,12,.5)}
+.item .lista li{font-size:12.5px;color:var(--ink-soft);border:1px solid var(--edge);border-radius:5px;padding:5px 9px;background:var(--sunk)}
 .item .peca{margin-top:auto;padding-top:14px;font-size:13.5px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:7px}
 .item .peca::after{content:"→";transition:transform .25s ease}
 .item:hover .peca::after{transform:translateX(4px)}
 
 /* ---------- PERSONALIZAÇÃO ---------- */
-.perso{border:1px solid var(--edge);border-radius:var(--r);background:linear-gradient(140deg,rgba(228,38,44,.12),rgba(20,20,23,1) 52%);
+.perso{border:1px solid var(--edge);border-radius:var(--r);background:linear-gradient(140deg,rgba(228,38,44,.12),var(--panel) 52%);
   padding:28px 24px;display:flex;flex-direction:column;gap:14px}
 .perso .sel{align-self:flex-start;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   color:#fff;background:var(--red);border-radius:5px;padding:6px 12px}
@@ -152,17 +239,17 @@ section{padding:84px 0;position:relative}
   padding:26px 20px;display:grid;grid-template-columns:1fr;gap:26px}
 .calc-field{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
 .calc-field label,.calc legend{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding:0}
-select,input[type=text],input[type=number],textarea{width:100%;appearance:none;background:var(--void);color:var(--ink);
+select,input[type=text],input[type=number],textarea{width:100%;appearance:none;background:var(--field);color:var(--ink);
   border:1px solid var(--edge);border-radius:10px;padding:13px 15px;font-family:"Instrument Sans",sans-serif;font-size:15px;line-height:1.5}
 textarea{resize:vertical;min-height:72px}
 .dica{font-size:12.5px;color:var(--ink-mute)}
 select{cursor:pointer}
-input::placeholder{color:#5C5C68}
+input::placeholder{color:var(--ph)}
 .dupla{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 fieldset{border:0;padding:0;margin:0}
 .addons{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
 .addon{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--edge);border-radius:10px;
-  background:rgba(10,10,12,.55);cursor:pointer;font-size:14.5px;transition:border-color .2s ease,background .2s ease}
+  background:var(--sunk);cursor:pointer;font-size:14.5px;transition:border-color .2s ease,background .2s ease}
 .addon:hover{border-color:var(--edge-2)}
 .addon input{accent-color:var(--red);width:17px;height:17px;flex:none;cursor:pointer}
 .addon:has(input:checked){border-color:rgba(228,38,44,.6);background:rgba(228,38,44,.08)}
@@ -170,7 +257,7 @@ fieldset{border:0;padding:0;margin:0}
 .resumo .tit{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:14px}
 .resumo .rows{display:flex;flex-direction:column;gap:9px;font-size:14px;margin-bottom:18px}
 .resumo .rows div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
-  border-bottom:1px solid rgba(43,43,50,.7);padding-bottom:9px}
+  border-bottom:1px solid var(--rule);padding-bottom:9px}
 .resumo .rows span:first-child{color:var(--ink-mute);font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;flex:none}
 .resumo .rows span:last-child{color:var(--ink);text-align:right;font-weight:600}
 .resumo .medida{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:clamp(30px,6vw,42px);
@@ -203,7 +290,7 @@ details p{padding:0 0 22px;font-size:15.5px;margin:0}
 /* ---------- CTA + RODAPÉ ---------- */
 .final{position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(228,38,44,.4);padding:52px 24px;text-align:center;background:var(--panel)}
 .final .luz{position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(90% 130% at 20% 0%,rgba(228,38,44,.34),transparent 62%),radial-gradient(80% 120% at 92% 100%,rgba(255,255,255,.07),transparent 60%)}
+  background:radial-gradient(90% 130% at 20% 0%,rgba(228,38,44,.34),transparent 62%),radial-gradient(80% 120% at 92% 100%,var(--shine),transparent 60%)}
 .final h2{font-size:clamp(29px,6.2vw,52px);position:relative}
 .final p{position:relative;margin:18px auto 30px}
 .final .btn{position:relative}
@@ -215,11 +302,11 @@ footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;colo
 .foot .col b{color:var(--ink);font-weight:600;font-size:13px;font-family:"DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
 .redes{display:flex;flex-wrap:wrap;gap:9px}
 .rede{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-  font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none;background:rgba(20,20,23,.7);
+  font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none;background:var(--glass);
   transition:border-color .2s ease,background .2s ease,transform .2s ease}
 .rede:hover{border-color:var(--red);background:rgba(228,38,44,.09);transform:translateY(-1px)}
 .rede svg{width:17px;height:17px;flex:none;fill:currentColor}
-.legal{margin-top:32px;font-size:13px;font-family:"DM Mono",monospace;color:#57575F}
+.legal{margin-top:32px;font-size:13px;font-family:"DM Mono",monospace;color:var(--legal)}
 
 /* botão flutuante de WhatsApp */
 .flut{position:fixed;right:14px;bottom:14px;z-index:70;display:inline-flex;align-items:center;gap:10px;
@@ -385,7 +472,7 @@ body.travado{overflow:hidden}
 .convite.vem{opacity:1}
 .convite-cx{position:relative;width:100%;max-width:470px;max-height:92vh;overflow-y:auto;
   border:1px solid var(--edge-2);border-radius:var(--r);background:var(--panel);
-  padding:clamp(22px,4vw,32px);box-shadow:0 30px 80px rgba(0,0,0,.6);
+  padding:clamp(22px,4vw,32px);box-shadow:0 30px 80px var(--shadow);
   transform:translateY(14px) scale(.98);transition:transform .35s cubic-bezier(.22,.61,.36,1)}
 .convite.vem .convite-cx{transform:none}
 .convite-cx h3{font-size:clamp(22px,4vw,27px);margin-bottom:10px}
@@ -446,3 +533,23 @@ body.travado{overflow:hidden}
   .faixa-ind{font-size:12.5px;padding:8px 12px;gap:5px}
   .faixa-ind span{display:block;width:100%;font-size:11px}
 }
+
+
+/* ---------- botão de tema (injetado por radar.js) ---------- */
+.tema{
+  flex:none;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+  border:1px solid var(--edge);border-radius:9px;background:var(--glass);color:var(--ink-soft);
+  cursor:pointer;padding:0;transition:color .2s ease,border-color .2s ease,transform .2s ease;
+}
+.tema:hover{color:var(--ink);border-color:var(--edge-2);transform:translateY(-1px)}
+.tema svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tema .sol{display:none}
+.tema .lua{display:block}
+/* no claro o botão mostra a lua-cheia invertida: o ícone anuncia para onde vai */
+:root[data-theme="light"] .tema .sol{display:block}
+:root[data-theme="light"] .tema .lua{display:none}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]) .tema .sol{display:block}
+  :root:not([data-theme="dark"]) .tema .lua{display:none}
+}
+@media (prefers-reduced-motion:reduce){ .tema{transition:none} .tema:hover{transform:none} }

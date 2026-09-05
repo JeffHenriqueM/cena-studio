@@ -278,3 +278,69 @@
     desconto: DESCONTO
   };
 })();
+
+/* ARTsivos — botão de tema
+   O site é escuro por identidade; o claro atende quem prefere. Sem escolha
+   gravada, vale a configuração do aparelho (`prefers-color-scheme`) — o
+   `<script>` no <head> de cada página aplica a escolha antes da primeira
+   pintura, para a tela não piscar branca. Aqui só entra o botão. */
+(function(){
+  var CHAVE = 'artsivos.tema';
+  var raiz  = document.documentElement;
+
+  function doAparelho(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+  function atual(){
+    return raiz.getAttribute('data-theme') || doAparelho();
+  }
+  function aplicar(t){
+    raiz.setAttribute('data-theme', t);
+    try{ localStorage.setItem(CHAVE, t); }catch(e){}
+    marcar(t);
+  }
+  function marcar(t){
+    var b = document.querySelector('.tema');
+    if(!b) return;
+    var vai = t === 'dark' ? 'claro' : 'escuro';
+    b.setAttribute('aria-label', 'Mudar para o tema ' + vai);
+    b.setAttribute('title', 'Tema ' + vai);
+  }
+
+  function montar(){
+    var barra = document.querySelector('.nav-in');
+    if(!barra || document.querySelector('.tema')) return;
+
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'tema';
+    b.innerHTML =
+      '<svg class="lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>' +
+      '<svg class="sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/>' +
+      '<path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M6.1 6.1 4.6 4.6M19.4 19.4l-1.5-1.5M17.9 6.1l1.5-1.5M4.6 19.4l1.5-1.5"/></svg>';
+
+    /* antes do botão de orçamento, que é o último da barra */
+    var cta = barra.querySelector('.btn');
+    if(cta) barra.insertBefore(b, cta); else barra.appendChild(b);
+
+    b.addEventListener('click', function(){
+      aplicar(atual() === 'dark' ? 'light' : 'dark');
+    });
+    marcar(atual());
+  }
+
+  /* quem nunca tocou no botão continua acompanhando o aparelho ao vivo */
+  if(window.matchMedia){
+    var mq = window.matchMedia('(prefers-color-scheme: light)');
+    var ouvir = function(){
+      var salvo = null;
+      try{ salvo = localStorage.getItem(CHAVE); }catch(e){}
+      if(!salvo) marcar(doAparelho());
+    };
+    if(mq.addEventListener) mq.addEventListener('change', ouvir);
+    else if(mq.addListener) mq.addListener(ouvir);
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', montar);
+  else montar();
+})();

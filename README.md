@@ -51,7 +51,7 @@ Não compartilha nada com o CENA além da hospedagem.
 | Arquivo | Página |
 |---|---|
 | `artsivo/index.html` | home: produtos, orçamento com estimativa, pagamento, dúvidas |
-| `artsivo/estilo.css` | CSS de todas as páginas do site |
+| `artsivo/estilo.css` | CSS de todas as páginas do site (tema escuro e claro) |
 | `artsivo/sobre/index.html` | sobre a empresa |
 | `artsivo/blog/index.html` | lista de artigos |
 | `artsivo/blog/<slug>/index.html` | artigos (3 publicados) |
@@ -59,6 +59,12 @@ Não compartilha nada com o CENA além da hospedagem.
 ### Já é real
 - WhatsApp `5583986062797` e Instagram `@artsivospb`
 - Os nove produtos
+- **Tema escuro e claro.** O escuro é a identidade e continua sendo o padrão. Sem
+  escolha gravada, o site segue a configuração do aparelho (`prefers-color-scheme`);
+  o botão no topo da barra grava a preferência em `artsivos.tema`. As cores todas
+  vivem em variáveis no topo do `estilo.css` — nenhuma cor escrita direto nas regras,
+  senão um dos dois temas quebra. O `<script>` no `<head>` de cada página aplica o
+  tema antes da primeira pintura, para a tela não piscar branca.
 
 O que está combinado para fazer depois está em [`artsivo/BACKLOG.md`](artsivo/BACKLOG.md).
 
