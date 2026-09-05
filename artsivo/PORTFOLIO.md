@@ -4,8 +4,11 @@ Levantado a partir dos prints do acervo da empresa. Serve de matéria-prima para
 a faixa de logos (item 2 do BACKLOG), para a seção Trabalhos e para descobrir o
 que a ARTsivos realmente vende.
 
-> **Nada daqui vai ao ar sem autorização.** Cada nome citado é um cliente
-> identificável. Antes de publicar logo, foto ou menção, confirmar um a um.
+> **Decisão do Jeff: todos podem ser citados pelo nome.** A lista de clientes
+> vai ao ar pela página de portfólio (item 6 do BACKLOG) e é cadastrada pelo
+> painel do admin — este arquivo é a carga inicial, não a fonte permanente.
+> Continua valendo o cuidado com **logo** e **foto** de cliente: arte e imagem
+> são material de terceiro, e saem se alguém pedir.
 
 ## Imobiliário e construção civil
 

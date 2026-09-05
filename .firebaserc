@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "finpay-134b0"
+  },
+  "targets": {
+    "finpay-134b0": {
+      "hosting": {
+        "cena-studio": [
+          "cena-studio"
+        ]
+      }
+    }
+  }
+}

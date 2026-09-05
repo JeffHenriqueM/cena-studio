@@ -4,8 +4,7 @@ Rascunho para decidir antes de escrever código. Nada aqui está fechado.
 
 O painel existe para a empresa trocar o conteúdo do site sem mexer no código:
 fotos dos trabalhos, logos de clientes, preços, avaliações. É o primeiro pedaço
-do site que precisa de backend de verdade (item 2 do BACKLOG) e é a mesma
-fundação do item 5 (níveis de indicação).
+do site que precisa de backend de verdade (item 2 do BACKLOG).
 
 ---
 
@@ -38,6 +37,12 @@ A manchete ("5,0 · 42 avaliações") continua fixa até mudar de verdade.
 Regra: produto sem preço cadastrado não pode ser ligado. O painel bloqueia, em
 vez de deixar o site dar estimativa em cima de zero.
 
+**Fatia 5 — Clientes do portfólio.** A página de portfólio (item 6 do BACKLOG)
+sai daqui: nome do cliente, segmento, foto e ordem. Todos entram com nome —
+decisão do Jeff. O `PORTFOLIO.md` é só a carga inicial dessa lista; depois quem
+manda é o painel. É a mesma mecânica da fatia 2 (logos) com um campo a mais, então
+sai barato se vier junto.
+
 **Fora do painel por enquanto:** textos das páginas, blog, dados da empresa
 (endereço, CNPJ, horário). Mudam uma vez por ano — não pagam o custo de virar
 formulário.
@@ -55,6 +60,7 @@ mostrar.
 | Orçamento | miniatura do produto escolhido, ao lado da calculadora | a fazer — reaproveita a mesma foto do Trabalhos |
 | Topo da home | 1 foto forte, a melhor fachada | a fazer |
 | Logos de clientes | 1 por cliente | a fazer |
+| Portfólio | 1 por cliente cadastrado | a fazer |
 | Sobre | 1 da oficina ou da equipe | a fazer |
 | Blog | 1 capa por post | a fazer |
 
@@ -87,23 +93,22 @@ Para o armazenamento e o login, duas opções reais:
 **A) Firebase próprio da ARTsivos** (projeto novo, separado do
 `crm-pessoal-d993d`, que já é compartilhado com outra aplicação e não deve
 receber mais nada). Login por e-mail e senha, upload de imagem e permissão por
-usuário prontos. É o mesmo alicerce que o item 5 (níveis de indicação) vai exigir
-de qualquer jeito. Conferir antes se o Storage do plano gratuito ainda atende sem
-cartão cadastrado.
+usuário prontos. Em compensação: mais um projeto para manter, e conferir antes se
+o Storage do plano gratuito ainda atende sem cartão cadastrado.
 
 **B) O próprio repositório como banco.** O painel grava `dados.json` e as fotos
 direto no GitHub por API, com um token do dono. Custo zero, nada novo para
-manter, e cada alteração fica versionada. Em compensação: um usuário só, token
-guardado no navegador dele, e a mudança leva cerca de um minuto para aparecer.
+manter, e cada alteração fica versionada — dá para desfazer qualquer besteira.
+Em compensação: um usuário só, token guardado no navegador dele, e a mudança leva
+cerca de um minuto para aparecer no site.
 
-**Recomendação: A.** B resolve as fatias 1 a 4 e é bem mais barato de fazer
-agora, mas não suporta níveis de indicação — se aquela página sair do papel, o
-trabalho de B é jogado fora. A escolha depende de a página de níveis ser real ou
-não.
+**Recomendação: B.** Com os níveis de indicação descartados, o painel não precisa
+mais de conta para cliente nem de permissão por papel — some a única coisa que
+exigia Firebase. Todas as cinco fatias são conteúdo do site, e conteúdo do site
+cabe num arquivo versionado. O que derruba B é ter mais de uma pessoa mexendo:
+token é por pessoa e não dá para tirar acesso de um sem trocar o de todos.
 
 ## 4. Decisões pendentes
 
-- A) Firebase próprio ou B) repositório como banco.
-- Quem faz login: só o dono, ou também alguém do balcão.
-- A página de níveis de indicação (item 5) vai acontecer? É o que decide o item
-  acima.
+- **Quem faz login: só o dono, ou também alguém do balcão?** É o que decide entre
+  A e B. Só o dono → B. Mais de uma pessoa → A.

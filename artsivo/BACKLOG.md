@@ -41,41 +41,18 @@ sabe o que quer pula direto para o orçamento.
 Falta: confirmar com a empresa quais etapas eles realmente fazem e em que ordem,
 e se a visita é gratuita em toda a região que atendem.
 
-## 5. Níveis de indicação (página à parte)
+## 5. Pessoa física e pessoa jurídica na mesma home
 
-Aproveitar o modelo do projeto Clube de Sócios (`~/Documents/Projetos/clube-socios`):
-papéis (admin / membro / cliente) e níveis que controlam desconto, com indicação
-que passa por aprovação do admin.
+Decidido e confirmado pelo Jeff: o site fala com os dois. **Home única**, com uma
+escolha logo no topo ("você é pessoa física ou empresa?"), e a página se molda ao
+que a pessoa clicar — ordem das seções, produtos em destaque, exemplos e tom do
+texto. A escolha fica guardada no navegador, então quem já respondeu não responde
+de novo.
 
-O que se aproveita é o **modelo**, não o código: aquele projeto é React + Vite e
-guarda tudo em `localStorage`; este site é HTML estático sem build no GitHub Pages.
-As telas teriam que ser reescritas no padrão do site. Vale copiar a ideia de
-`src/types.ts` (nível com desconto padrão e override por serviço) e o formato de
-`src/data/store.ts`, escrito para virar Firestore trocando um arquivo só.
-
-Decidido: entra como **página separada**, sem mexer na indicação atual da home —
-que é sem login de propósito (código determinístico, a empresa conta o crédito
-fora do site) e funciona sem nada nas costas.
-
-Depende do mesmo backend do item 2 (login + armazenamento + permissão por papel).
-`localStorage` não serve aqui: cada navegador teria os próprios dados, o admin
-editando no celular não mudaria o que o visitante vê, e o nível do cliente ficaria
-editável pelo console.
-
-Falta: a empresa definir a escada de benefício (quantas indicações para cada
-nível e o que cada um ganha) — hoje nem o R$ 50 por indicação está confirmado.
-
-## 6. Pessoa física e pessoa jurídica na mesma home
-
-Decidido: o site fala com os dois. **Home única**, com uma escolha logo no topo
-("você é pessoa física ou empresa?"), e a página se molda ao que a pessoa clicar —
-ordem das seções, produtos em destaque, exemplos e tom do texto. A escolha fica
-guardada no navegador, então quem já respondeu não responde de novo.
-
-Importante: a escolha é uma **faixa dentro da página**, não uma porta antes dela.
-Página que obriga a clicar para ver qualquer coisa perde visita e atrapalha a
-busca do Google. Quem ignora a pergunta continua vendo o site inteiro, montado
-para empresa, que é a maioria.
+A escolha é uma **faixa dentro da página**, não uma porta antes dela. Página que
+obriga a clicar para ver qualquer coisa perde visita e atrapalha a busca do
+Google. Quem ignora a pergunta continua vendo o site inteiro, montado para
+empresa, que é a maioria.
 
 Cada lado ganha a sua página depois: fachada, totem e frota de um lado; papel de
 parede, adesivo de parede e display de festa do outro.
@@ -83,15 +60,27 @@ parede, adesivo de parede e display de festa do outro.
 Falta: confirmar com a empresa quanto o residencial pesa no faturamento — é o que
 diz se essa página merece o mesmo capricho da de empresa ou se é secundária.
 
-## 7. Página de portfólio
+## 6. Página de portfólio
 
 Sai do `PORTFOLIO.md`: os segmentos atendidos (imobiliário, alimentação, saúde e
 beleza, comércio, residencial e eventos), cada um com os trabalhos que a empresa
 já fez. É a prova de que existe rodagem, e funciona mesmo antes das fotos boas
 chegarem.
 
-Falta: autorização de cada cliente citado pelo nome. Sem autorização, o segmento
-fica, o nome sai.
+Decidido: **todos os clientes entram, com nome**, e a lista é cadastrada pelo
+admin no painel — nome, segmento, foto e ordem. Tirar ou trocar um cliente é
+mexer no painel, não no código. O `PORTFOLIO.md` vira a carga inicial dessa
+lista, não a fonte permanente.
+
+## 7. Níveis de indicação — descartado
+
+Ideia antiga de aproveitar o modelo do Clube de Sócios (papéis, níveis com
+desconto, indicação com aprovação). **Cancelada pelo Jeff:** não é necessária. A
+indicação da home continua como está — sem login, código determinístico, a
+empresa conta o crédito fora do site.
+
+Consequência prática: o painel deixa de precisar de permissão por papel e de
+conta para cliente, o que muda a escolha de backend (ver `ESCOPO-PAINEL.md`).
 
 ---
 
