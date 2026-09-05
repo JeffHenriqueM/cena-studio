@@ -53,8 +53,11 @@ Placeholders a trocar antes de divulgar:
 - **Endereço, e-mail, CNPJ e horário** no rodapé
 - **Logo:** hoje a marca é escrita em CSS (ART cinza + sivos vermelho). Para usar o arquivo real,
   coloque `artsivo/logo.png` e troque o `<a class="marca">` do topo por um `<img>`.
-- **Todo o texto** (produtos, prazos, segmentos, "equipe própria de instalação") foi escrito como
-  rascunho, sem informação real da empresa — revisar antes de divulgar.
+- **Textos de apoio** (prazo de 1 dia útil, "equipe própria de instalação", horário, segmentos)
+  ainda são rascunho — os nove produtos são os reais.
+- **Captura de contato:** `LEAD_ENDPOINT` no script. Enquanto estiver vazio, o pedido só vira
+  mensagem de WhatsApp e nada fica registrado se a pessoa não enviar. Com uma URL de formulário
+  (Formspree, Google Forms, API própria), cada pedido montado é gravado antes de abrir o WhatsApp.
 
 O orçamento não calcula preço de propósito: em comunicação visual o valor depende do material,
 e número chutado no site vira desconforto na hora de fechar. O formulário monta a mensagem de
