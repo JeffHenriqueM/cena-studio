@@ -183,7 +183,10 @@ section{padding:86px 0;position:relative}
 .oferta p{margin:0;max-width:56ch}
 .oferta .vagas{display:flex;align-items:baseline;gap:10px;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute)}
 .oferta .vagas b{font-family:"Archivo",sans-serif;font-weight:900;font-size:34px;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
-.oferta .btn{align-self:flex-start}
+.oferta .acoes{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.oferta .acoes .btn{align-self:auto}
+.oferta .saiba{font-size:14.5px;color:var(--gel-cyan);text-decoration:none;border-bottom:1px solid rgba(53,224,214,.4);padding-bottom:2px}
+.oferta .saiba:hover{border-bottom-color:var(--gel-cyan)}
 .oferta .cond{font-size:12.5px;color:var(--ink-mute);margin:0}
 .oferta .fx{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:11px;max-width:62ch}
 .oferta .fx li{position:relative;padding-left:20px;font-size:15px;color:var(--ink-soft);line-height:1.55;text-wrap:pretty}
@@ -614,7 +617,10 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
       </ul>
       <p class="lig">É o encaixe direto com o estúdio: você chega com o roteiro pronto, grava as cenas que faltam e sai com o corte na mão.</p>
       <div class="vagas"><b id="fias-vagas">50</b> <span id="fias-txt">vagas disponíveis</span></div>
-      <a class="btn btn-primary" id="fias-cta" href="#simulador">Quero uma das vagas</a>
+      <div class="acoes">
+        <a class="btn btn-primary" id="fias-cta" href="#simulador">Quero uma das vagas</a>
+        <a class="saiba" id="fias-site" href="#" hidden>Conheça o sistema FIAS</a>
+      </div>
       <p class="cond">O acesso acompanha a assinatura: enquanto ela estiver ativa, o FIAS continua liberado. App em desenvolvimento — quem entrar agora acompanha as novidades primeiro.</p>
     </div>
   </div>
@@ -729,6 +735,8 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
 
   /* Oferta FIAS: atualize só este número conforme as assinaturas forem fechando. */
   var FIAS_TOTAL = 50, FIAS_TOMADAS = 0;
+  /* Página de vendas do FIAS. Enquanto estiver vazio, o link não aparece. */
+  var FIAS_SITE = "";
   (function(){
     var restam = Math.max(FIAS_TOTAL - FIAS_TOMADAS, 0);
     var n = document.getElementById('fias-vagas'), t = document.getElementById('fias-txt'), cta = document.getElementById('fias-cta');
@@ -739,6 +747,8 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
                   : restam === FIAS_TOTAL ? 'vagas disponíveis'
                   : 'das ' + FIAS_TOTAL + ' vagas ainda abertas';
     if(restam === 0 && cta){ cta.textContent = 'Entrar na lista de espera'; }
+    var site = document.getElementById('fias-site');
+    if(site && FIAS_SITE){ site.href = FIAS_SITE; site.hidden = false; }
   })();
 
   var plano = document.getElementById('f-plano');

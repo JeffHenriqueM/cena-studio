@@ -23,9 +23,20 @@ Trocar e remover pelo mesmo lugar.
 **Fatia 3 — Avaliações do Google.** Nome, texto e nota, copiados do perfil real.
 A manchete ("5,0 · 42 avaliações") continua fixa até mudar de verdade.
 
-**Fatia 4 — Tabela de preços.** Os números do `TABELA` no `index.html`
-(m², peça, mínimo, % de instalação) mais arte, pressa, entrega e margem.
-É o que mais muda com o tempo e hoje exige mexer em JavaScript.
+**Fatia 4 — Produtos e preços.** Duas coisas no mesmo lugar:
+
+- *Quais produtos entram no orçamento automático.* Uma chave por produto. Ligado,
+  ele aparece no seletor e a calculadora dá a estimativa; desligado, ele continua
+  existindo no site como produto que a empresa faz, mas cai em "Projetos
+  Especiais" — pedido pelo WhatsApp, preço feito à mão. Serve para produto novo
+  que ainda não tem preço fechado e para produto que varia demais para estimar
+  (papel de parede, display de festa, balão inflável).
+- *Os números.* O `TABELA` do `index.html` (m², peça, mínimo, % de instalação)
+  mais arte, pressa, entrega e margem. É o que mais muda com o tempo e hoje
+  exige mexer em JavaScript.
+
+Regra: produto sem preço cadastrado não pode ser ligado. O painel bloqueia, em
+vez de deixar o site dar estimativa em cima de zero.
 
 **Fora do painel por enquanto:** textos das páginas, blog, dados da empresa
 (endereço, CNPJ, horário). Mudam uma vez por ano — não pagam o custo de virar

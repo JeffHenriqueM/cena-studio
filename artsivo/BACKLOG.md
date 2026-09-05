@@ -65,6 +65,34 @@ editável pelo console.
 Falta: a empresa definir a escada de benefício (quantas indicações para cada
 nível e o que cada um ganha) — hoje nem o R$ 50 por indicação está confirmado.
 
+## 6. Pessoa física e pessoa jurídica na mesma home
+
+Decidido: o site fala com os dois. **Home única**, com uma escolha logo no topo
+("você é pessoa física ou empresa?"), e a página se molda ao que a pessoa clicar —
+ordem das seções, produtos em destaque, exemplos e tom do texto. A escolha fica
+guardada no navegador, então quem já respondeu não responde de novo.
+
+Importante: a escolha é uma **faixa dentro da página**, não uma porta antes dela.
+Página que obriga a clicar para ver qualquer coisa perde visita e atrapalha a
+busca do Google. Quem ignora a pergunta continua vendo o site inteiro, montado
+para empresa, que é a maioria.
+
+Cada lado ganha a sua página depois: fachada, totem e frota de um lado; papel de
+parede, adesivo de parede e display de festa do outro.
+
+Falta: confirmar com a empresa quanto o residencial pesa no faturamento — é o que
+diz se essa página merece o mesmo capricho da de empresa ou se é secundária.
+
+## 7. Página de portfólio
+
+Sai do `PORTFOLIO.md`: os segmentos atendidos (imobiliário, alimentação, saúde e
+beleza, comércio, residencial e eventos), cada um com os trabalhos que a empresa
+já fez. É a prova de que existe rodagem, e funciona mesmo antes das fotos boas
+chegarem.
+
+Falta: autorização de cada cliente citado pelo nome. Sem autorização, o segmento
+fica, o nome sai.
+
 ---
 
 ## Já pendente de antes

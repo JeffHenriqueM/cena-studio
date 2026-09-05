@@ -25,7 +25,9 @@ Tudo abaixo é fictício e precisa virar o dado real:
 - **Oferta FIAS:** o FIAS (Viral Analyst) é o app de inteligência de conteúdo para quem vende gravando —
   analisar vídeo viral, base de conhecimento, roteiros com IA, cenas pré-gravadas, sessão de gravação,
   produtos e perfis. O bloco da oferta no `index.html` descreve essas funções.
-  O contador de vagas fica em `FIAS_TOTAL` / `FIAS_TOMADAS`, no script do `index.html`
+  O contador de vagas fica em `FIAS_TOTAL` / `FIAS_TOMADAS`, no script do `index.html`.
+  O link **"Conheça o sistema FIAS"** aparece ao lado do botão da oferta assim que
+  `FIAS_SITE` receber a URL da página de vendas — vazio, o link fica escondido
 - **Painel:** clientes, telefones e a agenda semeada são inventados
 
 ## Custos já cadastrados
