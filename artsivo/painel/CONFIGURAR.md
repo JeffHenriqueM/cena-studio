@@ -15,15 +15,34 @@ projeto que já hospeda o FinPay, o FIAS e o site do CENA.
 
 Console → **Authentication** → *Sign-in method* → **E-mail/senha** → ativar.
 
-Depois, em *Users* → **Add user**, criar a conta de quem vai mexer no painel
-(e-mail + senha). Cada pessoa que precisar entrar ganha uma conta própria — é
-assim que se tira o acesso de uma sem mexer no das outras.
+Depois, em *Users* → **Add user**, criar **a conta padrão** — é a que as regras
+abaixo já esperam, então não precisa mudar nada no resto do arquivo:
+
+| Campo | Valor |
+|---|---|
+| E-mail | `admin@artsivos.com.br` |
+| Senha | qualquer uma, provisória |
+
+Esse e-mail não precisa existir de verdade nem receber nada: para o Firebase é
+só um nome de usuário. Serve para testar o painel agora.
+
+### Quando as contas reais entrarem
+
+Crie uma conta por pessoa (é assim que se tira o acesso de uma sem mexer no das
+outras), acrescente os e-mails na lista das duas regras abaixo e **apague a
+conta padrão** em *Authentication → Users*. Enquanto ela existir, quem souber a
+senha provisória escreve no site.
+
+> ⚠️ Não troque a lista de e-mails por um simples `request.auth != null`. O
+> Firebase Auth é **um só por projeto**: qualquer conta do FinPay ou do FIAS
+> passaria a poder reescrever o site da ARTsivos. A lista de e-mails é o que
+> separa as três aplicações.
 
 ## 2. Regras do Firestore
 
 Console → **Firestore Database** → *Rules*. **Não apague o que já está lá** —
 acrescente este bloco dentro do `match /databases/{database}/documents { … }`
-que já existe, e troque os e-mails pelos reais:
+que já existe (a lista de e-mails já vem com a conta padrão):
 
 ```
     // Conteúdo do site da ARTsivos: qualquer um lê, só o admin escreve.
