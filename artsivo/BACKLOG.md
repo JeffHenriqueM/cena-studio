@@ -41,6 +41,30 @@ sabe o que quer pula direto para o orçamento.
 Falta: confirmar com a empresa quais etapas eles realmente fazem e em que ordem,
 e se a visita é gratuita em toda a região que atendem.
 
+## 5. Níveis de indicação (página à parte)
+
+Aproveitar o modelo do projeto Clube de Sócios (`~/Documents/Projetos/clube-socios`):
+papéis (admin / membro / cliente) e níveis que controlam desconto, com indicação
+que passa por aprovação do admin.
+
+O que se aproveita é o **modelo**, não o código: aquele projeto é React + Vite e
+guarda tudo em `localStorage`; este site é HTML estático sem build no GitHub Pages.
+As telas teriam que ser reescritas no padrão do site. Vale copiar a ideia de
+`src/types.ts` (nível com desconto padrão e override por serviço) e o formato de
+`src/data/store.ts`, escrito para virar Firestore trocando um arquivo só.
+
+Decidido: entra como **página separada**, sem mexer na indicação atual da home —
+que é sem login de propósito (código determinístico, a empresa conta o crédito
+fora do site) e funciona sem nada nas costas.
+
+Depende do mesmo backend do item 2 (login + armazenamento + permissão por papel).
+`localStorage` não serve aqui: cada navegador teria os próprios dados, o admin
+editando no celular não mudaria o que o visitante vê, e o nível do cliente ficaria
+editável pelo console.
+
+Falta: a empresa definir a escada de benefício (quantas indicações para cada
+nível e o que cada um ganha) — hoje nem o R$ 50 por indicação está confirmado.
+
 ---
 
 ## Já pendente de antes
