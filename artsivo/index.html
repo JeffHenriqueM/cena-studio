@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ARTsivos Comunicacao Visual: fachadas, letra caixa, adesivagem de veiculos, banners, sinalizacao, uniformes e brindes personalizados.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0A0A0C">
+<title>ARTsivos Comunicação Visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+</head>
+<body>
+<style>
+:root{
+  --void:#0A0A0C;
+  --panel:#141417;
+  --panel-2:#1C1C21;
+  --edge:#2B2B32;
+  --edge-2:#3C3C46;
+  --ink:#F3F3F5;
+  --ink-soft:#B4B4BD;
+  --ink-mute:#7E7E8A;
+  --red:#E4262C;
+  --red-hot:#FF3B41;
+  --steel:#4A4A55;
+  --maxw:1140px;
+  --r:16px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img{max-width:100%}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+
+h1,h2,h3,.display{
+  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:800;font-stretch:112%;
+  letter-spacing:-.024em;line-height:.98;text-wrap:balance;margin:0;
+}
+p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4.2vw,44px)}
+
+.eyebrow{
+  font-family:"DM Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-mute);display:flex;align-items:center;gap:10px;margin:0 0 18px;
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--red);flex:none}
+
+/* marcas de corte — o vocabulário da gráfica, usado como moldura */
+.cropbox{position:relative}
+.cropbox::before,.cropbox::after{
+  content:"";position:absolute;width:16px;height:16px;pointer-events:none;opacity:.5;
+}
+.cropbox::before{left:-2px;top:-2px;border-left:1px solid var(--edge-2);border-top:1px solid var(--edge-2)}
+.cropbox::after{right:-2px;bottom:-2px;border-right:1px solid var(--edge-2);border-bottom:1px solid var(--edge-2)}
+
+/* ---------- NAV ---------- */
+header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:rgba(10,10,12,.78);border-bottom:1px solid rgba(43,43,50,.8)}
+.nav-in{display:flex;align-items:center;gap:24px;height:68px}
+.nav-in .marca{margin-right:auto}
+.marca{display:inline-flex;align-items:baseline;gap:1px;text-decoration:none;
+  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:900;font-stretch:112%;letter-spacing:-.03em;font-size:23px;line-height:1}
+.marca .a{color:#D9D9DE}
+.marca .b{color:var(--red)}
+.marca .sub{font-family:"DM Mono",monospace;font-weight:400;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-mute);margin-left:8px;align-self:center}
+.nav-links{display:none;gap:26px;align-items:center;font-size:14.5px;color:var(--ink-soft)}
+.nav-links a{text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:8px;border:0;cursor:pointer;
+  font-family:"Instrument Sans",sans-serif;font-weight:700;font-size:15px;line-height:1;text-decoration:none;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
+.btn-primary{background:var(--red);color:#fff;box-shadow:0 12px 34px -14px rgba(228,38,44,.9)}
+.btn-primary:hover{background:var(--red-hot);transform:translateY(-2px);box-shadow:0 18px 42px -14px rgba(228,38,44,1)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--edge-2)}
+.btn-ghost:hover{border-color:var(--ink-mute);transform:translateY(-2px)}
+.btn-sm{padding:11px 17px;font-size:14px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:2px solid var(--red-hot);outline-offset:3px;border-radius:6px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;overflow:hidden;padding:88px 0 68px}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg .glow{position:absolute;left:-10vw;top:-26vw;width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(228,38,44,.42),rgba(228,38,44,0) 66%);filter:blur(30px)}
+.hero-bg .grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(60,60,70,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(60,60,70,.16) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%);
+  mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%)}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(38px,7.4vw,82px);max-width:14ch}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero p.lead{font-size:clamp(16.5px,1.5vw,19px);margin-top:26px;max-width:46ch;text-wrap:pretty}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:44px}
+.tag{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:rgba(20,20,23,.7)}
+
+/* faixa corrida */
+.strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:rgba(20,20,23,.7);overflow:hidden}
+.strip-in{display:flex;gap:34px;padding:15px 0;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-mute);white-space:nowrap;animation:slide 36s linear infinite}
+.strip-in span{display:flex;align-items:center;gap:10px;flex:none}
+.strip-in span::before{content:"";width:5px;height:5px;background:var(--red);flex:none}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+section{padding:84px 0;position:relative}
+.sec-head{margin-bottom:44px}
+.sec-head h2{font-size:clamp(30px,5vw,48px)}
+.sec-head p{margin-top:16px}
+
+/* ---------- CATÁLOGO ---------- */
+.cat{display:grid;grid-template-columns:1fr;gap:14px}
+.item{position:relative;overflow:hidden;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);
+  padding:24px 22px;display:flex;flex-direction:column;gap:11px;cursor:pointer;text-align:left;color:inherit;font:inherit;
+  transition:transform .28s cubic-bezier(.2,.7,.3,1),border-color .28s ease,background .28s ease}
+.item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transform-origin:top;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+.item:hover{transform:translateY(-4px);border-color:var(--edge-2);background:var(--panel-2)}
+.item:hover::before{transform:scaleY(1)}
+.item .n{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
+.item h3{font-size:21px}
+.item .lista{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.item .lista li{font-size:12.5px;color:var(--ink-soft);border:1px solid var(--edge);border-radius:5px;padding:5px 9px;background:rgba(10,10,12,.5)}
+.item .peca{margin-top:auto;padding-top:14px;font-size:13.5px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:7px}
+.item .peca::after{content:"→";transition:transform .25s ease}
+.item:hover .peca::after{transform:translateX(4px)}
+
+/* ---------- PERSONALIZAÇÃO ---------- */
+.perso{border:1px solid var(--edge);border-radius:var(--r);background:linear-gradient(140deg,rgba(228,38,44,.12),rgba(20,20,23,1) 52%);
+  padding:28px 24px;display:flex;flex-direction:column;gap:14px}
+.perso .sel{align-self:flex-start;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;background:var(--red);border-radius:5px;padding:6px 12px}
+.perso h3{font-size:clamp(23px,3.4vw,32px);max-width:22ch}
+.perso p{margin:0}
+
+/* ---------- PASSOS ---------- */
+.steps{display:grid;grid-template-columns:1fr;gap:1px;border:1px solid var(--edge);border-radius:var(--r);overflow:hidden;background:var(--edge)}
+.step{background:var(--panel);padding:26px 22px;display:flex;flex-direction:column;gap:9px}
+.step .n{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--red)}
+.step h3{font-size:18px}
+.step p{font-size:14.5px;margin:0}
+
+/* ---------- SEGMENTOS ---------- */
+.segs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
+.seg{background:var(--panel);padding:20px 18px;display:flex;flex-direction:column;gap:6px}
+.seg b{font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:16px;letter-spacing:-.01em}
+.seg span{font-size:13.5px;color:var(--ink-mute);line-height:1.5}
+
+/* ---------- ORÇAMENTO ---------- */
+.calc{border:1px solid var(--edge);border-radius:20px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  padding:26px 20px;display:grid;grid-template-columns:1fr;gap:26px}
+.calc-field{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
+.calc-field label,.calc legend{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding:0}
+select,input[type=text],input[type=number]{width:100%;appearance:none;background:var(--void);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:13px 15px;font-family:"Instrument Sans",sans-serif;font-size:15px}
+select{cursor:pointer}
+input::placeholder{color:#5C5C68}
+.dupla{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+fieldset{border:0;padding:0;margin:0}
+.addons{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+.addon{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--edge);border-radius:10px;
+  background:rgba(10,10,12,.55);cursor:pointer;font-size:14.5px;transition:border-color .2s ease,background .2s ease}
+.addon:hover{border-color:var(--edge-2)}
+.addon input{accent-color:var(--red);width:17px;height:17px;flex:none;cursor:pointer}
+.addon:has(input:checked){border-color:rgba(228,38,44,.6);background:rgba(228,38,44,.08)}
+.resumo{border-top:1px dashed var(--edge);padding-top:22px;display:flex;flex-direction:column}
+.resumo .tit{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:14px}
+.resumo .rows{display:flex;flex-direction:column;gap:9px;font-size:14px;margin-bottom:18px}
+.resumo .rows div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+  border-bottom:1px solid rgba(43,43,50,.7);padding-bottom:9px}
+.resumo .rows span:first-child{color:var(--ink-mute);font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;flex:none}
+.resumo .rows span:last-child{color:var(--ink);text-align:right;font-weight:600}
+.resumo .medida{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:clamp(30px,6vw,42px);
+  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;margin-bottom:6px}
+.resumo .medida small{font-family:"DM Mono",monospace;font-size:13px;font-weight:400;color:var(--ink-mute);letter-spacing:.06em;margin-left:6px}
+.resumo .note{font-size:13px;color:var(--ink-mute);margin:8px 0 18px}
+.resumo .btn{width:100%}
+
+/* ---------- FAQ ---------- */
+.faq{display:flex;flex-direction:column;border-top:1px solid var(--edge)}
+details{border-bottom:1px solid var(--edge)}
+summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;position:relative;
+  font-family:Archivo,Arial,sans-serif;font-weight:600;font-stretch:110%;font-size:17.5px;letter-spacing:-.01em}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:6px;top:20px;font-family:"DM Mono",monospace;font-size:20px;color:var(--red);transition:transform .25s ease}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 0 22px;font-size:15.5px;margin:0}
+
+/* ---------- CTA + RODAPÉ ---------- */
+.final{position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(228,38,44,.4);padding:52px 24px;text-align:center;background:var(--panel)}
+.final .luz{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(90% 130% at 20% 0%,rgba(228,38,44,.34),transparent 62%),radial-gradient(80% 120% at 92% 100%,rgba(255,255,255,.07),transparent 60%)}
+.final h2{font-size:clamp(29px,6.2vw,52px);position:relative}
+.final p{position:relative;margin:18px auto 30px}
+.final .btn{position:relative}
+footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;color:var(--ink-mute);font-size:14.5px}
+.foot{display:flex;flex-direction:column;gap:26px}
+.foot a{text-decoration:none;color:var(--ink-soft)}
+.foot a:hover{color:var(--ink)}
+.foot .col{display:flex;flex-direction:column;gap:9px}
+.foot .col b{color:var(--ink);font-weight:600;font-size:13px;font-family:"DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+.redes{display:flex;flex-wrap:wrap;gap:9px}
+.rede{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
+  font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none;background:rgba(20,20,23,.7);
+  transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.rede:hover{border-color:var(--red);background:rgba(228,38,44,.09);transform:translateY(-1px)}
+.rede svg{width:17px;height:17px;flex:none;fill:currentColor}
+.legal{margin-top:32px;font-size:13px;font-family:"DM Mono",monospace;color:#57575F}
+
+/* botão flutuante de WhatsApp */
+.flut{position:fixed;right:16px;bottom:16px;z-index:70;display:inline-flex;align-items:center;gap:9px;
+  background:var(--red);color:#fff;border-radius:999px;padding:14px 18px;text-decoration:none;font-weight:700;font-size:14.5px;
+  box-shadow:0 14px 36px -12px rgba(228,38,44,.95);transition:transform .2s ease}
+.flut:hover{transform:translateY(-2px)}
+.flut svg{width:19px;height:19px;fill:currentColor}
+.flut span{display:none}
+@media (min-width:640px){ .flut span{display:inline} }
+
+/* revelação no scroll */
+.rv{opacity:0;transform:translateY(28px);filter:blur(6px);
+  transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1),filter .65s ease;
+  transition-delay:var(--d,0ms);will-change:opacity,transform,filter}
+.rv.in{opacity:1;transform:none;filter:blur(0);will-change:auto}
+.sec-head.rv .eyebrow{opacity:0;transform:translateX(-14px);transition:opacity .6s ease .05s,transform .6s cubic-bezier(.22,.61,.36,1) .05s}
+.sec-head.rv.in .eyebrow{opacity:1;transform:none}
+.sec-head.rv h2{opacity:0;transform:translateY(14px);transition:opacity .8s ease .16s,transform .8s cubic-bezier(.22,.61,.36,1) .16s}
+.sec-head.rv.in h2{opacity:1;transform:none}
+
+@media (min-width:640px){
+  .cat{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .segs{grid-template-columns:repeat(3,1fr)}
+  .addons{grid-template-columns:repeat(2,1fr)}
+  .foot{flex-direction:row;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .calc{padding:32px}
+  .perso{padding:34px 32px}
+}
+@media (min-width:900px){
+  .nav-links{display:flex}
+  .cat{grid-template-columns:repeat(3,1fr)}
+  .steps{grid-template-columns:repeat(5,1fr)}
+  .segs{grid-template-columns:repeat(6,1fr)}
+  .calc{grid-template-columns:1.1fr .9fr;gap:44px;padding:40px}
+  .resumo{border-top:0;border-left:1px dashed var(--edge);padding:0 0 0 40px;justify-content:center}
+  section{padding:104px 0}
+  .hero{padding:120px 0 92px}
+}
+@media (min-width:960px){
+  .foot{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:30px}
+  .hero .wrap{display:grid;grid-template-columns:1.06fr .94fr;column-gap:clamp(36px,4.4vw,72px);align-items:start}
+  .hero .eyebrow{grid-column:1/-1}
+  .hero h1{grid-column:1;grid-row:2/6;max-width:none;font-size:clamp(50px,5.2vw,78px);align-self:center}
+  .hero p.lead{grid-column:2;grid-row:2;margin-top:6px}
+  .hero-cta{grid-column:2;grid-row:3;margin-top:30px}
+  .tags{grid-column:2;grid-row:4;margin-top:26px}
+}
+@media (min-width:1440px){ :root{--maxw:1260px} }
+@media (max-height:620px) and (min-width:640px){
+  .hero{padding:70px 0 54px}
+  .hero h1{font-size:clamp(38px,5.4vw,58px)}
+  .tags{margin-top:26px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::after,*::before{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;transition-delay:0ms !important}
+  .rv,.sec-head.rv .eyebrow,.sec-head.rv h2{opacity:1;transform:none;filter:none}
+}
+</style>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="marca" href="#topo"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Comunicação Visual</span></a>
+    <nav class="nav-links">
+      <a href="#catalogo">Produtos</a>
+      <a href="#personalizado">Personalizados</a>
+      <a href="#como">Como funciona</a>
+      <a href="#orcamento">Orçamento</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#orcamento">Pedir orçamento</a>
+  </div>
+</header>
+
+<div class="hero" id="topo">
+  <div class="hero-bg" aria-hidden="true"><div class="glow"></div><div class="grid"></div></div>
+  <div class="wrap">
+    <p class="eyebrow">Comunicação visual · projeto, produção e instalação</p>
+    <h1>Sua marca precisa <em>ser vista</em> antes de ser escolhida.</h1>
+    <p class="lead">Fachada, veículo, vitrine, uniforme, brinde. A gente cria a arte, produz e instala — tudo sob medida para o seu negócio, sem você precisar entender de arquivo, medida ou material.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#orcamento">Montar meu pedido</a>
+      <a class="btn btn-ghost" href="#catalogo">Ver o catálogo</a>
+    </div>
+    <div class="tags">
+      <span class="tag">Fachadas</span>
+      <span class="tag">Letra caixa</span>
+      <span class="tag">Adesivagem</span>
+      <span class="tag">Banners</span>
+      <span class="tag">Uniformes</span>
+      <span class="tag">Brindes</span>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="strip-in" aria-hidden="true">
+    <span>Arte inclusa no pedido</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Material com garantia</span><span>Atendemos empresa e pessoa física</span><span>Orçamento em 1 dia útil</span>
+    <span>Arte inclusa no pedido</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Material com garantia</span><span>Atendemos empresa e pessoa física</span><span>Orçamento em 1 dia útil</span>
+  </div>
+</div>
+
+<section id="catalogo">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Catálogo</p>
+      <h2>Tudo que faz a sua marca aparecer.</h2>
+      <p>Nove famílias de produto, do letreiro que fica na rua ao brinde que o cliente leva para casa. Clique em uma delas e o pedido já vai preenchido para o orçamento.</p>
+    </div>
+    <div class="cat">
+      <button class="item rv" type="button" data-prod="Fachada / letreiro">
+        <span class="n">01 · na rua</span>
+        <h3>Fachadas e letreiros</h3>
+        <ul class="lista"><li>ACM</li><li>Letra caixa</li><li>Luminoso LED</li><li>Lona tensionada</li><li>Neon LED</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Adesivagem de veículo">
+        <span class="n">02 · na rua</span>
+        <h3>Adesivagem de veículos</h3>
+        <ul class="lista"><li>Envelopamento</li><li>Frota</li><li>Moto</li><li>Vidro perfurado</li><li>Recorte</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Adesivo / vitrine">
+        <span class="n">03 · na loja</span>
+        <h3>Vitrine e adesivos</h3>
+        <ul class="lista"><li>Jateado</li><li>Recorte eletrônico</li><li>Vitrine sazonal</li><li>Piso</li><li>Parede</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Banner / lona">
+        <span class="n">04 · evento</span>
+        <h3>Banners e lonas</h3>
+        <ul class="lista"><li>Banner</li><li>Faixa</li><li>Wind banner</li><li>Backdrop</li><li>Roll-up</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Sinalização interna">
+        <span class="n">05 · dentro</span>
+        <h3>Sinalização e comunicação interna</h3>
+        <ul class="lista"><li>Placas</li><li>Setas</li><li>Identificação de salas</li><li>Segurança</li><li>Acessibilidade</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Display / PDV">
+        <span class="n">06 · no ponto</span>
+        <h3>Displays e PDV</h3>
+        <ul class="lista"><li>Totem</li><li>Painel de preço</li><li>Cardápio</li><li>Expositor</li><li>Balcão</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Uniforme personalizado">
+        <span class="n">07 · na equipe</span>
+        <h3>Uniformes personalizados</h3>
+        <ul class="lista"><li>Camiseta</li><li>Polo</li><li>Avental</li><li>Boné</li><li>Colete</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Brinde personalizado">
+        <span class="n">08 · na mão</span>
+        <h3>Brindes personalizados</h3>
+        <ul class="lista"><li>Caneca</li><li>Squeeze</li><li>Chaveiro</li><li>Caneta</li><li>Sacola</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+      <button class="item rv" type="button" data-prod="Material impresso">
+        <span class="n">09 · no bolso</span>
+        <h3>Impressos</h3>
+        <ul class="lista"><li>Cartão de visita</li><li>Panfleto</li><li>Cardápio</li><li>Etiqueta</li><li>Talão</li></ul>
+        <span class="peca">Pedir orçamento</span>
+      </button>
+    </div>
+
+    <div class="perso rv cropbox" id="personalizado" style="margin-top:26px">
+      <span class="sel">Personalizado</span>
+      <h3>Não achou na lista? Então é com a gente mesmo.</h3>
+      <p>O que a ARTsivos faz de verdade não é produto de prateleira: é a sua marca aplicada em qualquer superfície. Se cabe adesivo, tinta, impressão ou recorte, a gente resolve — do troféu da confraternização ao painel de 6 metros da fachada.</p>
+      <p style="color:var(--ink-mute);font-size:14.5px">Chegue com uma foto, um print ou só a ideia na cabeça. A parte técnica — material, medida, arquivo, fixação — é o nosso trabalho, não o seu.</p>
+      <a class="btn btn-primary" href="#orcamento" style="align-self:flex-start">Contar minha ideia</a>
+    </div>
+  </div>
+</section>
+
+<section id="como">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Cinco passos, da ideia à parede.</h2>
+      <p>Você acompanha cada etapa pelo WhatsApp e só aprova depois de ver como vai ficar.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">01</span><h3>Você conta a ideia</h3><p>Manda a medida, a foto do local ou só o que precisa. Se não souber a medida, a gente vai medir.</p></div>
+      <div class="step"><span class="n">02</span><h3>Orçamento</h3><p>Enviamos valor, material recomendado e prazo em até 1 dia útil. Sem compromisso.</p></div>
+      <div class="step"><span class="n">03</span><h3>Arte</h3><p>Nossa equipe cria ou adapta a arte e mostra em simulação — no seu prédio, no seu carro, na sua camisa.</p></div>
+      <div class="step"><span class="n">04</span><h3>Produção</h3><p>Aprovou, entra na produção. Impressão, recorte, acabamento e conferência antes de sair daqui.</p></div>
+      <div class="step"><span class="n">05</span><h3>Instalação</h3><p>Equipe própria instala no local e leva o material embora. Você só olha e aprova.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="segmentos">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Quem atendemos</p>
+      <h2>Se tem porta na rua, tem trabalho nosso.</h2>
+    </div>
+    <div class="segs rv">
+      <div class="seg"><b>Comércio</b><span>Fachada, vitrine e preço</span></div>
+      <div class="seg"><b>Restaurantes</b><span>Cardápio, fachada e delivery</span></div>
+      <div class="seg"><b>Clínicas</b><span>Sinalização e identificação</span></div>
+      <div class="seg"><b>Academias</b><span>Painéis e adesivo de parede</span></div>
+      <div class="seg"><b>Construtoras</b><span>Placa de obra e tapume</span></div>
+      <div class="seg"><b>Eventos</b><span>Backdrop, wind e crachá</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="orcamento">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Orçamento</p>
+      <h2>Monte seu pedido em 30 segundos.</h2>
+      <p>Preencha o que souber — o que faltar a gente pergunta. No final vira uma mensagem pronta no nosso WhatsApp, com tudo organizado.</p>
+    </div>
+
+    <div class="calc rv">
+      <div>
+        <div class="calc-field">
+          <label for="f-prod">O que você precisa</label>
+          <select id="f-prod">
+            <optgroup label="Na rua">
+              <option data-medida="area">Fachada / letreiro</option>
+              <option data-medida="area">Adesivagem de veículo</option>
+            </optgroup>
+            <optgroup label="Na loja">
+              <option data-medida="area">Adesivo / vitrine</option>
+              <option data-medida="qtd">Display / PDV</option>
+              <option data-medida="qtd">Sinalização interna</option>
+            </optgroup>
+            <optgroup label="Evento">
+              <option data-medida="area">Banner / lona</option>
+            </optgroup>
+            <optgroup label="Personalizados">
+              <option data-medida="qtd">Uniforme personalizado</option>
+              <option data-medida="qtd">Brinde personalizado</option>
+              <option data-medida="qtd">Material impresso</option>
+              <option data-medida="livre">Outro — quero explicar</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="calc-field" id="wrap-area">
+          <label for="f-larg">Medida aproximada (em metros)</label>
+          <div class="dupla">
+            <input id="f-larg" type="number" min="0" step="0.1" value="2" inputmode="decimal" aria-label="Largura em metros">
+            <input id="f-alt" type="number" min="0" step="0.1" value="1" inputmode="decimal" aria-label="Altura em metros">
+          </div>
+          <span style="font-size:12.5px;color:var(--ink-mute)">Largura × altura. Não sabe? Deixe como está que a gente vai medir.</span>
+        </div>
+
+        <div class="calc-field" id="wrap-qtd">
+          <label for="f-qtd">Quantidade</label>
+          <input id="f-qtd" type="number" min="1" step="1" value="10" inputmode="numeric">
+        </div>
+
+        <div class="calc-field">
+          <label for="f-onde">Onde vai ser aplicado</label>
+          <input id="f-onde" type="text" placeholder="Ex.: fachada da loja, carro da empresa, vitrine">
+        </div>
+
+        <div class="calc-field">
+          <label for="f-prazo">Para quando</label>
+          <select id="f-prazo">
+            <option>Sem pressa</option>
+            <option selected>Nas próximas duas semanas</option>
+            <option>Esta semana</option>
+            <option>É urgente</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend>Precisa também de</legend>
+          <div class="addons">
+            <label class="addon"><input type="checkbox" data-label="Criação da arte" checked> Criação da arte</label>
+            <label class="addon"><input type="checkbox" data-label="Instalação no local" checked> Instalação no local</label>
+            <label class="addon"><input type="checkbox" data-label="Visita para medir"> Visita para medir</label>
+            <label class="addon"><input type="checkbox" data-label="Entrega"> Entrega</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="resumo">
+        <span class="tit">Seu pedido</span>
+        <div class="medida" id="out-medida">2,00 m²<small>de área</small></div>
+        <div class="rows" id="out-rows"></div>
+        <p class="note">Ainda não é o preço final: o valor depende do material escolhido. Mandamos o orçamento fechado em até 1 dia útil.</p>
+        <a class="btn btn-primary" id="out-wa" href="#" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="duvidas">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Dúvidas</p>
+      <h2>O que todo mundo pergunta antes.</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Quanto custa?</summary><p>Depende do tamanho e do material — uma mesma fachada muda muito de preço entre lona e ACM. Por isso o orçamento é feito caso a caso, e sai em até 1 dia útil, de graça e sem compromisso.</p></details>
+      <details><summary>Preciso ter a arte pronta?</summary><p>Não. A criação da arte pode entrar no pedido. Se você já tem logo em arquivo aberto, melhor ainda; se só tem uma foto ou uma imagem do Instagram, a gente redesenha.</p></details>
+      <details><summary>Vocês instalam?</summary><p>Sim, com equipe própria. Fachada, veículo, vitrine e sinalização saem daqui instalados, com o local limpo no final.</p></details>
+      <details><summary>Não sei a medida do que preciso.</summary><p>Sem problema. Marcamos uma visita para medir e fotografar o local antes do orçamento — assim o valor já vem certo e não muda depois.</p></details>
+      <details><summary>Qual o prazo?</summary><p>Trabalhos pequenos saem em poucos dias; fachada e adesivagem levam mais tempo porque envolvem arte, produção e instalação. O prazo exato vai junto com o orçamento — e a gente avisa se der para adiantar.</p></details>
+      <details><summary>Atendem pessoa física?</summary><p>Atendemos. Adesivo de carro, camisa de time, brinde de aniversário, placa de casa — não precisa ser empresa para pedir.</p></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final rv">
+      <div class="luz" aria-hidden="true"></div>
+      <h2>Manda a ideia. A gente devolve pronta.</h2>
+      <p>Orçamento sem compromisso, resposta em até 1 dia útil.</p>
+      <a class="btn btn-primary" id="final-wa" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="marca" href="#topo"><span class="a">ART</span><span class="b">sivos</span></a>
+        <span style="max-width:34ch;line-height:1.55">Comunicação visual: projeto, produção e instalação. Fachadas, veículos, vitrines, uniformes e brindes personalizados.</span>
+        <div class="redes" style="margin-top:8px">
+          <a class="rede" id="rede-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg>
+            WhatsApp
+          </a>
+          <a class="rede" id="rede-ig" href="https://instagram.com/artsivos" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4a3.9 3.9 0 0 1-1.4-.9 3.9 3.9 0 0 1-.9-1.4c-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1zm0 3.3a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm0 10.7a4.2 4.2 0 1 1 0-8.4 4.2 4.2 0 0 1 0 8.4zm6.8-11a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
+            Instagram
+          </a>
+          <a class="rede" id="rede-fb" href="https://facebook.com/artsivos" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+            Facebook
+          </a>
+          <a class="rede" id="rede-tt" href="https://tiktok.com/@artsivos" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.5 3c.4 2.1 1.7 3.5 3.8 3.7v2.5c-1.4.1-2.7-.3-3.9-1.1v5.6c0 4.3-3.8 6.9-7.4 5.5a5.5 5.5 0 0 1 1-10.5v2.6a2.9 2.9 0 1 0 2.1 2.8V3h2.5z"/></svg>
+            TikTok
+          </a>
+        </div>
+      </div>
+      <div class="col">
+        <b>Produtos</b>
+        <a href="#catalogo">Fachadas</a>
+        <a href="#catalogo">Adesivagem</a>
+        <a href="#catalogo">Banners</a>
+        <a href="#catalogo">Uniformes e brindes</a>
+      </div>
+      <div class="col">
+        <b>Atendimento</b>
+        <a href="#orcamento">Pedir orçamento</a>
+        <a href="#como">Como funciona</a>
+        <a href="#duvidas">Dúvidas</a>
+        <span>Seg a sex, 8h às 18h · Sáb, 8h às 12h</span>
+      </div>
+      <div class="col">
+        <b>Onde estamos</b>
+        <span>Rua Exemplo, 000 — Centro<br>João Pessoa — PB</span>
+        <a href="mailto:contato@artsivos.com.br">contato@artsivos.com.br</a>
+      </div>
+    </div>
+    <p class="legal">ARTsivos Comunicação Visual · CNPJ 00.000.000/0001-00 · Imagens meramente ilustrativas.</p>
+  </div>
+</footer>
+
+<a class="flut" id="flut-wa" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg>
+  <span>Orçamento</span>
+</a>
+
+<script>
+(function(){
+  /* ===== TROCAR PELO NÚMERO REAL DA ARTSIVOS ===== */
+  var PHONE = "5583999999999";
+
+  var prod = document.getElementById('f-prod');
+  var larg = document.getElementById('f-larg');
+  var alt  = document.getElementById('f-alt');
+  var qtd  = document.getElementById('f-qtd');
+  var onde = document.getElementById('f-onde');
+  var prazo= document.getElementById('f-prazo');
+  var wrapArea = document.getElementById('wrap-area');
+  var wrapQtd  = document.getElementById('wrap-qtd');
+  var outMedida= document.getElementById('out-medida');
+  var rows = document.getElementById('out-rows');
+  var wa   = document.getElementById('out-wa');
+  var addons = Array.prototype.slice.call(document.querySelectorAll('.addon input'));
+
+  function num(v, fb){ var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : fb; }
+  function dec(n){ return n.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+  function modo(){
+    var opt = prod.options[prod.selectedIndex];
+    return opt ? opt.dataset.medida : 'livre';
+  }
+
+  function update(){
+    var m = modo();
+    wrapArea.style.display = m === 'area' ? '' : 'none';
+    wrapQtd.style.display  = m === 'qtd'  ? '' : 'none';
+
+    var linhas = [];
+    linhas.push(['Produto', prod.value]);
+
+    var medidaTxt = '';
+    if(m === 'area'){
+      var l = num(larg.value, 1), a = num(alt.value, 1), area = l * a;
+      medidaTxt = dec(l) + ' × ' + dec(a) + ' m (' + dec(area) + ' m²)';
+      outMedida.innerHTML = dec(area) + ' m²<small>de área</small>';
+      linhas.push(['Medida', medidaTxt]);
+    } else if(m === 'qtd'){
+      var q = Math.max(1, Math.round(num(qtd.value, 1)));
+      medidaTxt = q + (q === 1 ? ' peça' : ' peças');
+      outMedida.innerHTML = q + '<small>' + (q === 1 ? 'peça' : 'peças') + '</small>';
+      linhas.push(['Quantidade', medidaTxt]);
+    } else {
+      medidaTxt = 'a definir';
+      outMedida.innerHTML = 'Sob medida<small>a combinar</small>';
+    }
+
+    if(onde.value.trim()) linhas.push(['Aplicação', onde.value.trim()]);
+    linhas.push(['Prazo', prazo.value]);
+
+    var extras = addons.filter(function(a){ return a.checked; }).map(function(a){ return a.dataset.label; });
+    linhas.push(['Precisa de', extras.length ? extras.join(', ') : 'só a produção']);
+
+    rows.innerHTML = linhas.map(function(l){
+      return '<div><span>' + l[0] + '</span><span>' + l[1].replace(/</g,'&lt;') + '</span></div>';
+    }).join('');
+
+    var msg = 'Olá! Vim pelo site e quero um orçamento.\n\n'
+      + linhas.map(function(l){ return '• ' + l[0] + ': ' + l[1]; }).join('\n')
+      + '\n\nPodem me passar o valor e o prazo?';
+    var link = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
+    wa.href = link;
+  }
+
+  [prod, larg, alt, qtd, onde, prazo].forEach(function(el){
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  });
+  addons.forEach(function(a){ a.addEventListener('change', update); });
+  update();
+
+  /* clicar num card do catálogo já escolhe o produto no orçamento */
+  document.querySelectorAll('.item[data-prod]').forEach(function(card){
+    card.addEventListener('click', function(){
+      var alvo = card.getAttribute('data-prod');
+      for(var i = 0; i < prod.options.length; i++){
+        if(prod.options[i].value === alvo){ prod.selectedIndex = i; break; }
+      }
+      update();
+      document.getElementById('orcamento').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  /* links diretos de WhatsApp */
+  var direto = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Olá! Vim pelo site da ARTsivos e quero um orçamento.');
+  ['final-wa','rede-wa','flut-wa'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.href = direto;
+  });
+
+  /* revelação em cascata */
+  document.querySelectorAll('.cat,.steps,.faq').forEach(function(grid){
+    grid.classList.remove('rv','in');
+    var i = 0;
+    Array.prototype.forEach.call(grid.children, function(child){
+      child.classList.add('rv');
+      child.style.setProperty('--d', Math.min(i, 5) * 70 + 'ms');
+      i++;
+    });
+  });
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var el = e.target;
+          el.classList.add('in');
+          io.unobserve(el);
+          setTimeout(function(){ el.classList.remove('rv','in'); el.style.removeProperty('--d'); },
+                     1400 + parseInt(el.style.getPropertyValue('--d') || 0, 10));
+        }
+      });
+    }, {rootMargin:'0px 0px -10% 0px', threshold:.12});
+    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+
+</body>
+</html>

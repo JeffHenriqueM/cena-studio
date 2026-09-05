@@ -6,6 +6,7 @@ Site estático (sem build, sem dependências) publicado pelo GitHub Pages.
 |---|---|---|
 | `index.html` | Landing page pública do estúdio | `/` |
 | `painel/index.html` | Painel interno: agenda, vendas/rede, custos mês a mês e pacotes | `/painel/` |
+| `artsivo/index.html` | Site da ARTsivos Comunicação Visual (outra empresa, mesma hospedagem) | `/artsivo/` |
 
 ## Como editar
 
@@ -39,3 +40,22 @@ edite o lançamento e mude o tipo para "Todo mês".
 As reservas ficam no `localStorage` do navegador — cada aparelho tem a sua cópia e nada
 é compartilhado entre celular e computador. Para virar a agenda real do estúdio,
 precisa de backend (naturalmente um módulo do NeuroCRM sobre o Firestore).
+
+## ARTsivos (`/artsivo/`)
+
+Site independente, hospedado na mesma pasta só para não pagar dois domínios.
+Não compartilha nada com o CENA além da hospedagem — paleta, conteúdo e script são próprios.
+
+Placeholders a trocar antes de divulgar:
+
+- **WhatsApp:** `PHONE = "5583999999999"` no script do `artsivo/index.html`
+- **Redes:** `instagram.com/artsivos`, `facebook.com/artsivos`, `tiktok.com/@artsivos`
+- **Endereço, e-mail, CNPJ e horário** no rodapé
+- **Logo:** hoje a marca é escrita em CSS (ART cinza + sivos vermelho). Para usar o arquivo real,
+  coloque `artsivo/logo.png` e troque o `<a class="marca">` do topo por um `<img>`.
+- **Todo o texto** (produtos, prazos, segmentos, "equipe própria de instalação") foi escrito como
+  rascunho, sem informação real da empresa — revisar antes de divulgar.
+
+O orçamento não calcula preço de propósito: em comunicação visual o valor depende do material,
+e número chutado no site vira desconforto na hora de fechar. O formulário monta a mensagem de
+WhatsApp com produto, medida, aplicação, prazo e serviços — o preço vai na resposta.
