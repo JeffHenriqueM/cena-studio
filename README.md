@@ -58,6 +58,8 @@ Não compartilha nada com o CENA além da hospedagem.
 - WhatsApp `5583986062797` e Instagram `@artsivospb`
 - Os nove produtos
 
+O que está combinado para fazer depois está em [`artsivo/BACKLOG.md`](artsivo/BACKLOG.md).
+
 ### Ainda é rascunho — confirmar com a empresa
 - **Tabela de preços:** `TABELA` no script do `index.html`. Os valores são de exemplo
   (baixados ~25% em setembro/2026 a pedido do Jeff, mas continuam inventados).
