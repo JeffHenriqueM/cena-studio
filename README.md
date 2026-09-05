@@ -44,21 +44,33 @@ precisa de backend (naturalmente um módulo do NeuroCRM sobre o Firestore).
 ## ARTsivos (`/artsivo/`)
 
 Site independente, hospedado na mesma pasta só para não pagar dois domínios.
-Não compartilha nada com o CENA além da hospedagem — paleta, conteúdo e script são próprios.
+Não compartilha nada com o CENA além da hospedagem.
 
-Placeholders a trocar antes de divulgar:
+| Arquivo | Página |
+|---|---|
+| `artsivo/index.html` | home: produtos, orçamento com estimativa, pagamento, dúvidas |
+| `artsivo/estilo.css` | CSS de todas as páginas do site |
+| `artsivo/sobre/index.html` | sobre a empresa |
+| `artsivo/blog/index.html` | lista de artigos |
+| `artsivo/blog/<slug>/index.html` | artigos (3 publicados) |
 
-- **WhatsApp:** `PHONE = "5583999999999"` no script do `artsivo/index.html`
-- **Redes:** `instagram.com/artsivos`, `facebook.com/artsivos`, `tiktok.com/@artsivos`
-- **Endereço, e-mail, CNPJ e horário** no rodapé
-- **Logo:** hoje a marca é escrita em CSS (ART cinza + sivos vermelho). Para usar o arquivo real,
-  coloque `artsivo/logo.png` e troque o `<a class="marca">` do topo por um `<img>`.
-- **Textos de apoio** (prazo de 1 dia útil, "equipe própria de instalação", horário, segmentos)
-  ainda são rascunho — os nove produtos são os reais.
-- **Captura de contato:** `LEAD_ENDPOINT` no script. Enquanto estiver vazio, o pedido só vira
-  mensagem de WhatsApp e nada fica registrado se a pessoa não enviar. Com uma URL de formulário
-  (Formspree, Google Forms, API própria), cada pedido montado é gravado antes de abrir o WhatsApp.
+### Já é real
+- WhatsApp `5583986062797` e Instagram `@artsivospb`
+- Os nove produtos
 
-O orçamento não calcula preço de propósito: em comunicação visual o valor depende do material,
-e número chutado no site vira desconforto na hora de fechar. O formulário monta a mensagem de
-WhatsApp com produto, medida, aplicação, prazo e serviços — o preço vai na resposta.
+### Ainda é rascunho — confirmar com a empresa
+- **Tabela de preços:** `TABELA` no script do `index.html`. Os valores são de exemplo.
+  A página deixa claro que é estimativa, mas número errado gera expectativa errada.
+  Mexer só nos números (`m2`, `peca`, `min`, `inst`) — a conta se ajusta sozinha.
+  Também `ARTE`, `PRESSA`, `ENTREGA`, `RETIRADA` e `MARGEM` (faixa de ±12%).
+- **Formas de pagamento:** PIX com desconto, 12x, sinal de 50%, nota fiscal — nada confirmado.
+- **Promessa de resposta em 2 horas** no horário comercial: só manter se alguém garantir.
+- **Endereço, e-mail, CNPJ, horário** no rodapé; textos do "sobre"; instalação com equipe própria.
+- **Captura de contato:** `LEAD_ENDPOINT` no script. Vazio = o pedido só vira mensagem de
+  WhatsApp e nada fica registrado se a pessoa desistir de enviar.
+- **Logo:** a marca é escrita em CSS. Para usar o arquivo real, coloque `artsivo/logo.png`
+  e troque o `<a class="marca">` por um `<img>`.
+- **Fotos de trabalhos:** o site não tem nenhuma. É o que mais falta.
+
+O orçamento mostra uma faixa de valor (estimativa) e dois botões: fechar pelo WhatsApp
+ou pedir um preço melhor. Preço fechado é sempre feito à mão.

@@ -3,303 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="ARTsivos Comunicacao Visual: fachadas, letra caixa, adesivagem de veiculos, banners, sinalizacao, uniformes e brindes personalizados.">
+<meta name="description" content="ARTsivos Comunicacao Visual em Joao Pessoa: ACM, lonas, acrilico, adesivos, fachadas, letras caixa, envelopamentos e placas luminosas. Orcamento estimado na hora.">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0A0A0C">
 <title>ARTsivos Comunicação Visual</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-<style>
-:root{
-  --void:#0A0A0C;
-  --panel:#141417;
-  --panel-2:#1C1C21;
-  --edge:#2B2B32;
-  --edge-2:#3C3C46;
-  --ink:#F3F3F5;
-  --ink-soft:#B4B4BD;
-  --ink-mute:#7E7E8A;
-  --red:#E4262C;
-  --red-hot:#FF3B41;
-  --steel:#4A4A55;
-  --maxw:1140px;
-  --r:16px;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--void);color:var(--ink);
-  font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
-  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
-}
-img{max-width:100%}
-a{color:inherit}
-::selection{background:var(--red);color:#fff}
-
-h1,h2,h3,.display{
-  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:800;font-stretch:112%;
-  letter-spacing:-.024em;line-height:.98;text-wrap:balance;margin:0;
-}
-p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
-.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4.2vw,44px)}
-
-.eyebrow{
-  font-family:"DM Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--ink-mute);display:flex;align-items:center;gap:10px;margin:0 0 18px;
-}
-.eyebrow::before{content:"";width:22px;height:2px;background:var(--red);flex:none}
-
-/* marcas de corte — o vocabulário da gráfica, usado como moldura */
-.cropbox{position:relative}
-.cropbox::before,.cropbox::after{
-  content:"";position:absolute;width:16px;height:16px;pointer-events:none;opacity:.5;
-}
-.cropbox::before{left:-2px;top:-2px;border-left:1px solid var(--edge-2);border-top:1px solid var(--edge-2)}
-.cropbox::after{right:-2px;bottom:-2px;border-right:1px solid var(--edge-2);border-bottom:1px solid var(--edge-2)}
-
-/* ---------- NAV ---------- */
-header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
-  background:rgba(10,10,12,.78);border-bottom:1px solid rgba(43,43,50,.8)}
-.nav-in{display:flex;align-items:center;gap:24px;height:68px}
-.nav-in .marca{margin-right:auto}
-.marca{display:inline-flex;align-items:baseline;gap:1px;text-decoration:none;
-  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:900;font-stretch:112%;letter-spacing:-.03em;font-size:23px;line-height:1}
-.marca .a{color:#D9D9DE}
-.marca .b{color:var(--red)}
-.marca .sub{font-family:"DM Mono",monospace;font-weight:400;font-size:9.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--ink-mute);margin-left:8px;align-self:center}
-.nav-links{display:none;gap:26px;align-items:center;font-size:14.5px;color:var(--ink-soft)}
-.nav-links a{text-decoration:none}
-.nav-links a:hover{color:var(--ink)}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:8px;border:0;cursor:pointer;
-  font-family:"Instrument Sans",sans-serif;font-weight:700;font-size:15px;line-height:1;text-decoration:none;
-  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
-.btn-primary{background:var(--red);color:#fff;box-shadow:0 12px 34px -14px rgba(228,38,44,.9)}
-.btn-primary:hover{background:var(--red-hot);transform:translateY(-2px);box-shadow:0 18px 42px -14px rgba(228,38,44,1)}
-.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--edge-2)}
-.btn-ghost:hover{border-color:var(--ink-mute);transform:translateY(-2px)}
-.btn-sm{padding:11px 17px;font-size:14px}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
-  outline:2px solid var(--red-hot);outline-offset:3px;border-radius:6px}
-
-/* ---------- HERO ---------- */
-.hero{position:relative;overflow:hidden;padding:88px 0 68px}
-.hero-bg{position:absolute;inset:0;pointer-events:none}
-.hero-bg .glow{position:absolute;left:-10vw;top:-26vw;width:70vw;height:70vw;max-width:900px;max-height:900px;border-radius:50%;
-  background:radial-gradient(circle at 50% 50%,rgba(228,38,44,.42),rgba(228,38,44,0) 66%);filter:blur(30px)}
-.hero-bg .grid{position:absolute;inset:0;opacity:.5;
-  background-image:linear-gradient(rgba(60,60,70,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(60,60,70,.16) 1px,transparent 1px);
-  background-size:64px 64px;
-  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%);
-  mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%)}
-.hero .wrap{position:relative;z-index:2}
-.hero h1{font-size:clamp(38px,7.4vw,82px);max-width:14ch}
-.hero h1 em{font-style:normal;color:var(--red)}
-.hero p.lead{font-size:clamp(16.5px,1.5vw,19px);margin-top:26px;max-width:46ch;text-wrap:pretty}
-.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
-.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:44px}
-.tag{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-  padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:rgba(20,20,23,.7)}
-
-/* faixa corrida */
-.strip{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:rgba(20,20,23,.7);overflow:hidden}
-.strip-in{display:flex;gap:34px;padding:15px 0;font-family:"DM Mono",monospace;font-size:12.5px;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--ink-mute);white-space:nowrap;animation:slide 36s linear infinite}
-.strip-in span{display:flex;align-items:center;gap:10px;flex:none}
-.strip-in span::before{content:"";width:5px;height:5px;background:var(--red);flex:none}
-@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-section{padding:84px 0;position:relative}
-.sec-head{margin-bottom:44px}
-.sec-head h2{font-size:clamp(30px,5vw,48px)}
-.sec-head p{margin-top:16px}
-
-/* ---------- CATÁLOGO ---------- */
-.cat{display:grid;grid-template-columns:1fr;gap:14px}
-.item{position:relative;overflow:hidden;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);
-  padding:24px 22px;display:flex;flex-direction:column;gap:11px;cursor:pointer;text-align:left;color:inherit;font:inherit;
-  transition:transform .28s cubic-bezier(.2,.7,.3,1),border-color .28s ease,background .28s ease}
-.item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);transform:scaleY(0);transform-origin:top;
-  transition:transform .3s cubic-bezier(.2,.7,.3,1)}
-.item:hover{transform:translateY(-4px);border-color:var(--edge-2);background:var(--panel-2)}
-.item:hover::before{transform:scaleY(1)}
-.item .n{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute)}
-.item h3{font-size:21px}
-.item .desc{font-size:14.5px;color:var(--ink-soft);margin:0;line-height:1.55;text-wrap:pretty}
-.item .lista{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
-.item .lista li{font-size:12.5px;color:var(--ink-soft);border:1px solid var(--edge);border-radius:5px;padding:5px 9px;background:rgba(10,10,12,.5)}
-.item .peca{margin-top:auto;padding-top:14px;font-size:13.5px;font-weight:600;color:var(--red);display:flex;align-items:center;gap:7px}
-.item .peca::after{content:"→";transition:transform .25s ease}
-.item:hover .peca::after{transform:translateX(4px)}
-
-/* ---------- PERSONALIZAÇÃO ---------- */
-.perso{border:1px solid var(--edge);border-radius:var(--r);background:linear-gradient(140deg,rgba(228,38,44,.12),rgba(20,20,23,1) 52%);
-  padding:28px 24px;display:flex;flex-direction:column;gap:14px}
-.perso .sel{align-self:flex-start;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:#fff;background:var(--red);border-radius:5px;padding:6px 12px}
-.perso h3{font-size:clamp(23px,3.4vw,32px);max-width:22ch}
-.perso p{margin:0}
-.perso .fx{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:11px;max-width:62ch}
-.perso .fx li{position:relative;padding-left:20px;font-size:15px;color:var(--ink-soft);line-height:1.55;text-wrap:pretty}
-.perso .fx li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--red)}
-.perso .fx b{color:var(--ink);font-weight:700}
-.perso .lig{font-size:14.5px;color:var(--ink-mute);max-width:56ch}
-@media (min-width:760px){ .perso .fx{grid-template-columns:1fr 1fr;gap:12px 30px} }
-
-/* ---------- PASSOS ---------- */
-.steps{display:grid;grid-template-columns:1fr;gap:1px;border:1px solid var(--edge);border-radius:var(--r);overflow:hidden;background:var(--edge)}
-.step{background:var(--panel);padding:26px 22px;display:flex;flex-direction:column;gap:9px}
-.step .n{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--red)}
-.step h3{font-size:18px}
-.step p{font-size:14.5px;margin:0}
-
-/* ---------- SEGMENTOS ---------- */
-.segs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--edge);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
-.seg{background:var(--panel);padding:20px 18px;display:flex;flex-direction:column;gap:6px}
-.seg b{font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:16px;letter-spacing:-.01em}
-.seg span{font-size:13.5px;color:var(--ink-mute);line-height:1.5}
-
-/* ---------- ORÇAMENTO ---------- */
-.calc{border:1px solid var(--edge);border-radius:20px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
-  padding:26px 20px;display:grid;grid-template-columns:1fr;gap:26px}
-.calc-field{display:flex;flex-direction:column;gap:9px;margin-bottom:18px}
-.calc-field label,.calc legend{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);padding:0}
-select,input[type=text],input[type=number],textarea{width:100%;appearance:none;background:var(--void);color:var(--ink);
-  border:1px solid var(--edge);border-radius:10px;padding:13px 15px;font-family:"Instrument Sans",sans-serif;font-size:15px;line-height:1.5}
-textarea{resize:vertical;min-height:72px}
-.dica{font-size:12.5px;color:var(--ink-mute)}
-select{cursor:pointer}
-input::placeholder{color:#5C5C68}
-.dupla{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-fieldset{border:0;padding:0;margin:0}
-.addons{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
-.addon{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--edge);border-radius:10px;
-  background:rgba(10,10,12,.55);cursor:pointer;font-size:14.5px;transition:border-color .2s ease,background .2s ease}
-.addon:hover{border-color:var(--edge-2)}
-.addon input{accent-color:var(--red);width:17px;height:17px;flex:none;cursor:pointer}
-.addon:has(input:checked){border-color:rgba(228,38,44,.6);background:rgba(228,38,44,.08)}
-.resumo{border-top:1px dashed var(--edge);padding-top:22px;display:flex;flex-direction:column}
-.resumo .tit{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:14px}
-.resumo .rows{display:flex;flex-direction:column;gap:9px;font-size:14px;margin-bottom:18px}
-.resumo .rows div{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
-  border-bottom:1px solid rgba(43,43,50,.7);padding-bottom:9px}
-.resumo .rows span:first-child{color:var(--ink-mute);font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;flex:none}
-.resumo .rows span:last-child{color:var(--ink);text-align:right;font-weight:600}
-.resumo .medida{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:clamp(30px,6vw,42px);
-  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;margin-bottom:6px}
-.resumo .medida small{font-family:"DM Mono",monospace;font-size:13px;font-weight:400;color:var(--ink-mute);letter-spacing:.06em;margin-left:6px}
-.resumo .note{font-size:13px;color:var(--ink-mute);margin:8px 0 18px}
-.resumo .btn{width:100%}
-.resumo .dados{border-top:1px dashed var(--edge);padding-top:20px;margin-bottom:4px}
-.resumo .dados .calc-field{margin-bottom:12px}
-.resumo .aviso{margin:2px 0 0;font-size:13px;color:var(--red-hot);font-weight:600}
-.resumo .dados input.falta{border-color:var(--red)}
-
-/* ---------- FAQ ---------- */
-.faq{display:flex;flex-direction:column;border-top:1px solid var(--edge)}
-details{border-bottom:1px solid var(--edge)}
-summary{list-style:none;cursor:pointer;padding:22px 40px 22px 0;position:relative;
-  font-family:Archivo,Arial,sans-serif;font-weight:600;font-stretch:110%;font-size:17.5px;letter-spacing:-.01em}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";position:absolute;right:6px;top:20px;font-family:"DM Mono",monospace;font-size:20px;color:var(--red);transition:transform .25s ease}
-details[open] summary::after{transform:rotate(45deg)}
-details p{padding:0 0 22px;font-size:15.5px;margin:0}
-
-/* ---------- CTA + RODAPÉ ---------- */
-.final{position:relative;overflow:hidden;border-radius:22px;border:1px solid rgba(228,38,44,.4);padding:52px 24px;text-align:center;background:var(--panel)}
-.final .luz{position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(90% 130% at 20% 0%,rgba(228,38,44,.34),transparent 62%),radial-gradient(80% 120% at 92% 100%,rgba(255,255,255,.07),transparent 60%)}
-.final h2{font-size:clamp(29px,6.2vw,52px);position:relative}
-.final p{position:relative;margin:18px auto 30px}
-.final .btn{position:relative}
-footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;color:var(--ink-mute);font-size:14.5px}
-.foot{display:flex;flex-direction:column;gap:26px}
-.foot a{text-decoration:none;color:var(--ink-soft)}
-.foot a:hover{color:var(--ink)}
-.foot .col{display:flex;flex-direction:column;gap:9px}
-.foot .col b{color:var(--ink);font-weight:600;font-size:13px;font-family:"DM Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
-.redes{display:flex;flex-wrap:wrap;gap:9px}
-.rede{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--edge);border-radius:8px;padding:10px 14px;
-  font-size:13.5px;font-weight:600;color:var(--ink);text-decoration:none;background:rgba(20,20,23,.7);
-  transition:border-color .2s ease,background .2s ease,transform .2s ease}
-.rede:hover{border-color:var(--red);background:rgba(228,38,44,.09);transform:translateY(-1px)}
-.rede svg{width:17px;height:17px;flex:none;fill:currentColor}
-.legal{margin-top:32px;font-size:13px;font-family:"DM Mono",monospace;color:#57575F}
-
-/* botão flutuante de WhatsApp */
-.flut{position:fixed;right:14px;bottom:14px;z-index:70;display:inline-flex;align-items:center;gap:10px;
-  background:var(--red);color:#fff;border-radius:999px;padding:15px 20px;text-decoration:none;font-weight:700;font-size:15px;
-  box-shadow:0 14px 36px -12px rgba(228,38,44,.95),0 0 0 6px rgba(228,38,44,.14);
-  transition:transform .2s ease,box-shadow .2s ease,opacity .3s ease}
-.flut:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(228,38,44,1),0 0 0 9px rgba(228,38,44,.18)}
-.flut svg{width:21px;height:21px;fill:currentColor;flex:none}
-/* some só enquanto o próprio botão do orçamento está na tela, para não brigarem */
-.flut.oculto{opacity:0;pointer-events:none;transform:translateY(12px)}
-@media (max-width:479px){ .flut{padding:14px 17px;font-size:14.5px} }
-body{padding-bottom:76px}
-
-/* revelação no scroll */
-.rv{opacity:0;transform:translateY(28px);filter:blur(6px);
-  transition:opacity .8s cubic-bezier(.22,.61,.36,1),transform .8s cubic-bezier(.22,.61,.36,1),filter .65s ease;
-  transition-delay:var(--d,0ms);will-change:opacity,transform,filter}
-.rv.in{opacity:1;transform:none;filter:blur(0);will-change:auto}
-.sec-head.rv .eyebrow{opacity:0;transform:translateX(-14px);transition:opacity .6s ease .05s,transform .6s cubic-bezier(.22,.61,.36,1) .05s}
-.sec-head.rv.in .eyebrow{opacity:1;transform:none}
-.sec-head.rv h2{opacity:0;transform:translateY(14px);transition:opacity .8s ease .16s,transform .8s cubic-bezier(.22,.61,.36,1) .16s}
-.sec-head.rv.in h2{opacity:1;transform:none}
-
-@media (min-width:640px){
-  .cat{grid-template-columns:repeat(2,1fr)}
-  .steps{grid-template-columns:repeat(2,1fr)}
-  .segs{grid-template-columns:repeat(3,1fr)}
-  .addons{grid-template-columns:repeat(2,1fr)}
-  .foot{flex-direction:row;justify-content:space-between;gap:40px;flex-wrap:wrap}
-  .calc{padding:32px}
-  .perso{padding:34px 32px}
-}
-@media (min-width:900px){
-  .nav-links{display:flex}
-  .cat{grid-template-columns:repeat(3,1fr)}
-  .steps{grid-template-columns:repeat(5,1fr)}
-  .segs{grid-template-columns:repeat(6,1fr)}
-  .calc{grid-template-columns:1.1fr .9fr;gap:44px;padding:40px}
-  .resumo{border-top:0;border-left:1px dashed var(--edge);padding:0 0 0 40px;justify-content:center}
-  section{padding:104px 0}
-  .hero{padding:120px 0 92px}
-}
-@media (min-width:960px){
-  .foot{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:30px}
-  .hero .wrap{display:grid;grid-template-columns:1.06fr .94fr;column-gap:clamp(36px,4.4vw,72px);align-items:start}
-  .hero .eyebrow{grid-column:1/-1}
-  .hero h1{grid-column:1;grid-row:2/6;max-width:none;font-size:clamp(50px,5.2vw,78px);align-self:center}
-  .hero p.lead{grid-column:2;grid-row:2;margin-top:6px}
-  .hero-cta{grid-column:2;grid-row:3;margin-top:30px}
-  .tags{grid-column:2;grid-row:4;margin-top:26px}
-}
-@media (min-width:1440px){ :root{--maxw:1260px} }
-@media (max-height:620px) and (min-width:640px){
-  .hero{padding:70px 0 54px}
-  .hero h1{font-size:clamp(38px,5.4vw,58px)}
-  .tags{margin-top:26px}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::after,*::before{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;transition-delay:0ms !important}
-  .rv,.sec-head.rv .eyebrow,.sec-head.rv h2{opacity:1;transform:none;filter:none}
-}
-</style>
-
 <header class="nav">
   <div class="wrap nav-in">
     <a class="marca" href="#topo"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Comunicação Visual</span></a>
     <nav class="nav-links">
       <a href="#catalogo">Produtos</a>
-      <a href="#personalizado">Personalização</a>
-      <a href="#como">Como funciona</a>
       <a href="#orcamento">Orçamento</a>
-      <a href="#duvidas">Dúvidas</a>
+      <a href="#pagamento">Pagamento</a>
+      <a href="sobre/">A empresa</a>
+      <a href="blog/">Blog</a>
     </nav>
     <a class="btn btn-primary btn-sm" href="#orcamento">Pedir orçamento</a>
   </div>
@@ -328,8 +50,8 @@ body{padding-bottom:76px}
 
 <div class="strip">
   <div class="strip-in" aria-hidden="true">
-    <span>Arte inclusa no pedido</span><span>Você manda a arte ou só o texto</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Atendemos empresa e pessoa física</span><span>Orçamento em 1 dia útil</span>
-    <span>Arte inclusa no pedido</span><span>Você manda a arte ou só o texto</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Atendemos empresa e pessoa física</span><span>Orçamento em 1 dia útil</span>
+    <span>Arte inclusa no pedido</span><span>Você manda a arte ou só o texto</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Atendemos empresa e pessoa física</span><span>Resposta em até 2 horas</span>
+    <span>Arte inclusa no pedido</span><span>Você manda a arte ou só o texto</span><span>Instalação por equipe própria</span><span>Impressão em alta resolução</span><span>Atendemos empresa e pessoa física</span><span>Resposta em até 2 horas</span>
   </div>
 </div>
 
@@ -431,7 +153,7 @@ body{padding-bottom:76px}
     </div>
     <div class="steps">
       <div class="step"><span class="n">01</span><h3>Você conta a ideia</h3><p>Manda a medida, a foto do local ou só o que precisa. Se não souber a medida, a gente vai medir.</p></div>
-      <div class="step"><span class="n">02</span><h3>Orçamento</h3><p>Enviamos valor, material recomendado e prazo em até 1 dia útil. Sem compromisso.</p></div>
+      <div class="step"><span class="n">02</span><h3>Orçamento</h3><p>Enviamos valor, material recomendado e prazo — em até 2 horas, dentro do horário comercial. Sem compromisso.</p></div>
       <div class="step"><span class="n">03</span><h3>Arte</h3><p>Nossa equipe cria ou adapta a arte e mostra em simulação — no seu prédio, no seu carro, na sua camisa.</p></div>
       <div class="step"><span class="n">04</span><h3>Produção</h3><p>Aprovou, entra na produção. Impressão, recorte, acabamento e conferência antes de sair daqui.</p></div>
       <div class="step"><span class="n">05</span><h3>Instalação</h3><p>Equipe própria instala no local e leva o material embora. Você só olha e aprova.</p></div>
@@ -538,8 +260,10 @@ body{padding-bottom:76px}
       </div>
 
       <div class="resumo">
-        <span class="tit">Seu pedido</span>
+        <span class="tit">Estimativa na hora</span>
         <div class="medida" id="out-medida">2,00 m²<small>de área</small></div>
+        <div class="valor" id="out-valor">—</div>
+        <p class="disc">Valor de referência calculado pelo próprio site, para você ter uma ideia agora. O preço fechado sai depois que a gente vê o material e o local — e quase sempre dá para melhorar conversando.</p>
         <div class="rows" id="out-rows"></div>
 
         <div class="dados">
@@ -555,11 +279,49 @@ body{padding-bottom:76px}
           <p class="aviso" id="f-aviso" hidden>Preencha nome e WhatsApp para a gente conseguir te responder.</p>
         </div>
 
-        <p class="note">O valor depende do material escolhido — por isso o orçamento é feito à mão. Respondemos em até 1 dia útil, sem compromisso.</p>
+        <p class="note">Em horário comercial, respondemos em até 2 horas. Sem compromisso.</p>
         <a class="btn btn-primary" id="out-wa" href="#" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a>
+        <a class="btn btn-ghost" id="out-melhor" href="#" target="_blank" rel="noopener">Quero um preço melhor</a>
         <p class="note" style="margin:12px 0 0">Guardamos seu contato só para responder este orçamento.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="pagamento">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Pagamento</p>
+      <h2>Do jeito que couber no seu caixa.</h2>
+      <p>Comunicação visual é investimento, não despesa do mês — por isso a forma de pagar importa tanto quanto o preço.</p>
+    </div>
+    <div class="pgto rv">
+      <div class="pg destaque">
+        <span class="ic" aria-hidden="true">PIX</span>
+        <h3>À vista no PIX</h3>
+        <p>Pagamento na hora, com o melhor valor do orçamento. É a forma que mais rende para quem já decidiu.</p>
+        <span class="obs">Desconto no fechamento</span>
+      </div>
+      <div class="pg">
+        <span class="ic" aria-hidden="true">12×</span>
+        <h3>Cartão de crédito</h3>
+        <p>Parcelamos a produção para o investimento caber no mês. Fachada e luminoso costumam sair assim.</p>
+        <span class="obs">Consulte as parcelas sem juros</span>
+      </div>
+      <div class="pg">
+        <span class="ic" aria-hidden="true">50%</span>
+        <h3>Sinal + entrega</h3>
+        <p>Metade na aprovação da arte, metade na entrega ou instalação. O sinal cobre o material que já é comprado no seu nome.</p>
+        <span class="obs">O padrão dos pedidos grandes</span>
+      </div>
+      <div class="pg">
+        <span class="ic" aria-hidden="true">NF</span>
+        <h3>Empresa e nota fiscal</h3>
+        <p>Emitimos nota, atendemos ordem de compra e prazo de faturamento para quem precisa lançar na contabilidade.</p>
+        <span class="obs">Boleto disponível</span>
+      </div>
+    </div>
+    <p class="pgto-nota rv">Combinamos a condição junto com o orçamento — se nenhuma dessas servir, fale com a gente que a gente ajeita.</p>
   </div>
 </section>
 
@@ -570,7 +332,7 @@ body{padding-bottom:76px}
       <h2>O que todo mundo pergunta antes.</h2>
     </div>
     <div class="faq">
-      <details><summary>Quanto custa?</summary><p>Depende do tamanho e do material — uma mesma fachada muda muito de preço entre lona e ACM. Por isso o orçamento é feito caso a caso, e sai em até 1 dia útil, de graça e sem compromisso.</p></details>
+      <details><summary>Quanto custa?</summary><p>Depende do tamanho e do material — uma mesma fachada muda muito de preço entre lona e ACM. Por isso o orçamento é feito caso a caso, e a resposta sai em até 2 horas dentro do horário comercial, de graça e sem compromisso.</p></details>
       <details><summary>Preciso ter a arte pronta?</summary><p>Não. Você escolhe como quer entrar: manda o arquivo pronto, manda só a logo, manda só o texto que precisa aparecer, ou deixa a criação inteira com a gente. Em todos os casos você vê e aprova antes de qualquer coisa ir para produção.</p></details>
       <details><summary>Vocês instalam?</summary><p>Sim, com equipe própria. Fachada, ACM, letra caixa, luminoso e envelopamento saem daqui instalados, com o local limpo no final.</p></details>
       <details><summary>Não sei a medida do que preciso.</summary><p>Sem problema. Marcamos uma visita para medir e fotografar o local antes do orçamento — assim o valor já vem certo e não muda depois.</p></details>
@@ -585,7 +347,7 @@ body{padding-bottom:76px}
     <div class="final rv">
       <div class="luz" aria-hidden="true"></div>
       <h2>Manda a ideia. A gente devolve pronta.</h2>
-      <p>Orçamento sem compromisso, resposta em até 1 dia útil.</p>
+      <p>Orçamento sem compromisso. Em horário comercial, a gente responde em até 2 horas.</p>
       <a class="btn btn-primary" id="final-wa" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
     </div>
   </div>
@@ -602,7 +364,7 @@ body{padding-bottom:76px}
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg>
             WhatsApp
           </a>
-          <a class="rede" id="rede-ig" href="https://instagram.com/artsivos" target="_blank" rel="noopener" aria-label="Instagram">
+          <a class="rede" id="rede-ig" href="https://www.instagram.com/artsivospb" target="_blank" rel="noopener" aria-label="Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4a3.9 3.9 0 0 1-1.4-.9 3.9 3.9 0 0 1-.9-1.4c-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1zm0 3.3a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zm0 10.7a4.2 4.2 0 1 1 0-8.4 4.2 4.2 0 0 1 0 8.4zm6.8-11a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg>
             Instagram
           </a>
@@ -626,7 +388,9 @@ body{padding-bottom:76px}
       <div class="col">
         <b>Atendimento</b>
         <a href="#orcamento">Pedir orçamento</a>
-        <a href="#como">Como funciona</a>
+        <a href="#pagamento">Formas de pagamento</a>
+        <a href="sobre/">Sobre a ARTsivos</a>
+        <a href="blog/">Blog</a>
         <a href="#duvidas">Dúvidas</a>
         <span>Seg a sex, 8h às 18h · Sáb, 8h às 12h</span>
       </div>
@@ -647,8 +411,28 @@ body{padding-bottom:76px}
 
 <script>
 (function(){
-  /* ===== TROCAR PELO NÚMERO REAL DA ARTSIVOS ===== */
-  var PHONE = "5583999999999";
+  var PHONE = "5583986062797";
+
+  /* ===================================================================
+     TABELA DE PREÇOS — VALORES DE EXEMPLO, TROCAR PELOS REAIS
+     m2   = preço por metro quadrado        peca = preço por peça
+     min  = pedido mínimo                   inst = instalação, % sobre a produção
+     Mexer só nos números; o resto da conta se ajusta sozinho.
+     =================================================================== */
+  var TABELA = {
+    'ACM':                {m2:480,  min:900,  inst:.25},
+    'Lonas':              {m2:65,   min:90,   inst:.15},
+    'Acrílico':           {peca:190,min:190,  inst:.20},
+    'Adesivos':           {m2:120,  min:80,   inst:.20},
+    'Fachadas':           {m2:620,  min:1500, inst:.30},
+    'Letras Caixa':       {peca:145,min:600,  inst:.25},
+    'Envelopamentos':     {m2:180,  min:450,  inst:.20},
+    'Placas Luminosas':   {m2:850,  min:1200, inst:.30},
+    'Projetos Especiais': null
+  };
+  var ARTE   = [0, 120, 180, 260];      /* na ordem do select de arte */
+  var PRESSA = {'Esta semana':.10, 'É urgente':.25};
+  var ENTREGA = 60, RETIRADA = 180, MARGEM = .12;
 
   /* Onde os contatos são guardados. Enquanto estiver vazio, o pedido só vira mensagem
      de WhatsApp — nada fica registrado se a pessoa desistir de enviar.
@@ -660,7 +444,8 @@ body{padding-bottom:76px}
   var arte = $('f-arte'), texto = $('f-texto'), onde = $('f-onde'), prazo = $('f-prazo');
   var nome = $('f-nome'), fone = $('f-fone'), aviso = $('f-aviso');
   var wrapArea = $('wrap-area'), wrapQtd = $('wrap-qtd'), wrapTexto = $('wrap-texto');
-  var outMedida = $('out-medida'), rows = $('out-rows'), wa = $('out-wa');
+  var outMedida = $('out-medida'), outValor = $('out-valor'), rows = $('out-rows');
+  var wa = $('out-wa'), melhor = $('out-melhor');
   var addons = Array.prototype.slice.call(document.querySelectorAll('.addon input'));
 
   function num(v, fb){ var n = parseFloat(String(v).replace(',', '.')); return isFinite(n) && n > 0 ? n : fb; }
@@ -691,6 +476,44 @@ body{padding-bottom:76px}
     return linhas;
   }
 
+  function brl(n){ return 'R$ ' + Math.round(n).toLocaleString('pt-BR'); }
+
+  function estimar(){
+    var t = TABELA[prod.value];
+    if(!t) return null;
+
+    var base;
+    if(t.m2){
+      var l = num(larg.value, 1), a = num(alt.value, 1);
+      base = t.m2 * l * a;
+    } else {
+      base = t.peca * Math.max(1, Math.round(num(qtd.value, 1)));
+    }
+    if(base < t.min) base = t.min;
+
+    var itens = [];
+    var total = base;
+    itens.push(['Produção', base]);
+
+    var vArte = ARTE[arte.selectedIndex] || 0;
+    if(vArte){ total += vArte; itens.push(['Criação da arte', vArte]); }
+
+    addons.forEach(function(ad){
+      if(!ad.checked) return;
+      var rot = ad.dataset.label, v = 0;
+      if(rot === 'Instalação no local') v = base * t.inst;
+      else if(rot === 'Entrega') v = ENTREGA;
+      else if(rot === 'Retirada da peça antiga') v = RETIRADA;
+      else return;                       /* visita para medir não custa */
+      total += v; itens.push([rot, v]);
+    });
+
+    var extra = PRESSA[prazo.value] || 0;
+    if(extra){ var v2 = total * extra; total += v2; itens.push(['Prioridade na produção', v2]); }
+
+    return {total: total, itens: itens};
+  }
+
   function update(){
     var m = modo();
     wrapArea.style.display = m === 'area' ? '' : 'none';
@@ -706,16 +529,32 @@ body{padding-bottom:76px}
       outMedida.innerHTML = 'Sob medida<small>a combinar</small>';
     }
 
+    var est = estimar();
+    if(est){
+      outValor.className = 'valor';
+      outValor.innerHTML = brl(est.total * (1 - MARGEM)) + '<span class="ate">até</span>' + brl(est.total * (1 + MARGEM));
+    } else {
+      outValor.className = 'valor consulta';
+      outValor.textContent = 'Sob consulta';
+    }
+
     var linhas = pedido();
+    if(est){
+      est.itens.forEach(function(i){ linhas.push([i[0], brl(i[1])]); });
+      linhas.push(['Estimativa', brl(est.total)]);
+    }
     rows.innerHTML = linhas.map(function(l){
       return '<div><span>' + l[0] + '</span><span>' + esc(l[1]) + '</span></div>';
     }).join('');
 
-    var msg = 'Olá! Vim pelo site e quero um orçamento.\n\n'
-      + (nome.value.trim() ? 'Meu nome é ' + nome.value.trim() + '.\n\n' : '')
-      + linhas.map(function(l){ return '• ' + l[0] + ': ' + l[1]; }).join('\n')
-      + '\n\nPodem me passar o valor e o prazo?';
-    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
+    var corpo = (nome.value.trim() ? 'Meu nome é ' + nome.value.trim() + '.\n\n' : '')
+      + pedido().map(function(l){ return '• ' + l[0] + ': ' + l[1]; }).join('\n')
+      + (est ? '\n• Estimativa do site: ' + brl(est.total) : '');
+
+    wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(
+      'Olá! Vim pelo site e quero fechar um orçamento.\n\n' + corpo + '\n\nPodem confirmar o valor e o prazo?');
+    melhor.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(
+      'Olá! Simulei no site e queria ver se dá para melhorar o valor.\n\n' + corpo + '\n\nConsegue fazer melhor?');
   }
 
   [prod, larg, alt, qtd, arte, texto, onde, prazo, nome, fone].forEach(function(el){
@@ -726,7 +565,7 @@ body{padding-bottom:76px}
   update();
 
   /* o contato é pedido antes de sair: assim dá para retomar quem não fecha na hora */
-  wa.addEventListener('click', function(e){
+  [wa, melhor].forEach(function(botao){ botao.addEventListener('click', function(e){
     var faltaNome = !nome.value.trim(), faltaFone = nome.value.trim() && fone.value.replace(/\D/g,'').length < 10;
     nome.classList.toggle('falta', faltaNome);
     fone.classList.toggle('falta', !!faltaFone);
@@ -750,7 +589,7 @@ body{padding-bottom:76px}
         }).catch(function(){});
       }catch(err){}
     }
-  });
+  }); });
 
   /* clicar num produto já escolhe no orçamento e leva a pessoa para o formulário */
   document.querySelectorAll('.item[data-prod]').forEach(function(card){
