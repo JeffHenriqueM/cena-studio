@@ -230,13 +230,16 @@ footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;colo
 .legal{margin-top:32px;font-size:13px;font-family:"DM Mono",monospace;color:#57575F}
 
 /* botão flutuante de WhatsApp */
-.flut{position:fixed;right:16px;bottom:16px;z-index:70;display:inline-flex;align-items:center;gap:9px;
-  background:var(--red);color:#fff;border-radius:999px;padding:14px 18px;text-decoration:none;font-weight:700;font-size:14.5px;
-  box-shadow:0 14px 36px -12px rgba(228,38,44,.95);transition:transform .2s ease}
-.flut:hover{transform:translateY(-2px)}
-.flut svg{width:19px;height:19px;fill:currentColor}
-.flut span{display:none}
-@media (min-width:640px){ .flut span{display:inline} }
+.flut{position:fixed;right:14px;bottom:14px;z-index:70;display:inline-flex;align-items:center;gap:10px;
+  background:var(--red);color:#fff;border-radius:999px;padding:15px 20px;text-decoration:none;font-weight:700;font-size:15px;
+  box-shadow:0 14px 36px -12px rgba(228,38,44,.95),0 0 0 6px rgba(228,38,44,.14);
+  transition:transform .2s ease,box-shadow .2s ease,opacity .3s ease}
+.flut:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(228,38,44,1),0 0 0 9px rgba(228,38,44,.18)}
+.flut svg{width:21px;height:21px;fill:currentColor;flex:none}
+/* some só enquanto o próprio botão do orçamento está na tela, para não brigarem */
+.flut.oculto{opacity:0;pointer-events:none;transform:translateY(12px)}
+@media (max-width:479px){ .flut{padding:14px 17px;font-size:14.5px} }
+body{padding-bottom:76px}
 
 /* revelação no scroll */
 .rv{opacity:0;transform:translateY(28px);filter:blur(6px);
@@ -639,7 +642,7 @@ footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;colo
 
 <a class="flut" id="flut-wa" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg>
-  <span>Orçamento</span>
+  <span>Falar no WhatsApp</span>
 </a>
 
 <script>
@@ -768,6 +771,14 @@ footer{border-top:1px solid var(--edge);margin-top:84px;padding:44px 0 56px;colo
     var el = $(id);
     if(el) el.href = direto;
   });
+
+  /* o botão flutuante some só quando o botão do orçamento está visível */
+  var flut = $('flut-wa');
+  if(flut && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ flut.classList.toggle('oculto', e.isIntersecting); });
+    }, {threshold:.4}).observe(wa);
+  }
 
   /* revelação em cascata */
   document.querySelectorAll('.cat,.steps,.faq').forEach(function(grid){
