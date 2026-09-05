@@ -6,6 +6,10 @@
       "firebase.json",
       ".firebaserc",
       "README.md",
+      ".git/**",
+      ".gitignore",
+      ".nojekyll",
+      ".firebase/**",
       "**/.*",
       "**/node_modules/**"
     ]
