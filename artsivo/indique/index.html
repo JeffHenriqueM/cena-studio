@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Indique a ARTsivos e ganhe R$ 50 de desconto no seu proximo servico. Gere seu link, seu QR code e acompanhe suas indicacoes.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0A0A0C">
+<title>Indique e ganhe R$ 50</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../estilo.css">
+<script src="../radar.js" defer></script>
+<script src="../qr.js" defer></script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="marca" href="../"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Comunicação Visual</span></a>
+    <nav class="nav-links">
+      <a href="../#catalogo">Produtos</a>
+      <a href="../#orcamento">Orçamento</a>
+      <a href="../#pagamento">Pagamento</a>
+      <a href="../sobre/">A empresa</a>
+      <a href="../blog/">Blog</a>
+      <a href="../indique/">Indique e ganhe</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="../#orcamento">Pedir orçamento</a>
+  </div>
+</header>
+
+<div class="pag-topo">
+  <div class="hero-bg" aria-hidden="true"><div class="glow"></div><div class="grid"></div></div>
+  <div class="wrap">
+    <a class="voltar" href="../">Voltar para o site</a>
+    <p class="eyebrow">Programa de indicação</p>
+    <h1>Indicou, ganhou <em>R$ 50</em>.</h1>
+    <p class="lead">Cada cliente que fecha serviço com a gente por indicação sua vira <b>R$ 50 de desconto</b> no seu próximo pedido. Não tem limite: cinco indicações que fecharam são R$ 250 a menos na sua próxima fachada.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Como funciona</p>
+      <h2>Três jeitos de indicar. Todos valem o mesmo.</h2>
+    </div>
+    <div class="steps">
+      <div class="step rv"><span class="n">01</span><h3>Pelo seu link</h3><p>Gere aqui embaixo o seu link e o seu QR code. Quem chegar por ele já entra marcado como sua indicação — você não precisa avisar ninguém.</p></div>
+      <div class="step rv"><span class="n">02</span><h3>Deixando o contato</h3><p>Sabe de alguém que precisa? Passe o nome e o telefone da pessoa no formulário. A gente entra em contato com jeito, dizendo que foi você quem indicou.</p></div>
+      <div class="step rv"><span class="n">03</span><h3>Passando o nosso número</h3><p>Se preferir o jeito antigo, mande o nosso WhatsApp e peça para a pessoa falar o seu nome. Vale igual.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="meulink">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Seu link exclusivo</p>
+      <h2>Gere o seu em dez segundos.</h2>
+      <p>Sem cadastro e sem senha. Seu nome e o seu WhatsApp geram sempre o mesmo código — se você perder o link, é só voltar aqui e gerar de novo.</p>
+    </div>
+
+    <div class="ger rv">
+      <div class="ger-form">
+        <div class="calc-field">
+          <label for="i-nome">Seu nome</label>
+          <input id="i-nome" type="text" autocomplete="name" placeholder="Ex.: Maria Souza">
+        </div>
+        <div class="calc-field">
+          <label for="i-fone">Seu WhatsApp</label>
+          <input id="i-fone" type="text" inputmode="tel" autocomplete="tel" placeholder="(83) 9 0000-0000">
+        </div>
+        <p class="ger-aviso" id="i-aviso" hidden>Preencha o nome e o WhatsApp para gerar o seu código.</p>
+        <button class="btn btn-primary" id="i-gerar" type="button">Gerar meu link e meu QR</button>
+        <p class="ger-nota">O seu WhatsApp serve para a gente saber para quem lançar o desconto. Fica só com a ARTsivos.</p>
+      </div>
+
+      <div class="ger-saida" id="i-saida" hidden>
+        <div class="ger-codigo">
+          <span>Seu código</span>
+          <b id="i-codigo">—</b>
+        </div>
+        <div class="ger-qr" id="i-qr" aria-live="polite"></div>
+        <div class="ger-link">
+          <input id="i-url" type="text" readonly aria-label="Seu link de indicação">
+          <button class="btn btn-ghost btn-sm" id="i-copiar" type="button">Copiar</button>
+        </div>
+        <div class="ger-btns">
+          <a class="btn btn-primary" id="i-wa" href="#" target="_blank" rel="noopener">Enviar para um contato</a>
+          <a class="btn btn-ghost" id="i-baixar" href="#" download="artsivos-qr.png">Baixar o QR code</a>
+        </div>
+        <p class="ger-nota">Imprima o QR, cole no balcão, mande no grupo da família. Quem escanear cai no site já com o desconto marcado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="indicar">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Indicar alguém agora</p>
+      <h2>Prefere só passar o contato?</h2>
+      <p>Diga quem precisa e a gente cuida do resto. Só peça licença para a pessoa antes — ninguém gosta de receber mensagem do nada.</p>
+    </div>
+
+    <div class="ger rv">
+      <div class="ger-form">
+        <div class="calc-field">
+          <label for="a-nome">Nome de quem você está indicando</label>
+          <input id="a-nome" type="text" placeholder="Ex.: Padaria do João">
+        </div>
+        <div class="calc-field">
+          <label for="a-fone">WhatsApp da pessoa</label>
+          <input id="a-fone" type="text" inputmode="tel" placeholder="(83) 9 0000-0000">
+        </div>
+        <div class="calc-field">
+          <label for="a-obs">O que ela precisa <i>(opcional)</i></label>
+          <textarea id="a-obs" rows="2" placeholder="Ex.: quer trocar a fachada da loja"></textarea>
+        </div>
+        <p class="ger-aviso" id="a-aviso" hidden>Preencha o seu nome lá em cima e o nome e o WhatsApp de quem você está indicando.</p>
+        <a class="btn btn-primary" id="a-enviar" href="#" target="_blank" rel="noopener">Enviar indicação</a>
+        <p class="ger-nota">A indicação vai pelo seu WhatsApp para a gente, com o seu código junto.</p>
+      </div>
+      <div class="regras">
+        <h3>As regras, sem letra miúda</h3>
+        <ul class="fx">
+          <li><b>O desconto entra quando o serviço fecha.</b> Indicação que só pediu orçamento ainda não conta.</li>
+          <li><b>R$ 50 por indicação, sem limite.</b> Elas acumulam e valem no seu próximo pedido.</li>
+          <li><b>Vale por um ano</b> a partir do dia em que a sua indicação fechou.</li>
+          <li><b>Não acumula com outras promoções</b> do mesmo pedido.</li>
+          <li><b>A pessoa indicada também ganha:</b> ela entra com R$ 50 de desconto no primeiro serviço dela.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="fim rv">
+      <h2>Quem já é cliente sabe como a gente trabalha.</h2>
+      <p>Indicar é o jeito mais barato de a gente crescer — e o desconto é a nossa forma de dividir isso com você.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#meulink">Gerar meu link</a>
+        <a class="btn btn-ghost wa-link" href="#" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="col">
+        <a class="marca" href="../"><span class="a">ART</span><span class="b">sivos</span></a>
+        <span style="max-width:34ch;line-height:1.55">Comunicação visual: projeto, produção e instalação. ACM, lonas, acrílico, adesivos, fachadas, letras caixa, envelopamentos e placas luminosas.</span>
+        <div class="redes" style="margin-top:8px">
+          <a class="rede wa-link" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg> WhatsApp</a>
+          <a class="rede" href="https://www.instagram.com/artsivospb" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <div class="col">
+        <b>Produtos</b>
+        <a href="../#catalogo">ACM e fachadas</a>
+        <a href="../#catalogo">Letras caixa</a>
+        <a href="../#catalogo">Envelopamentos</a>
+        <a href="../#catalogo">Placas luminosas</a>
+      </div>
+      <div class="col">
+        <b>Atendimento</b>
+        <a href="../#orcamento">Pedir orçamento</a>
+        <a href="../#pagamento">Formas de pagamento</a>
+        <a href="../sobre/">Sobre a ARTsivos</a>
+        <a href="../blog/">Blog</a>
+        <a href="../indique/">Indique e ganhe R$ 50</a>
+      </div>
+      <div class="col">
+        <b>Onde estamos</b>
+        <span>João Pessoa — PB</span>
+        <a href="https://www.instagram.com/artsivospb" target="_blank" rel="noopener">@artsivospb</a>
+      </div>
+    </div>
+    <p class="legal">ARTsivos Comunicação Visual · Imagens meramente ilustrativas.</p>
+  </div>
+</footer>
+
+<a class="flut wa-link" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.1-.3 0-.5l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.5.1-.7.3-.8.8-.9 1.8-.4 3a9.4 9.4 0 0 0 4.4 4.3c1.6.7 2.4.6 3.1.4.5-.1 1.4-.6 1.6-1.2.2-.6.2-1 .1-1.1l-.4-.6z"/></svg><span>Falar no WhatsApp</span></a>
+
+
+<script>
+(function(){
+  var PHONE = "5583986062797", DESCONTO = 50;
+  var link = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent('Olá! Vim pelo site da ARTsivos e quero um orçamento.');
+  document.querySelectorAll('.wa-link').forEach(function(a){ a.href = link; });
+
+  var $ = function(id){ return document.getElementById(id); };
+  var nome = $('i-nome'), fone = $('i-fone'), aviso = $('i-aviso'), saida = $('i-saida');
+  var codigo = '', url = '';
+
+  /* o site fica em uma pasta; o link de indicação aponta para a raiz do site */
+  function raiz(){ return location.href.replace(/indique\/.*$/, ''); }
+
+  function gerar(){
+    var n = nome.value.trim(), f = fone.value.replace(/\D/g, '');
+    if(!n || f.length < 10){
+      aviso.hidden = false;
+      (!n ? nome : fone).focus();
+      return;
+    }
+    aviso.hidden = true;
+
+    codigo = (window.ARTsivosRadar && window.ARTsivosRadar.codigoDe) ? window.ARTsivosRadar.codigoDe(n, f) : n.toUpperCase().slice(0,6) + '-' + f.slice(-4);
+    url = raiz() + '?ind=' + encodeURIComponent(codigo) + '&de=' + encodeURIComponent(n.split(' ')[0]);
+
+    $('i-codigo').textContent = codigo;
+    $('i-url').value = url;
+    saida.hidden = false;
+
+    var caixa = $('i-qr');
+    caixa.innerHTML = '';
+    try{
+      caixa.innerHTML = QR.svg(url, 190);
+      prepararDownload(url);
+    }catch(e){
+      caixa.innerHTML = '<p class="ger-nota">Não deu para desenhar o QR aqui, mas o link acima funciona igual.</p>';
+    }
+
+    $('i-wa').href = 'https://wa.me/?text=' + encodeURIComponent(
+      'Oi! Uso a ARTsivos para comunicação visual (fachada, adesivo, letreiro) e recomendo.\n\n'
+      + 'Se você entrar por este link, já ganha R$ ' + DESCONTO + ' de desconto no primeiro serviço:\n' + url);
+
+    /* deixa o código guardado para o próprio cliente não precisar gerar de novo */
+    try{ localStorage.setItem('artsivos.meucodigo', JSON.stringify({codigo: codigo, nome: n, url: url})); }catch(e){}
+    saida.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  /* transforma o QR em PNG para quem quiser imprimir */
+  function prepararDownload(texto){
+    var botao = $('i-baixar');
+    try{
+      var q = QR.gerar(texto), lado = 12, borda = 4, tam = (q.n + borda * 2) * lado;
+      var c = document.createElement('canvas');
+      c.width = c.height = tam;
+      var ctx = c.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, tam, tam);
+      ctx.fillStyle = '#0A0A0C';
+      for(var y = 0; y < q.n; y++)
+        for(var x = 0; x < q.n; x++)
+          if(q.m[y][x]) ctx.fillRect((x + borda) * lado, (y + borda) * lado, lado, lado);
+      botao.href = c.toDataURL('image/png');
+      botao.download = 'artsivos-indicacao-' + codigo + '.png';
+    }catch(e){ botao.hidden = true; }
+  }
+
+  $('i-gerar').addEventListener('click', gerar);
+  [nome, fone].forEach(function(el){
+    el.addEventListener('keydown', function(e){ if(e.key === 'Enter') gerar(); });
+  });
+
+  $('i-copiar').addEventListener('click', function(){
+    var campo = $('i-url'), botao = this;
+    campo.select(); campo.setSelectionRange(0, 99999);
+    var pronto = function(){ botao.textContent = 'Copiado'; setTimeout(function(){ botao.textContent = 'Copiar'; }, 1800); };
+    if(navigator.clipboard) navigator.clipboard.writeText(campo.value).then(pronto, pronto);
+    else { try{ document.execCommand('copy'); pronto(); }catch(e){} }
+  });
+
+  /* se a pessoa já gerou antes, volta com tudo preenchido */
+  try{
+    var salvo = JSON.parse(localStorage.getItem('artsivos.meucodigo') || 'null');
+    if(salvo && salvo.nome){ nome.value = salvo.nome; }
+  }catch(e){}
+
+  /* ---- indicar alguém direto ---- */
+  var aNome = $('a-nome'), aFone = $('a-fone'), aObs = $('a-obs'), aAviso = $('a-aviso');
+  $('a-enviar').addEventListener('click', function(e){
+    var meu = nome.value.trim(), meuFone = fone.value.trim();
+    var quem = aNome.value.trim(), quemFone = aFone.value.trim();
+    if(!meu || !quem || quemFone.replace(/\D/g,'').length < 10){
+      e.preventDefault();
+      aAviso.hidden = false;
+      (!meu ? nome : (!quem ? aNome : aFone)).focus();
+      if(!meu) nome.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    aAviso.hidden = true;
+    if(!codigo) codigo = (window.ARTsivosRadar && window.ARTsivosRadar.codigoDe) ? window.ARTsivosRadar.codigoDe(meu, meuFone) : '';
+
+    this.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(
+      'Olá! Quero indicar alguém para vocês.\n\n'
+      + '• Quem indica: ' + meu + ' — ' + meuFone + '\n'
+      + '• Código: ' + codigo + '\n'
+      + '• Indicado: ' + quem + '\n'
+      + '• WhatsApp: ' + quemFone
+      + (aObs.value.trim() ? '\n• Precisa de: ' + aObs.value.trim() : '')
+      + '\n\nCombinado o desconto de R$ ' + DESCONTO + ' quando fechar, certo?');
+
+    if(window.ARTsivosRadar && window.ARTsivosRadar.endpoint){
+      window.ARTsivosRadar.enviar({
+        tipo: 'indicacao',
+        indicador: meu, indicador_whatsapp: meuFone, codigo: codigo,
+        indicado: quem, indicado_whatsapp: quemFone, indicado_precisa: aObs.value.trim()
+      });
+    }
+  });
+
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -10% 0px', threshold:0});
+    document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+    /* rede de segurança: se o navegador não reportar a rolagem (aba em segundo
+       plano, impressão, navegador antigo), mostra tudo mesmo assim */
+    setTimeout(function(){
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    }, 2500);
+  } else {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+
+</body>
+</html>

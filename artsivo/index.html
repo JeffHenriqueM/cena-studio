@@ -22,8 +22,11 @@
       <a href="#trabalhos">Trabalhos</a>
       <a href="#orcamento">Orçamento</a>
       <a href="#pagamento">Pagamento</a>
+      <a href="indique/">Indique e ganhe</a>
       <a href="sobre/">A empresa</a>
       <a href="blog/">Blog</a>
+        <a href="indique/">Indique e ganhe R$ 50</a>
+      <a href="indique/">Indique e ganhe</a>
     </nav>
     <a class="btn btn-primary btn-sm" href="#orcamento">Pedir orçamento</a>
   </div>
@@ -372,6 +375,22 @@
   </div>
 </section>
 
+<section id="indicacao">
+  <div class="wrap">
+    <div class="perso rv cropbox">
+      <span class="sel">Indique e ganhe</span>
+      <h3>Cada indicação sua vale R$ 50 no seu próximo serviço.</h3>
+      <p>Quem fecha serviço com a gente por indicação sua vira R$ 50 de desconto no seu próximo pedido — e a pessoa indicada também entra com R$ 50 de desconto. Sem limite e sem cadastro: você gera o seu link e o seu QR code em dez segundos.</p>
+      <ul class="fx">
+        <li><b>Pelo seu link</b> — quem chega por ele já entra marcado como sua indicação.</li>
+        <li><b>Pelo QR code</b> — imprima, cole no balcão ou mande no grupo.</li>
+        <li><b>Passando o contato</b> — diga quem precisa que a gente fala com a pessoa.</li>
+      </ul>
+      <a class="btn btn-primary" href="indique/" style="align-self:flex-start">Gerar meu link de indicação</a>
+    </div>
+  </div>
+</section>
+
 <section id="duvidas">
   <div class="wrap">
     <div class="sec-head rv">
@@ -467,19 +486,19 @@
      Mexer só nos números; o resto da conta se ajusta sozinho.
      =================================================================== */
   var TABELA = {
-    'ACM':                {m2:480,  min:900,  inst:.25},
-    'Lonas':              {m2:65,   min:90,   inst:.15},
-    'Acrílico':           {peca:190,min:190,  inst:.20},
-    'Adesivos':           {m2:120,  min:80,   inst:.20},
-    'Fachadas':           {m2:620,  min:1500, inst:.30},
-    'Letras Caixa':       {peca:145,min:600,  inst:.25},
-    'Envelopamentos':     {m2:180,  min:450,  inst:.20},
-    'Placas Luminosas':   {m2:850,  min:1200, inst:.30},
+    'ACM':                {m2:360,  min:690,  inst:.25},
+    'Lonas':              {m2:48,   min:70,   inst:.15},
+    'Acrílico':           {peca:145,min:145,  inst:.20},
+    'Adesivos':           {m2:90,   min:60,   inst:.20},
+    'Fachadas':           {m2:460,  min:1100, inst:.30},
+    'Letras Caixa':       {peca:110,min:450,  inst:.25},
+    'Envelopamentos':     {m2:135,  min:340,  inst:.20},
+    'Placas Luminosas':   {m2:640,  min:900,  inst:.30},
     'Projetos Especiais': null
   };
-  var ARTE   = [0, 120, 180, 260];      /* na ordem do select de arte */
+  var ARTE   = [0, 90, 140, 200];       /* na ordem do select de arte */
   var PRESSA = {'Esta semana':.10, 'É urgente':.25};
-  var ENTREGA = 60, RETIRADA = 180, MARGEM = .12;
+  var ENTREGA = 50, RETIRADA = 140, MARGEM = .12;
 
   /* Onde os contatos são guardados: definido uma única vez em radar.js (LEAD_ENDPOINT).
      Enquanto estiver vazio, o pedido só vira mensagem de WhatsApp — nada fica
@@ -596,7 +615,8 @@
 
     var corpo = (nome.value.trim() ? 'Meu nome é ' + nome.value.trim() + '.\n\n' : '')
       + pedido().map(function(l){ return '• ' + l[0] + ': ' + l[1]; }).join('\n')
-      + (est ? '\n• Estimativa do site: ' + brl(est.total) : '');
+      + (est ? '\n• Estimativa do site: ' + brl(est.total) : '')
+      + (window.ARTsivosRadar ? window.ARTsivosRadar.sufixo() : '');
 
     wa.href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(
       'Olá! Vim pelo site e quero fechar um orçamento.\n\n' + corpo + '\n\nPodem confirmar o valor e o prazo?');
@@ -689,8 +709,13 @@
                      1400 + parseInt(el.style.getPropertyValue('--d') || 0, 10));
         }
       });
-    }, {rootMargin:'0px 0px -10% 0px', threshold:.12});
+    }, {rootMargin:'0px 0px -10% 0px', threshold:0});
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+    /* rede de segurança: se o navegador não reportar a rolagem (aba em segundo
+       plano, impressão, navegador antigo), mostra tudo mesmo assim */
+    setTimeout(function(){
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    }, 2500);
   } else {
     document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
   }

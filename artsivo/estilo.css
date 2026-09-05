@@ -411,3 +411,38 @@ body.travado{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   .convite,.convite-cx,.obra,.obra .foto img{transition:none}
 }
+
+/* ============ programa de indicação ============ */
+.faixa-ind{position:relative;z-index:80;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;
+  padding:9px 16px;text-align:center;font-size:13.5px;line-height:1.4;
+  background:linear-gradient(90deg,var(--red) 0%,var(--red-hot) 100%);color:#fff}
+.faixa-ind b{font-weight:700}
+.faixa-ind span{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.08em;opacity:.85}
+
+.ger{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
+.ger-form,.ger-saida,.regras{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);
+  padding:clamp(20px,3vw,28px);display:flex;flex-direction:column;gap:14px}
+.ger-form .btn{align-self:flex-start}
+.ger-nota{font-size:13px;color:var(--ink-mute);margin:0;line-height:1.5}
+.ger-aviso{font-size:13.5px;color:var(--red-hot);margin:0}
+.ger-codigo{display:flex;flex-direction:column;gap:4px}
+.ger-codigo span{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-mute)}
+.ger-codigo b{font-family:Archivo,Arial,sans-serif;font-size:clamp(26px,5vw,34px);font-weight:800;
+  letter-spacing:-.01em;color:var(--red)}
+.ger-qr{align-self:center;line-height:0;padding:10px;background:#fff;border-radius:12px}
+.ger-qr svg{display:block}
+.ger-link{display:flex;gap:8px}
+.ger-link input{flex:1;min-width:0;font-family:"DM Mono",monospace;font-size:12.5px;color:var(--ink-soft);
+  background:var(--void);border:1px solid var(--edge);border-radius:10px;padding:11px 12px}
+.ger-link input:focus{outline:none;border-color:var(--steel)}
+.ger-btns{display:flex;flex-wrap:wrap;gap:10px}
+.ger-btns .btn{flex:1 1 180px;justify-content:center}
+.regras h3{font-size:19px;margin-bottom:4px}
+@media (min-width:820px){
+  .ger{grid-template-columns:1fr 1fr;gap:18px}
+}
+@media (max-width:520px){
+  .faixa-ind{font-size:12.5px;padding:8px 12px;gap:5px}
+  .faixa-ind span{display:block;width:100%;font-size:11px}
+}

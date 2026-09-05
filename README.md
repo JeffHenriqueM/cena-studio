@@ -59,11 +59,16 @@ Não compartilha nada com o CENA além da hospedagem.
 - Os nove produtos
 
 ### Ainda é rascunho — confirmar com a empresa
-- **Tabela de preços:** `TABELA` no script do `index.html`. Os valores são de exemplo.
+- **Tabela de preços:** `TABELA` no script do `index.html`. Os valores são de exemplo
+  (baixados ~25% em setembro/2026 a pedido do Jeff, mas continuam inventados).
   A página deixa claro que é estimativa, mas número errado gera expectativa errada.
   Mexer só nos números (`m2`, `peca`, `min`, `inst`) — a conta se ajusta sozinha.
   Também `ARTE`, `PRESSA`, `ENTREGA`, `RETIRADA` e `MARGEM` (faixa de ±12%).
 - **Formas de pagamento:** PIX com desconto, 12x, sinal de 50%, nota fiscal — nada confirmado.
+- **Programa de indicação:** os R$ 50, o prazo de um ano, o desconto para o indicado e a
+  regra de não acumular com outras promoções são propostas. A empresa precisa bater o martelo
+  antes de a página ir para o ar de verdade. Valor no `DESCONTO` do `radar.js` e no texto de
+  `indique/index.html`.
 - **Promessa de resposta em 2 horas** no horário comercial: só manter se alguém garantir.
 - **Endereço, e-mail, CNPJ, horário** no rodapé; textos do "sobre"; instalação com equipe própria.
 - **Captura de contato:** `LEAD_ENDPOINT` no topo do `radar.js` — um único lugar, usado
@@ -77,13 +82,28 @@ Não compartilha nada com o CENA além da hospedagem.
 - **Legendas dos trabalhos:** descrevem o tipo de peça, sem nome de cliente. Se a empresa
   puder citar clientes (com autorização), vale trocar.
 
+### Programa de indicação (`indique/`)
+Sem cadastro e sem senha, de propósito: o código do cliente é o primeiro nome + os quatro
+últimos dígitos do WhatsApp (`MARIAS-7777`), então ele sempre gera o mesmo código de volta.
+O link fica `.../artsivo/?ind=MARIAS-7777&de=Maria`; quem chega por ele vê uma faixa de
+desconto no topo e o código entra em toda mensagem de WhatsApp e em todo lead enviado.
+Quem controla quantas indicações cada cliente tem é a ARTsivos, na planilha dela — o site
+registra a origem, não faz a contabilidade. Painel do cliente com login exige backend.
+
+O QR code é gerado no próprio navegador por `qr.js`, escrito aqui (modo byte, correção M,
+versões 1 a 10) e conferido contra a biblioteca segno e contra o leitor de QR do macOS —
+o mesmo motor da câmera do iPhone. Nenhum serviço de fora envolvido.
+
 ### Radar de visita (`radar.js`)
 Carregado nas cinco páginas. Guarda no navegador da pessoa o que ela olhou — produtos
 clicados, páginas lidas, se simulou orçamento e quanto deu, tempo com a aba na frente —
-e depois de **5 minutos** de uso real abre um convite pedindo nome, WhatsApp, e-mail e
-o que está procurando (já vem preenchido com o que ela olhou). Quem já preencheu o
-orçamento não vê o convite; quem diz "agora não" não vê de novo. O tempo só corre com a
-aba visível, então 5 minutos são 5 minutos de verdade.
+e abre um convite pedindo nome, WhatsApp, e-mail e
+o que está procurando (já vem preenchido com o que ela olhou). São dois momentos:
+depois de **5 minutos** de uso real, e quando a pessoa **vai embora** (o cursor sobe para
+fechar a aba, ou a rolagem volta correndo ao topo no celular) — esse só a partir de 45
+segundos de visita. Quem já preencheu o orçamento não vê o convite; quem diz "agora não"
+não vê de novo; e cada visita tenta a saída uma vez só. O tempo só corre com a aba visível,
+então 5 minutos são 5 minutos de verdade.
 
 O orçamento mostra uma faixa de valor (estimativa) e dois botões: fechar pelo WhatsApp
 ou pedir um preço melhor. Preço fechado é sempre feito à mão.

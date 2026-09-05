@@ -1,7 +1,8 @@
 /* ARTsivos — radar de visita
-   Acompanha o que a pessoa olhou no site e, depois de 5 minutos, convida
-   a deixar o contato. Nada é enviado para lugar nenhum enquanto LEAD_ENDPOINT
-   estiver vazio: sem endereço, o convite funciona mas o dado morre no navegador. */
+   Acompanha o que a pessoa olhou, convida a deixar o contato depois de 5 minutos
+   e tenta uma última vez quando ela vai embora. Também carrega o código de
+   indicação de quem chegou por um link de cliente.
+   Nada é enviado para lugar nenhum enquanto LEAD_ENDPOINT estiver vazio. */
 (function(){
   var PHONE = "5583986062797";
 
@@ -9,20 +10,17 @@
      Enquanto estiver vazia, nada é registrado — só o WhatsApp funciona. */
   var LEAD_ENDPOINT = "";
 
-  var MINUTOS = 5;                 /* quando o convite aparece */
-  var CHAVE   = 'artsivos.radar.v1';
+  var MINUTOS  = 5;      /* quando o convite por tempo aparece */
+  var ESPERA   = 45;     /* segundos mínimos antes de tentar o convite de saída */
+  var DESCONTO = 50;     /* R$ por indicação */
+  var CHAVE    = 'artsivos.radar.v1';
 
   /* ---------- memória entre páginas ---------- */
   function ler(){
-    try{
-      var b = localStorage.getItem(CHAVE);
-      if(b) return JSON.parse(b);
-    }catch(e){}
+    try{ var b = localStorage.getItem(CHAVE); if(b) return JSON.parse(b); }catch(e){}
     return null;
   }
-  function gravar(){
-    try{ localStorage.setItem(CHAVE, JSON.stringify(d)); }catch(e){}
-  }
+  function gravar(){ try{ localStorage.setItem(CHAVE, JSON.stringify(d)); }catch(e){} }
 
   var d = ler() || {};
   if(!d.desde)    d.desde    = new Date().toISOString();
@@ -35,38 +33,54 @@
 
   var pag = document.title.replace(/\s*[|·—-]\s*ARTsivos.*$/i, '').trim() || location.pathname;
   if(d.paginas.indexOf(pag) === -1) d.paginas.push(pag);
+
+  /* ---------- quem chegou por indicação ---------- */
+  function param(nome){
+    var m = new RegExp('[?&]' + nome + '=([^&#]*)').exec(location.search);
+    return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+  }
+  var indNovo = param('ind').toUpperCase().replace(/[^A-Z0-9-]/g, '').slice(0, 20);
+  if(indNovo){
+    d.indicacao = indNovo;
+    var quem = param('de').replace(/[^\wÀ-ÿ .'-]/g, '').slice(0, 40);
+    if(quem) d.indicadoPor = quem;
+  }
   gravar();
 
-  function anota(texto){
-    if(d.acoes.indexOf(texto) === -1){ d.acoes.push(texto); gravar(); }
-  }
-  function produto(nome){
-    if(!nome) return;
-    d.produtos[nome] = (d.produtos[nome] || 0) + 1;
-    gravar();
+  function anota(t){ if(d.acoes.indexOf(t) === -1){ d.acoes.push(t); gravar(); } }
+  function produto(n){ if(n){ d.produtos[n] = (d.produtos[n] || 0) + 1; gravar(); } }
+
+  /* faixa que avisa que o desconto está valendo */
+  if(d.indicacao){
+    var faixa = document.createElement('div');
+    faixa.className = 'faixa-ind';
+    faixa.innerHTML = '<b>R$ ' + DESCONTO + ' de desconto</b> no seu pedido — você chegou pela indicação'
+      + (d.indicadoPor ? ' de ' + d.indicadoPor.replace(/</g,'') : '')
+      + '. <span>Código ' + d.indicacao + '</span>';
+    document.addEventListener('DOMContentLoaded', function(){
+      document.body.insertBefore(faixa, document.body.firstChild);
+      document.body.classList.add('com-faixa');
+    });
   }
 
   /* ---------- tempo de verdade: só conta com a aba na frente ---------- */
   var ultimo = Date.now();
-  function tique(){
+  setInterval(function(){
     var agora = Date.now();
     if(!document.hidden){
       var dt = (agora - ultimo) / 1000;
-      if(dt > 0 && dt < 30) d.segundos += dt;     /* pulo grande = máquina dormiu */
+      if(dt > 0 && dt < 30) d.segundos += dt;
     }
     ultimo = agora;
     gravar();
-    if(d.segundos >= MINUTOS * 60) convidar();
-  }
-  setInterval(tique, 5000);
+    if(d.segundos >= MINUTOS * 60) convidar('tempo');
+  }, 5000);
   document.addEventListener('visibilitychange', function(){ ultimo = Date.now(); });
 
   /* ---------- o que a pessoa está buscando ---------- */
   document.addEventListener('click', function(e){
     var alvo = e.target.closest ? e.target.closest('[data-prod]') : null;
     if(alvo) produto(alvo.getAttribute('data-prod'));
-    var art = e.target.closest ? e.target.closest('[data-post]') : null;
-    if(art) anota('Leu sobre: ' + art.getAttribute('data-post'));
   }, true);
 
   var sel = document.getElementById('f-prod');
@@ -74,27 +88,21 @@
 
   var valor = document.getElementById('out-valor');
   if(valor && 'MutationObserver' in window){
-    var mo = new MutationObserver(function(){
+    new MutationObserver(function(){
       var t = valor.textContent.trim().replace('até', ' até ');
       if(t && t !== '—'){ d.estimativa = t; gravar(); anota('Simulou orçamento no site'); }
-    });
-    mo.observe(valor, {childList:true, characterData:true, subtree:true});
+    }).observe(valor, {childList:true, characterData:true, subtree:true});
   }
 
-  function resumo(){
-    var nomes = Object.keys(d.produtos).sort(function(a,b){ return d.produtos[b] - d.produtos[a]; });
-    return nomes.slice(0, 3);
-  }
   function palpite(){
-    var p = resumo();
-    if(p.length) return p.join(', ');
+    var nomes = Object.keys(d.produtos).sort(function(a,b){ return d.produtos[b] - d.produtos[a]; });
+    if(nomes.length) return nomes.slice(0, 3).join(', ');
     var outras = d.paginas.filter(function(x){ return x.indexOf('ARTsivos') === -1; });
-    if(outras.length) return outras.join(', ');
-    return '';
+    return outras.length ? outras.join(', ') : '';
   }
 
   /* ---------- o convite ---------- */
-  var aberto = false, fechado = false;
+  var aberto = false, fechado = false, jaTentouSaida = false;
   try{ fechado = localStorage.getItem('artsivos.convite') === 'nao'; }catch(e){}
 
   function jaTemContato(){
@@ -103,8 +111,24 @@
     return !!(n && f && n.value.trim() && f.value.replace(/\D/g,'').length >= 10);
   }
 
-  function convidar(){
+  var COPIA = {
+    tempo: {
+      olho: 'Já que você está por aqui',
+      tit:  'Quer que a gente monte esse orçamento para você?',
+      sub:  'Deixe seu contato e a nossa equipe volta com valor, material e prazo — em até 2 horas, no horário comercial. Sem compromisso.',
+      ok:   'Quero receber o orçamento'
+    },
+    saida: {
+      olho: 'Antes de você ir',
+      tit:  'Leva o orçamento com você.',
+      sub:  'Deixe o contato e a gente manda valor, material e prazo por WhatsApp — em até 2 horas, no horário comercial. Você decide depois, com o número na mão.',
+      ok:   'Quero receber e decidir depois'
+    }
+  };
+
+  function convidar(motivo){
     if(aberto || fechado || jaTemContato()) return;
+    var c = COPIA[motivo] || COPIA.tempo;
     aberto = true;
 
     var cx = document.createElement('div');
@@ -115,9 +139,9 @@
     cx.innerHTML =
       '<div class="convite-cx">' +
         '<button class="convite-x" type="button" aria-label="Fechar">&times;</button>' +
-        '<p class="eyebrow">Já que você está por aqui</p>' +
-        '<h3 id="cv-tit">Quer que a gente monte esse orçamento para você?</h3>' +
-        '<p class="convite-sub">Deixe seu contato e a nossa equipe volta com valor, material e prazo — em até 2 horas, no horário comercial. Sem compromisso.</p>' +
+        '<p class="eyebrow">' + c.olho + '</p>' +
+        '<h3 id="cv-tit">' + c.tit + '</h3>' +
+        '<p class="convite-sub">' + c.sub + '</p>' +
         '<div class="convite-campos">' +
           '<label>Nome<input id="cv-nome" type="text" autocomplete="name" placeholder="Como te chamamos"></label>' +
           '<label>WhatsApp<input id="cv-fone" type="text" inputmode="tel" autocomplete="tel" placeholder="(83) 9 0000-0000"></label>' +
@@ -126,7 +150,7 @@
         '</div>' +
         '<p class="convite-aviso" id="cv-aviso" hidden>Preencha nome e WhatsApp para a gente conseguir te responder.</p>' +
         '<div class="convite-btns">' +
-          '<button class="btn btn-primary" id="cv-ok" type="button">Quero receber o orçamento</button>' +
+          '<button class="btn btn-primary" id="cv-ok" type="button">' + c.ok + '</button>' +
           '<a class="btn btn-ghost" id="cv-wa" href="#" target="_blank" rel="noopener">Prefiro falar agora</a>' +
         '</div>' +
         '<button class="convite-nao" id="cv-nao" type="button">Agora não, obrigado</button>' +
@@ -140,15 +164,14 @@
     var pre = palpite();
     if(pre) busca.value = pre;
 
-    var texto = 'Olá! Estava vendo o site da ARTsivos'
+    cx.querySelector('#cv-wa').href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(
+      'Olá! Estava vendo o site da ARTsivos'
       + (pre ? ' e me interessei por: ' + pre : '')
-      + (d.estimativa ? '. O site estimou ' + d.estimativa : '') + '.';
-    cx.querySelector('#cv-wa').href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(texto);
+      + (d.estimativa ? '. O site estimou ' + d.estimativa : '') + '.' + sufixo());
 
     function encerra(lembrar){
       if(lembrar){ try{ localStorage.setItem('artsivos.convite', 'nao'); }catch(e){} fechado = true; }
-      cx.remove();
-      aberto = false;
+      cx.remove(); aberto = false;
       document.body.classList.remove('travado');
     }
     cx.querySelector('.convite-x').addEventListener('click', function(){ encerra(true); });
@@ -160,25 +183,16 @@
     });
 
     cx.querySelector('#cv-ok').addEventListener('click', function(){
-      var faltaNome = !nome.value.trim(),
-          faltaFone = fone.value.replace(/\D/g,'').length < 10;
+      var faltaNome = !nome.value.trim(), faltaFone = fone.value.replace(/\D/g,'').length < 10;
       nome.classList.toggle('falta', faltaNome);
       fone.classList.toggle('falta', faltaFone);
-      if(faltaNome || faltaFone){
-        aviso.hidden = false;
-        (faltaNome ? nome : fone).focus();
-        return;
-      }
+      if(faltaNome || faltaFone){ aviso.hidden = false; (faltaNome ? nome : fone).focus(); return; }
 
-      d.contato = {
-        nome: nome.value.trim(),
-        whatsapp: fone.value.trim(),
-        email: mail.value.trim(),
-        busca: busca.value.trim(),
-        em: new Date().toISOString()
-      };
+      d.contato = {nome: nome.value.trim(), whatsapp: fone.value.trim(),
+                   email: mail.value.trim(), busca: busca.value.trim(),
+                   em: new Date().toISOString(), momento: motivo};
       gravar();
-      enviar();
+      enviar({});
 
       cx.querySelector('.convite-cx').innerHTML =
         '<p class="eyebrow">Recebido</p>' +
@@ -192,14 +206,41 @@
     setTimeout(function(){ cx.classList.add('vem'); nome.focus(); }, 20);
   }
 
-  function enviar(){
+  /* ---------- quando a pessoa vai embora ---------- */
+  function tentaSaida(){
+    if(jaTentouSaida || d.segundos < ESPERA) return;
+    jaTentouSaida = true;
+    convidar('saida');
+  }
+  /* no computador: o cursor sobe para fechar a aba ou digitar outro endereço */
+  document.addEventListener('mouseout', function(e){
+    if(e.clientY <= 0 && !e.relatedTarget && !e.toElement) tentaSaida();
+  });
+  /* no celular não existe esse gesto: vale a rolagem rápida de volta ao topo */
+  var yAnt = window.pageYOffset, tAnt = Date.now();
+  window.addEventListener('scroll', function(){
+    var y = window.pageYOffset, agora = Date.now(), dt = agora - tAnt;
+    if(dt > 60){
+      if(yAnt - y > 420 && dt < 700 && y < 260) tentaSaida();
+      yAnt = y; tAnt = agora;
+    }
+  }, {passive:true});
+
+  /* ---------- envio ---------- */
+  function sufixo(){
+    return d.indicacao ? '\n\nIndicação: ' + d.indicacao
+      + (d.indicadoPor ? ' (' + d.indicadoPor + ')' : '') + ' — R$ ' + DESCONTO + ' de desconto.' : '';
+  }
+
+  function enviar(extra){
     if(!LEAD_ENDPOINT) return;               /* sem endereço, não há para onde mandar */
+    var c = d.contato || {};
     var carga = {
       origem: 'site artsivos',
-      nome: d.contato.nome,
-      whatsapp: d.contato.whatsapp,
-      email: d.contato.email,
-      procurando: d.contato.busca,
+      nome: c.nome || '', whatsapp: c.whatsapp || '', email: c.email || '',
+      procurando: c.busca || '',
+      momento: c.momento || '',
+      indicado_por: d.indicacao || '',
       produtos_vistos: Object.keys(d.produtos).join(', '),
       paginas: d.paginas.join(' · '),
       acoes: d.acoes.join(' · '),
@@ -207,6 +248,7 @@
       minutos_no_site: Math.round(d.segundos / 60),
       visitas: d.visitas
     };
+    for(var k in extra){ if(extra.hasOwnProperty(k)) carga[k] = extra[k]; }
     try{
       fetch(LEAD_ENDPOINT, {
         method: 'POST', keepalive: true,
@@ -216,6 +258,23 @@
     }catch(e){}
   }
 
-  /* deixa o resto do site consultar o radar, se precisar */
-  window.ARTsivosRadar = {dados: function(){ return d; }, convidar: convidar, endpoint: LEAD_ENDPOINT};
+  /* ---------- código de indicação de um cliente ---------- */
+  function codigoDe(nome, fone){
+    var n = (nome || '').normalize ? nome.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : (nome || '');
+    n = n.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6) || 'ART';
+    var dig = (fone || '').replace(/\D/g, '').slice(-4) || '0000';
+    return n + '-' + dig;
+  }
+
+  window.ARTsivosRadar = {
+    dados: function(){ return d; },
+    convidar: convidar,
+    enviar: enviar,
+    sufixo: sufixo,
+    codigoDe: codigoDe,
+    indicacao: function(){ return d.indicacao || ''; },
+    endpoint: LEAD_ENDPOINT,
+    phone: PHONE,
+    desconto: DESCONTO
+  };
 })();

@@ -23,6 +23,8 @@
       <a href="../../#pagamento">Pagamento</a>
       <a href="../../sobre/">A empresa</a>
       <a href="../../blog/">Blog</a>
+        <a href="../../indique/">Indique e ganhe R$ 50</a>
+      <a href="../../indique/">Indique e ganhe</a>
     </nav>
     <a class="btn btn-primary btn-sm" href="../../#orcamento">Pedir orçamento</a>
   </div>
@@ -124,8 +126,13 @@
   if('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(es){
       es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, {rootMargin:'0px 0px -10% 0px', threshold:.12});
+    }, {rootMargin:'0px 0px -10% 0px', threshold:0});
     document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+    /* rede de segurança: se o navegador não reportar a rolagem (aba em segundo
+       plano, impressão, navegador antigo), mostra tudo mesmo assim */
+    setTimeout(function(){
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    }, 2500);
   } else {
     document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
   }
