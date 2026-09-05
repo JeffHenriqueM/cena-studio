@@ -22,6 +22,7 @@ na `main`, mas deixou de ser o endereço oficial — é só um espelho até deci
 | `index.html` | Landing page pública do estúdio | `/` |
 | `painel/index.html` | Painel interno: agenda, vendas/rede, custos mês a mês e pacotes | `/painel/` |
 | `artsivo/index.html` | Site da ARTsivos Comunicação Visual (outra empresa, mesma hospedagem) | `/artsivo/` |
+| `artsivo/painel/index.html` | Painel do admin da ARTsivos: fotos dos trabalhos e preços | `/artsivo/painel/` |
 
 ## Como editar
 
@@ -80,6 +81,26 @@ Não compartilha nada com o CENA além da hospedagem.
   vivem em variáveis no topo do `estilo.css` — nenhuma cor escrita direto nas regras,
   senão um dos dois temas quebra. O `<script>` no `<head>` de cada página aplica o
   tema antes da primeira pintura, para a tela não piscar branca.
+
+### Painel do admin (`artsivo/painel/`)
+
+Fora do índice de busca, com login. A empresa troca **as fotos dos trabalhos** e
+**os preços do orçamento** sem mexer em código. O painel encolhe a foto no próprio
+navegador (máx. 1600 px, WebP, alvo de 250 KB) e grava um documento só no Firestore,
+`artsivos_site/publico`; a home lê esse documento por REST em `dados.js`, sem SDK.
+**Se a leitura falhar, a página fica exatamente como está escrita no HTML** — o site
+não depende do painel para funcionar.
+
+Cada produto tem uma chave de ligar/desligar: desligado, ele sai do orçamento
+automático e o pedido cai em "Projetos Especiais", preço feito à mão. Produto sem
+preço cadastrado não pode ser ligado.
+
+⚠️ Usa o projeto Firebase `finpay-134b0`, **compartilhado com o FinPay e o FIAS**.
+Os dados são escopados (`artsivos_site` no Firestore, `artsivos/` no Storage), mas as
+regras são um arquivo só por projeto — por isso este repo **não tem** `firestore.rules`
+nem `storage.rules`: um deploy daqui apagaria as regras das outras aplicações. As
+regras da ARTsivos são coladas no console, somadas às que já existem.
+Passo a passo em [`artsivo/painel/CONFIGURAR.md`](artsivo/painel/CONFIGURAR.md).
 
 O que está combinado para fazer depois está em [`artsivo/BACKLOG.md`](artsivo/BACKLOG.md).
 

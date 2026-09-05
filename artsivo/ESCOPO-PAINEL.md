@@ -1,6 +1,7 @@
 # Painel do admin — escopo
 
-Rascunho para decidir antes de escrever código. Nada aqui está fechado.
+Decidido e em parte já construído. As fatias 1 e 4 estão escritas; o resto
+segue como plano.
 
 O painel existe para a empresa trocar o conteúdo do site sem mexer no código:
 fotos dos trabalhos, logos de clientes, preços, avaliações. É o primeiro pedaço
@@ -88,27 +89,37 @@ Desenho proposto:
 - **Painel** em `artsivo/painel/`, fora do índice de busca, com login. Escreve o
   `dados.json` e sobe as imagens.
 
-Para o armazenamento e o login, duas opções reais:
+Para o armazenamento e o login havia duas opções — Firebase próprio (A) ou o
+repositório do GitHub como banco (B). **Decidido: A.** O Jeff ligou o site a um
+projeto Firebase que já existe, o `finpay-134b0` — o mesmo do FinPay, do FIAS e
+da hospedagem do `cena-studio.web.app`. Login por e-mail e senha, upload de
+imagem e conta por pessoa vêm prontos, e some a limitação do B (um usuário só,
+token no navegador dele).
 
-**A) Firebase próprio da ARTsivos** (projeto novo, separado do
-`crm-pessoal-d993d`, que já é compartilhado com outra aplicação e não deve
-receber mais nada). Login por e-mail e senha, upload de imagem e permissão por
-usuário prontos. Em compensação: mais um projeto para manter, e conferir antes se
-o Storage do plano gratuito ainda atende sem cartão cadastrado.
+⚠️ **É um projeto compartilhado com outras duas aplicações.** Isso não é problema
+para dado — a ARTsivos vive inteira em `artsivos_site` (Firestore) e `artsivos/`
+(Storage) — mas é problema para **regras**: as do Firestore e as do Storage são
+um arquivo só por projeto. Um `firebase deploy --only firestore:rules` a partir
+deste repositório apagaria as regras do FinPay e do FIAS. Por isso o repositório
+**não tem** `firestore.rules` nem `storage.rules`, e as regras da ARTsivos são
+coladas no console, somadas às que já estão lá. O passo a passo está em
+`painel/CONFIGURAR.md`.
 
-**B) O próprio repositório como banco.** O painel grava `dados.json` e as fotos
-direto no GitHub por API, com um token do dono. Custo zero, nada novo para
-manter, e cada alteração fica versionada — dá para desfazer qualquer besteira.
-Em compensação: um usuário só, token guardado no navegador dele, e a mudança leva
-cerca de um minuto para aparecer no site.
+## 4. O que já está escrito
 
-**Recomendação: B.** Com os níveis de indicação descartados, o painel não precisa
-mais de conta para cliente nem de permissão por papel — some a única coisa que
-exigia Firebase. Todas as cinco fatias são conteúdo do site, e conteúdo do site
-cabe num arquivo versionado. O que derruba B é ter mais de uma pessoa mexendo:
-token é por pessoa e não dá para tirar acesso de um sem trocar o de todos.
+- `painel/index.html` — login, fatia 1 (fotos) e fatia 4 (preços e chave de
+  ligar/desligar produto no orçamento). Grava um documento só,
+  `artsivos_site/publico`.
+- `dados.js` — leitura pública, por REST, sem SDK. Carregado na home. Se falhar,
+  a página fica como está escrita no HTML.
+- O `index.html` da home passou a aceitar preços vindos do painel: quando os
+  dados chegam, `TABELA`, arte, pressa, entrega, retirada e margem são
+  substituídos e a estimativa é refeita. Produto desligado sai do seletor e o
+  pedido vira "Projetos Especiais".
 
-## 4. Decisões pendentes
+Falta ligar no console (login por e-mail/senha, regras do Firestore, regras do
+Storage) — `painel/CONFIGURAR.md`.
 
-- **Quem faz login: só o dono, ou também alguém do balcão?** É o que decide entre
-  A e B. Só o dono → B. Mais de uma pessoa → A.
+As fatias 2 (logos), 3 (avaliações) e 5 (portfólio) são a mesma mecânica das duas
+já feitas. O que falta nelas não é o painel: é o lugar no site público onde
+apareceriam, que ainda não existe.

@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
 <script src="radar.js" defer></script>
+<script src="dados.js" defer></script>
 </head>
 <body>
 <header class="nav">
@@ -629,6 +630,37 @@
   });
   addons.forEach(function(a){ a.addEventListener('change', update); });
   update();
+
+  /* -------------------------------------------------------------------
+     Preços cadastrados no painel (dados.js). Chegam depois da página
+     montada; quando chegam, substituem os valores de exemplo acima e a
+     estimativa é refeita. Se nunca chegarem, vale o que está escrito aqui.
+     ------------------------------------------------------------------- */
+  document.addEventListener('artsivos:dados', function(ev){
+    var d = (ev && ev.detail) || window.ARTSIVOS_DADOS || {};
+    var p = d.precos;
+    if(p){
+      if(p.TABELA)  TABELA  = p.TABELA;
+      if(p.ARTE && p.ARTE.length === 4) ARTE = p.ARTE;
+      if(p.PRESSA)  PRESSA  = p.PRESSA;
+      if(typeof p.ENTREGA  === 'number') ENTREGA  = p.ENTREGA;
+      if(typeof p.RETIRADA === 'number') RETIRADA = p.RETIRADA;
+      if(typeof p.MARGEM   === 'number') MARGEM   = p.MARGEM;
+    }
+    /* produto desligado sai do orçamento automático e vira Projetos Especiais */
+    if(d.ativos){
+      var fora = false;
+      Array.prototype.slice.call(prod.options).forEach(function(o){
+        if(o.value === 'Projetos Especiais') return;
+        if(d.ativos[o.value] === false){
+          if(o.selected) fora = true;
+          o.parentNode.removeChild(o);
+        }
+      });
+      if(fora) prod.value = 'Projetos Especiais';
+    }
+    update();
+  });
 
   /* o contato é pedido antes de sair: assim dá para retomar quem não fecha na hora */
   [wa, melhor].forEach(function(botao){ botao.addEventListener('click', function(e){
