@@ -1,6 +1,21 @@
 # Cena Studio — site + painel
 
-Site estático (sem build, sem dependências) publicado pelo GitHub Pages.
+Site estático (sem build, sem dependências). **Endereço oficial: [cena-studio.web.app](https://cena-studio.web.app)**
+(Firebase Hosting, mesmo projeto do FIAS). O código continua neste repo — a única mudança é onde
+ele é publicado.
+
+## Deploy
+
+```
+firebase deploy --only hosting --project finpay-134b0
+```
+
+Publica pra `cena-studio.web.app` (site "cena-studio" dentro do projeto Firebase `finpay-134b0`,
+configurado em `.firebaserc`/`firebase.json`). Precisa do Firebase CLI logado (`firebase login`)
+com acesso a esse projeto.
+
+O GitHub Pages (`jeffhenriquem.github.io/cena-studio`) continua ativo automaticamente a cada push
+na `main`, mas deixou de ser o endereço oficial — é só um espelho até decidirmos desligar.
 
 | Arquivo | O que é | URL |
 |---|---|---|
