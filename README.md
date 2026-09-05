@@ -66,11 +66,24 @@ Não compartilha nada com o CENA além da hospedagem.
 - **Formas de pagamento:** PIX com desconto, 12x, sinal de 50%, nota fiscal — nada confirmado.
 - **Promessa de resposta em 2 horas** no horário comercial: só manter se alguém garantir.
 - **Endereço, e-mail, CNPJ, horário** no rodapé; textos do "sobre"; instalação com equipe própria.
-- **Captura de contato:** `LEAD_ENDPOINT` no script. Vazio = o pedido só vira mensagem de
-  WhatsApp e nada fica registrado se a pessoa desistir de enviar.
+- **Captura de contato:** `LEAD_ENDPOINT` no topo do `radar.js` — um único lugar, usado
+  tanto pelo orçamento quanto pelo convite dos 5 minutos. Vazio = nada fica registrado
+  se a pessoa não for para o WhatsApp. Preencher com a URL de um Formspree/Google Forms/API.
 - **Logo:** a marca é escrita em CSS. Para usar o arquivo real, coloque `artsivo/logo.png`
   e troque o `<a class="marca">` por um `<img>`.
-- **Fotos de trabalhos:** o site não tem nenhuma. É o que mais falta.
+- **Fotos de trabalhos:** a seção "Trabalhos" já existe com 8 espaços; enquanto o arquivo
+  não estiver em `artsivo/fotos/`, o site mostra o nome do arquivo que falta no lugar da
+  imagem. Nomes e formato em `artsivo/fotos/LEIA-ME.txt`. É o que mais falta.
+- **Legendas dos trabalhos:** descrevem o tipo de peça, sem nome de cliente. Se a empresa
+  puder citar clientes (com autorização), vale trocar.
+
+### Radar de visita (`radar.js`)
+Carregado nas cinco páginas. Guarda no navegador da pessoa o que ela olhou — produtos
+clicados, páginas lidas, se simulou orçamento e quanto deu, tempo com a aba na frente —
+e depois de **5 minutos** de uso real abre um convite pedindo nome, WhatsApp, e-mail e
+o que está procurando (já vem preenchido com o que ela olhou). Quem já preencheu o
+orçamento não vê o convite; quem diz "agora não" não vê de novo. O tempo só corre com a
+aba visível, então 5 minutos são 5 minutos de verdade.
 
 O orçamento mostra uma faixa de valor (estimativa) e dois botões: fechar pelo WhatsApp
 ou pedir um preço melhor. Preço fechado é sempre feito à mão.

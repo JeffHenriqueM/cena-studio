@@ -1,0 +1,16 @@
+Fotos dos trabalhos da seção "Trabalhos" da página inicial.
+
+Coloque os arquivos aqui com EXATAMENTE estes nomes (JPG):
+
+  fachada-01.jpg        fachada completa (ACM + letra caixa)
+  letra-caixa-01.jpg    letra caixa iluminada, de preferência à noite
+  envelopamento-01.jpg  veículo envelopado, de lado, carro inteiro no quadro
+  vitrine-01.jpg        vitrine adesivada
+  luminoso-01.jpg       placa luminosa acesa
+  acm-01.jpg            testeira/revestimento em ACM
+  acrilico-01.jpg       placa ou display em acrílico
+  lona-01.jpg           lona, banner ou faixa instalada
+
+Formato: horizontal (4:3), no mínimo 1200 px de largura, até ~400 KB cada.
+Enquanto o arquivo não existir, o site mostra o nome do arquivo no lugar da foto
+— ninguém vê imagem quebrada, mas também não vê trabalho nenhum.

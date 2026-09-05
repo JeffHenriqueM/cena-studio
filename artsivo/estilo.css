@@ -355,3 +355,59 @@ body{padding-bottom:76px}
 .fim h2{font-size:clamp(21px,3vw,27px);margin:0}
 .fim p{margin:0;font-size:15.5px}
 .fim .btn{align-self:flex-start;margin-top:6px}
+
+/* ============ trabalhos ============ */
+.obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.obra{display:flex;flex-direction:column;gap:0;padding:0;text-align:left;cursor:pointer;
+  border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);overflow:hidden;
+  color:inherit;font:inherit;transition:transform .25s ease,border-color .25s ease}
+.obra:hover{transform:translateY(-4px);border-color:var(--edge-2)}
+.obra:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.obra .foto{position:relative;display:block;aspect-ratio:4/3;background:
+  repeating-linear-gradient(45deg,var(--panel-2) 0 10px,var(--panel) 10px 20px);overflow:hidden}
+.obra .foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+.obra:hover .foto img{transform:scale(1.05)}
+/* aparece só enquanto a foto real não existe */
+.obra .foto.cheia .vazio{display:none}
+.obra .vazio{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;
+  font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-mute);
+  border-bottom:1px solid var(--edge);padding:10px;text-align:center}
+.obra .leg{display:flex;flex-direction:column;gap:3px;padding:14px 16px 16px;border-top:1px solid var(--edge)}
+.obra .leg b{font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+.obra .leg span{font-size:13px;color:var(--ink-mute)}
+.obras-nota{margin:24px 0 0;font-size:14.5px;color:var(--ink-mute)}
+
+/* ============ convite depois de 5 minutos ============ */
+body.travado{overflow:hidden}
+.convite{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(6,6,8,.72);backdrop-filter:blur(6px);opacity:0;transition:opacity .3s ease}
+.convite.vem{opacity:1}
+.convite-cx{position:relative;width:100%;max-width:470px;max-height:92vh;overflow-y:auto;
+  border:1px solid var(--edge-2);border-radius:var(--r);background:var(--panel);
+  padding:clamp(22px,4vw,32px);box-shadow:0 30px 80px rgba(0,0,0,.6);
+  transform:translateY(14px) scale(.98);transition:transform .35s cubic-bezier(.22,.61,.36,1)}
+.convite.vem .convite-cx{transform:none}
+.convite-cx h3{font-size:clamp(22px,4vw,27px);margin-bottom:10px}
+.convite-sub{font-size:14.5px;margin:0 0 20px;text-wrap:pretty}
+.convite-x{position:absolute;top:12px;right:12px;width:32px;height:32px;line-height:1;font-size:22px;
+  border:1px solid var(--edge);border-radius:8px;background:transparent;color:var(--ink-mute);cursor:pointer}
+.convite-x:hover{color:var(--ink);border-color:var(--edge-2)}
+.convite-campos{display:grid;gap:12px;margin-bottom:16px}
+.convite-campos label{display:flex;flex-direction:column;gap:6px;
+  font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute)}
+.convite-campos i{font-style:normal;opacity:.6;text-transform:none;letter-spacing:.04em}
+.convite-campos input,.convite-campos textarea{
+  font-family:"Instrument Sans",Arial,sans-serif;font-size:15px;color:var(--ink);
+  background:var(--void);border:1px solid var(--edge);border-radius:10px;padding:11px 13px;resize:vertical}
+.convite-campos input:focus,.convite-campos textarea:focus{outline:none;border-color:var(--steel)}
+.convite-campos .falta{border-color:var(--red)}
+.convite-aviso{font-size:13px;color:var(--red-hot);margin:-8px 0 14px}
+.convite-btns{display:flex;flex-wrap:wrap;gap:10px}
+.convite-btns .btn{flex:1 1 190px;justify-content:center}
+.convite-nao{display:block;margin:16px auto 0;background:none;border:0;cursor:pointer;
+  font-size:13px;color:var(--ink-mute);text-decoration:underline;text-underline-offset:3px}
+.convite-nao:hover{color:var(--ink-soft)}
+@media (prefers-reduced-motion:reduce){
+  .convite,.convite-cx,.obra,.obra .foto img{transition:none}
+}

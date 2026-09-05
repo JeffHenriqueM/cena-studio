@@ -11,6 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
+<script src="radar.js" defer></script>
 </head>
 <body>
 <header class="nav">
@@ -18,6 +19,7 @@
     <a class="marca" href="#topo"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Comunicação Visual</span></a>
     <nav class="nav-links">
       <a href="#catalogo">Produtos</a>
+      <a href="#trabalhos">Trabalhos</a>
       <a href="#orcamento">Orçamento</a>
       <a href="#pagamento">Pagamento</a>
       <a href="sobre/">A empresa</a>
@@ -175,6 +177,51 @@
       <div class="seg"><b>Construtoras</b><span>Lona de obra e tapume</span></div>
       <div class="seg"><b>Eventos</b><span>Projetos especiais</span></div>
     </div>
+  </div>
+</section>
+
+<section id="trabalhos">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Trabalhos</p>
+      <h2>O nosso portfólio está na rua.</h2>
+      <p>Uma amostra do que sai daqui — do adesivo de vitrine à fachada inteira. Clique numa peça para pedir algo parecido.</p>
+    </div>
+    <div class="obras">
+      <button class="obra rv" type="button" data-prod="Fachadas" data-obra="fachada">
+        <span class="foto"><span class="vazio">fotos/fachada-01.jpg</span><img src="fotos/fachada-01.jpg" alt="Fachada produzida e instalada pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Fachada completa</b><span>ACM, letra caixa e iluminação</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Letras Caixa" data-obra="letra">
+        <span class="foto"><span class="vazio">fotos/letra-caixa-01.jpg</span><img src="fotos/letra-caixa-01.jpg" alt="Letra caixa iluminada instalada pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Letra caixa com LED</b><span>Letreiro que aparece à noite</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Envelopamentos" data-obra="frota">
+        <span class="foto"><span class="vazio">fotos/envelopamento-01.jpg</span><img src="fotos/envelopamento-01.jpg" alt="Veículo envelopado pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Veículo envelopado</b><span>A marca rodando a cidade</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Adesivos" data-obra="vitrine">
+        <span class="foto"><span class="vazio">fotos/vitrine-01.jpg</span><img src="fotos/vitrine-01.jpg" alt="Vitrine adesivada pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Vitrine adesivada</b><span>Recorte e impressão colorida</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Placas Luminosas" data-obra="luminoso">
+        <span class="foto"><span class="vazio">fotos/luminoso-01.jpg</span><img src="fotos/luminoso-01.jpg" alt="Placa luminosa produzida pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Placa luminosa</b><span>Painel em LED para fachada</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="ACM" data-obra="acm">
+        <span class="foto"><span class="vazio">fotos/acm-01.jpg</span><img src="fotos/acm-01.jpg" alt="Revestimento em ACM feito pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Revestimento em ACM</b><span>Testeira reta, sem emenda aparente</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Acrílico" data-obra="acrilico">
+        <span class="foto"><span class="vazio">fotos/acrilico-01.jpg</span><img src="fotos/acrilico-01.jpg" alt="Sinalização interna em acrílico feita pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Sinalização em acrílico</b><span>Placas e displays sob medida</span></span>
+      </button>
+      <button class="obra rv" type="button" data-prod="Lonas" data-obra="lona">
+        <span class="foto"><span class="vazio">fotos/lona-01.jpg</span><img src="fotos/lona-01.jpg" alt="Lona impressa pela ARTsivos" loading="lazy" onload="this.parentNode.classList.add(&quot;cheia&quot;)"></span>
+        <span class="leg"><b>Lona impressa</b><span>Banner, faixa e fachada em lona</span></span>
+      </button>
+    </div>
+    <p class="obras-nota">Quer ver algo parecido com o seu caso? Peça no WhatsApp que a gente manda fotos de trabalhos do seu segmento.</p>
   </div>
 </section>
 
@@ -434,10 +481,10 @@
   var PRESSA = {'Esta semana':.10, 'É urgente':.25};
   var ENTREGA = 60, RETIRADA = 180, MARGEM = .12;
 
-  /* Onde os contatos são guardados. Enquanto estiver vazio, o pedido só vira mensagem
-     de WhatsApp — nada fica registrado se a pessoa desistir de enviar.
-     Coloque aqui a URL do formulário (Formspree, Google Forms, sua API) para capturar o lead. */
-  var LEAD_ENDPOINT = "";
+  /* Onde os contatos são guardados: definido uma única vez em radar.js (LEAD_ENDPOINT).
+     Enquanto estiver vazio, o pedido só vira mensagem de WhatsApp — nada fica
+     registrado se a pessoa desistir de enviar. */
+  function endpoint(){ return (window.ARTsivosRadar && window.ARTsivosRadar.endpoint) || ""; }
 
   var $ = function(id){ return document.getElementById(id); };
   var prod = $('f-prod'), larg = $('f-larg'), alt = $('f-alt'), qtd = $('f-qtd');
@@ -578,6 +625,7 @@
     }
     aviso.hidden = true;
 
+    var LEAD_ENDPOINT = endpoint();
     if(LEAD_ENDPOINT){
       var dados = {nome: nome.value.trim(), whatsapp: fone.value.trim(), origem: 'site artsivos'};
       pedido().forEach(function(l){ dados[l[0]] = l[1]; });
@@ -592,7 +640,7 @@
   }); });
 
   /* clicar num produto já escolhe no orçamento e leva a pessoa para o formulário */
-  document.querySelectorAll('.item[data-prod]').forEach(function(card){
+  document.querySelectorAll('[data-prod]').forEach(function(card){
     card.addEventListener('click', function(){
       var alvo = card.getAttribute('data-prod');
       for(var i = 0; i < prod.options.length; i++){
