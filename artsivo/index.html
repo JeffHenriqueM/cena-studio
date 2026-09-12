@@ -228,6 +228,25 @@
   </div>
 </section>
 
+<!-- A seção nasce escondida de propósito: só aparece com avaliação real,
+     escrita abaixo em AVALIACOES ou cadastrada no painel. -->
+<section id="avaliacoes" hidden>
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Quem já contratou</p>
+      <h2>O que os clientes falam depois que a placa sobe.</h2>
+      <div class="aval-nota">
+        <b class="media" id="aval-media">—</b>
+        <span class="estrelas" id="aval-estrelas" aria-hidden="true"></span>
+        <span class="de" id="aval-de"></span>
+        <a class="fonte" id="aval-fonte" href="#" target="_blank" rel="noopener" hidden>Ver no Google</a>
+      </div>
+    </div>
+    <div class="avals" id="avals"></div>
+    <p class="avals-nota">Avaliações recebidas no Google. O texto é o que a pessoa escreveu — nada aqui é reescrito.</p>
+  </div>
+</section>
+
 <section id="orcamento">
   <div class="wrap">
     <div class="sec-head rv">
@@ -636,6 +655,76 @@
      montada; quando chegam, substituem os valores de exemplo acima e a
      estimativa é refeita. Se nunca chegarem, vale o que está escrito aqui.
      ------------------------------------------------------------------- */
+  /* -------------------------------------------------------------------
+     AVALIAÇÕES
+     A lista abaixo é a fonte fixa: o que estiver aqui aparece sempre, mesmo
+     sem painel e sem internet. O painel, quando tiver avaliações cadastradas,
+     substitui esta lista.
+
+     Cada item: { nome, texto, nota (1 a 5), servico, data }
+     Só entra aqui avaliação que a pessoa escreveu de verdade — copiada do
+     Google, do WhatsApp ou de onde ela tiver escrito. Nada inventado: a lista
+     vazia esconde a seção inteira, e é assim que ela deve ficar até existir a
+     primeira. Preencha também GOOGLE_PERFIL para o link "Ver no Google".
+     ------------------------------------------------------------------- */
+  var AVALIACOES = [];
+  var GOOGLE_PERFIL = '';
+
+  function estrelasHTML(nota){
+    var d = '', i;
+    for(i = 1; i <= 5; i++){
+      d += '<svg viewBox="0 0 24 24" class="' + (i <= Math.round(nota) ? 'on' : '') + '">' +
+           '<path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
+    }
+    return d;
+  }
+
+  function montarAvaliacoes(lista){
+    var sec = document.getElementById('avaliacoes');
+    var cx  = document.getElementById('avals');
+    if(!sec || !cx) return;
+
+    lista = (lista || []).filter(function(a){ return a && a.texto && a.nome; });
+    if(!lista.length){ sec.hidden = true; return; }
+
+    var soma = 0, html = '';
+    lista.forEach(function(a){
+      var nota = Number(a.nota) || 5;
+      soma += nota;
+      var ini = a.nome.trim().charAt(0).toUpperCase();
+      html += '<article class="aval rv">' +
+                '<span class="estrelas" aria-label="' + nota + ' de 5 estrelas">' + estrelasHTML(nota) + '</span>' +
+                '<blockquote>' + esc(a.texto) + '</blockquote>' +
+                '<div class="quem"><span class="ini" aria-hidden="true">' + esc(ini) + '</span>' +
+                  '<div><b>' + esc(a.nome) + '</b>' +
+                  (a.servico || a.data ? '<span>' + esc([a.servico, a.data].filter(Boolean).join(' · ')) + '</span>' : '') +
+                  '</div></div>' +
+              '</article>';
+    });
+
+    cx.innerHTML = html;
+    var media = soma / lista.length;
+    document.getElementById('aval-media').textContent = media.toFixed(1).replace('.', ',');
+    document.getElementById('aval-estrelas').innerHTML = estrelasHTML(media);
+    document.getElementById('aval-de').textContent = lista.length === 1
+      ? 'de 1 avaliação' : 'de ' + lista.length + ' avaliações';
+    var fonte = document.getElementById('aval-fonte');
+    var perfil = (window.ARTSIVOS_DADOS && window.ARTSIVOS_DADOS.googlePerfil) || GOOGLE_PERFIL;
+    if(perfil){ fonte.href = perfil; fonte.hidden = false; } else { fonte.hidden = true; }
+
+    sec.hidden = false;
+    /* os cards nasceram depois do observer: mostra sem depender dele */
+    Array.prototype.forEach.call(cx.children, function(el){ el.classList.add('in'); });
+  }
+
+  function esc(t){
+    return String(t).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+
+  montarAvaliacoes(AVALIACOES);
+
   document.addEventListener('artsivos:dados', function(ev){
     var d = (ev && ev.detail) || window.ARTSIVOS_DADOS || {};
     var p = d.precos;
@@ -660,6 +749,8 @@
       if(fora) prod.value = 'Projetos Especiais';
     }
     update();
+
+    if(d.avaliacoes && d.avaliacoes.length) montarAvaliacoes(d.avaliacoes);
   });
 
   /* o contato é pedido antes de sair: assim dá para retomar quem não fecha na hora */

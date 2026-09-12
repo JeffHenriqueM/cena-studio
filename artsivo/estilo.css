@@ -553,3 +553,38 @@ body.travado{overflow:hidden}
   :root:not([data-theme="dark"]) .tema .lua{display:none}
 }
 @media (prefers-reduced-motion:reduce){ .tema{transition:none} .tema:hover{transform:none} }
+
+
+/* ---------- AVALIAÇÕES ----------
+   A seção inteira nasce com `hidden`. Só aparece quando existe avaliação de
+   verdade — cadastrada no painel ou escrita no HTML. Sem conteúdo real, o
+   site prefere não ter a seção a ter uma seção inventada. */
+.aval-nota{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+.aval-nota .media{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:34px;
+  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.aval-nota .de{font-size:14px;color:var(--ink-mute)}
+.aval-nota .fonte{margin-left:auto;font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-mute);text-decoration:none;border-bottom:1px solid var(--edge-2);
+  padding-bottom:2px}
+.aval-nota .fonte:hover{color:var(--ink)}
+
+.estrelas{display:inline-flex;gap:3px}
+.estrelas svg{width:17px;height:17px;fill:var(--edge-2)}
+.estrelas svg.on{fill:var(--red)}
+
+.avals{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px}
+.aval{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);padding:22px 20px;
+  display:flex;flex-direction:column;gap:12px}
+.aval blockquote{margin:0;font-size:15.5px;line-height:1.62;color:var(--ink-soft)}
+.aval blockquote::before{content:"“";color:var(--red);font-family:Archivo,Arial,sans-serif;font-weight:800;
+  font-size:22px;line-height:0;margin-right:2px;vertical-align:-2px}
+.aval .quem{display:flex;align-items:center;gap:11px;margin-top:auto;padding-top:4px}
+.aval .ini{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:var(--panel-2);border:1px solid var(--edge);font-family:Archivo,Arial,sans-serif;
+  font-weight:700;font-size:14px;color:var(--ink-soft)}
+.aval .quem b{display:block;font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:14.5px;
+  letter-spacing:-.01em}
+.aval .quem span{display:block;font-size:12.5px;color:var(--ink-mute);margin-top:1px}
+.avals-nota{margin-top:20px;font-size:14.5px;color:var(--ink-mute);max-width:58ch}
+@media (min-width:700px){ .avals{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:1000px){ .avals{grid-template-columns:repeat(3,1fr)} }

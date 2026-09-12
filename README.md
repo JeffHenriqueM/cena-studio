@@ -84,12 +84,18 @@ Não compartilha nada com o CENA além da hospedagem.
 
 ### Painel do admin (`artsivo/painel/`)
 
-Fora do índice de busca, com login. A empresa troca **as fotos dos trabalhos** e
-**os preços do orçamento** sem mexer em código. O painel encolhe a foto no próprio
+Fora do índice de busca, com login. A empresa troca **as fotos dos trabalhos**,
+**os preços do orçamento** e **as avaliações de clientes** sem mexer em código. O painel encolhe a foto no próprio
 navegador (máx. 1600 px, WebP, alvo de 250 KB) e grava um documento só no Firestore,
 `artsivos_site/publico`; a home lê esse documento por REST em `dados.js`, sem SDK.
 **Se a leitura falhar, a página fica exatamente como está escrita no HTML** — o site
 não depende do painel para funcionar.
+
+As avaliações aparecem numa seção própria da home, logo antes do orçamento. Essa
+seção **nasce escondida e só aparece quando existe avaliação cadastrada** — vale o
+mesmo para a home do CENA, onde a lista fica escrita no próprio `index.html` (em
+`AVALIACOES`). Seção de avaliação vazia, ou preenchida com elogio inventado, faz
+mais mal do que não ter.
 
 Cada produto tem uma chave de ligar/desligar: desligado, ele sai do orçamento
 automático e o pedido cai em "Projetos Especiais", preço feito à mão. Produto sem

@@ -262,6 +262,35 @@ summary::after{content:"+";position:absolute;right:6px;top:20px;font-family:"DM 
 details[open] summary::after{transform:rotate(45deg)}
 details p{padding:0 0 22px;font-size:15.5px;margin:0}
 
+/* ---------- AVALIAÇÕES ----------
+   Nasce escondida. Só aparece quando existe avaliação de verdade na lista
+   AVALIACOES lá embaixo. Sem conteúdo real, melhor não ter a seção. */
+.aval-nota{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+.aval-nota .media{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:34px;
+  letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
+.aval-nota .de{font-size:14px;color:var(--ink-mute)}
+.aval-nota .fonte{margin-left:auto;font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-mute);text-decoration:none;border-bottom:1px solid var(--edge);padding-bottom:2px}
+.aval-nota .fonte:hover{color:var(--ink)}
+.estrelas{display:inline-flex;gap:3px}
+.estrelas svg{width:17px;height:17px;fill:var(--edge)}
+.estrelas svg.on{fill:var(--gel-amber)}
+.avals{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px}
+.aval{border:1px solid var(--edge);border-radius:var(--r);background:var(--stage);padding:22px 20px;
+  display:flex;flex-direction:column;gap:12px}
+.aval blockquote{margin:0;font-size:15.5px;line-height:1.62;color:var(--ink-soft)}
+.aval blockquote::before{content:"\201C";color:var(--gel-rose);font-family:Archivo,Arial,sans-serif;font-weight:800;
+  font-size:22px;line-height:0;margin-right:2px;vertical-align:-2px}
+.aval .quem{display:flex;align-items:center;gap:11px;margin-top:auto;padding-top:4px}
+.aval .ini{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:var(--stage-2);border:1px solid var(--edge);font-family:Archivo,Arial,sans-serif;font-weight:700;
+  font-size:14px;color:var(--ink-soft)}
+.aval .quem b{display:block;font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:14.5px;letter-spacing:-.01em}
+.aval .quem span{display:block;font-size:12.5px;color:var(--ink-mute);margin-top:1px}
+.avals-nota{margin-top:20px;font-size:14.5px;color:var(--ink-mute);max-width:58ch}
+@media (min-width:700px){ .avals{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:1000px){ .avals{grid-template-columns:repeat(3,1fr)} }
+
 /* ---------- CTA FINAL + RODAPÉ ---------- */
 .final{position:relative;overflow:hidden;border-radius:26px;border:1px solid rgba(255,77,141,.35);padding:56px 26px;text-align:center;background:var(--stage)}
 .final .set-light{background:radial-gradient(90% 120% at 20% 0%,rgba(255,77,141,.42),transparent 62%),radial-gradient(80% 110% at 90% 100%,rgba(53,224,214,.28),transparent 62%)}
@@ -687,6 +716,24 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
   </div>
 </section>
 
+<!-- Escondida até existir avaliação real (ver AVALIACOES no script). -->
+<section id="avaliacoes" hidden>
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="eyebrow">Quem já gravou aqui</p>
+      <h2>O que dizem depois de sair com o material pronto.</h2>
+      <div class="aval-nota">
+        <b class="media" id="aval-media">&mdash;</b>
+        <span class="estrelas" id="aval-estrelas" aria-hidden="true"></span>
+        <span class="de" id="aval-de"></span>
+        <a class="fonte" id="aval-fonte" href="#" target="_blank" rel="noopener" hidden>Ver no Google</a>
+      </div>
+    </div>
+    <div class="avals" id="avals"></div>
+    <p class="avals-nota">O texto é o que a pessoa escreveu &mdash; nada aqui &eacute; reescrito.</p>
+  </div>
+</section>
+
 <section style="padding-top:0">
   <div class="wrap">
     <div class="final rv">
@@ -820,8 +867,68 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
   var footWa = document.getElementById('foot-wa');
   if(footWa){ footWa.href = 'https://wa.me/' + PHONE; footWa.target = '_blank'; footWa.rel = 'noopener'; }
 
+  /* -----------------------------------------------------------------
+     AVALIAÇÕES
+     Só entra aqui avaliação que a pessoa escreveu de verdade — copiada do
+     Google, do Instagram ou de onde ela tiver escrito. Nada inventado:
+     enquanto a lista estiver vazia a seção inteira fica escondida, e é
+     assim que ela deve ficar até a primeira avaliação real existir.
+
+     Cada item: { nome, texto, nota (1 a 5), servico, data }
+     GOOGLE_PERFIL é o link do perfil, para o "Ver no Google".
+     ----------------------------------------------------------------- */
+  var AVALIACOES = [];
+  var GOOGLE_PERFIL = '';
+
+  function esc(t){
+    return String(t).replace(/[&<>"]/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
+  }
+  function estrelasHTML(nota){
+    var d = '', i;
+    for(i = 1; i <= 5; i++){
+      d += '<svg viewBox="0 0 24 24" class="' + (i <= Math.round(nota) ? 'on' : '') + '">' +
+           '<path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
+    }
+    return d;
+  }
+  (function(){
+    var sec = document.getElementById('avaliacoes');
+    var cx  = document.getElementById('avals');
+    if(!sec || !cx) return;
+
+    var lista = AVALIACOES.filter(function(a){ return a && a.texto && a.nome; });
+    if(!lista.length){ sec.hidden = true; return; }
+
+    var soma = 0, html = '';
+    lista.forEach(function(a){
+      var nota = Number(a.nota) || 5;
+      soma += nota;
+      html += '<article class="aval">' +
+                '<span class="estrelas" aria-label="' + nota + ' de 5 estrelas">' + estrelasHTML(nota) + '</span>' +
+                '<blockquote>' + esc(a.texto) + '</blockquote>' +
+                '<div class="quem"><span class="ini" aria-hidden="true">' + esc(a.nome.trim().charAt(0).toUpperCase()) + '</span>' +
+                  '<div><b>' + esc(a.nome) + '</b>' +
+                  (a.servico || a.data ? '<span>' + esc([a.servico, a.data].filter(Boolean).join(' · ')) + '</span>' : '') +
+                  '</div></div>' +
+              '</article>';
+    });
+    cx.innerHTML = html;
+
+    var media = soma / lista.length;
+    document.getElementById('aval-media').textContent = media.toFixed(1).replace('.', ',');
+    document.getElementById('aval-estrelas').innerHTML = estrelasHTML(media);
+    document.getElementById('aval-de').textContent = lista.length === 1
+      ? 'de 1 avaliação' : 'de ' + lista.length + ' avaliações';
+    var fonte = document.getElementById('aval-fonte');
+    if(GOOGLE_PERFIL){ fonte.href = GOOGLE_PERFIL; fonte.hidden = false; }
+
+    sec.hidden = false;
+  })();
+
   // grades revelam item a item, em cascata, em vez de o bloco inteiro de uma vez
-  document.querySelectorAll('.sets,.plans,.cards,.steps,.faq').forEach(function(grid){
+  document.querySelectorAll('.sets,.plans,.cards,.steps,.faq,.avals').forEach(function(grid){
     grid.classList.remove('rv','in');
     var i = 0;
     Array.prototype.forEach.call(grid.children, function(child){

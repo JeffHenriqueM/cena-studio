@@ -61,7 +61,7 @@ button,input,select{font:inherit;color:inherit}
 .login-card p.sub{color:var(--ink-mute);font-size:14px;margin:0 0 22px}
 label{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-mute);margin-bottom:6px;font-family:"DM Mono",monospace}
-input[type=email],input[type=password],input[type=text],input[type=number]{
+input[type=email],input[type=password],input[type=text],input[type=number],textarea,select{
   width:100%;background:var(--void);border:1px solid var(--edge);border-radius:10px;
   padding:11px 13px;color:var(--ink);outline:0}
 input:focus{border-color:var(--edge-2)}
@@ -108,6 +108,18 @@ main{padding:0 0 90px}
 .chave input{accent-color:var(--red);width:16px;height:16px}
 .aviso{background:var(--panel);border:1px solid var(--edge);border-left:3px solid var(--warn);
   border-radius:10px;padding:13px 15px;font-size:14px;color:var(--ink-soft);margin:18px 0}
+textarea{resize:vertical;min-height:84px;font:inherit;line-height:1.55}
+select{appearance:none}
+
+/* avaliações */
+.avals-ed{display:flex;flex-direction:column;gap:14px;margin-top:20px}
+.aval-ed{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:16px}
+.aval-ed .linha{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:12px}
+.aval-ed .pe{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px}
+.aval-ed .conta{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-mute)}
+.vazio-lista{color:var(--ink-mute);font-size:14px;border:1px dashed var(--edge-2);border-radius:var(--r);
+  padding:22px;text-align:center;margin-top:20px}
 .extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px}
 
 /* barra de publicar */
@@ -155,6 +167,7 @@ main{padding:0 0 90px}
     <div class="abas" role="tablist">
       <button class="aba" type="button" role="tab" aria-selected="true"  data-aba="fotos">Fotos dos trabalhos</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="precos">Preços do orçamento</button>
+      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="avaliacoes">Avaliações</button>
     </div>
 
     <main>
@@ -164,6 +177,25 @@ main{padding:0 0 90px}
           <p>Uma foto por produto. Ela aparece na seção “Trabalhos” da home. Escolha o arquivo direto da câmera ou do computador — o painel corta, encolhe e converte sozinho (no máximo 1600 px de largura, alvo de 250 KB). Enquanto não houver foto, o site mostra um espaço marcado, nunca uma imagem quebrada.</p>
         </div>
         <div class="grade" id="grade-fotos"></div>
+      </section>
+
+      <section id="sec-avaliacoes" hidden>
+        <div class="sec-head">
+          <h2>Avaliações de clientes</h2>
+          <p>Aparecem numa seção própria da home, logo antes do orçamento. <b>Enquanto não houver nenhuma cadastrada, a seção não existe no site</b> — é de propósito: seção de avaliação vazia, ou com elogio inventado, faz mais mal do que não ter.</p>
+        </div>
+        <div class="aviso">Copie o texto como a pessoa escreveu, sem melhorar. Se ela escreveu no Google, o mais seguro é copiar de lá — assim o que está no site bate com o que qualquer um pode conferir.</div>
+
+        <div class="campo" style="max-width:520px">
+          <label for="p-google">Link do perfil no Google (opcional)</label>
+          <input id="p-google" type="text" placeholder="https://g.page/…">
+        </div>
+
+        <div class="avals-ed" id="avals-ed"></div>
+        <p class="vazio-lista" id="avals-vazio" hidden>Nenhuma avaliação cadastrada. A seção está escondida no site.</p>
+        <div style="margin-top:16px">
+          <button class="btn btn-ghost" type="button" id="btn-add-aval">+ Adicionar avaliação</button>
+        </div>
       </section>
 
       <section id="sec-precos" hidden>
@@ -273,6 +305,8 @@ const PRODUTOS = ["ACM","Lonas","Acrílico","Adesivos","Fachadas","Letras Caixa"
 const PADRAO = {
   fotos: {},
   ativos: {},
+  avaliacoes: [],
+  googlePerfil: "",
   precos: {
     TABELA: {
       "ACM":              {m2:360,  min:690,  inst:.25},
@@ -348,6 +382,8 @@ async function carregar(){
     dados = {
       fotos:  Object.assign({}, PADRAO.fotos,  vindo.fotos  || {}),
       ativos: Object.assign({}, PADRAO.ativos, vindo.ativos || {}),
+      avaliacoes: Array.isArray(vindo.avaliacoes) ? vindo.avaliacoes.slice() : [],
+      googlePerfil: typeof vindo.googlePerfil === "string" ? vindo.googlePerfil : "",
       precos: {
         TABELA:  Object.assign({}, PADRAO.precos.TABELA,  (vindo.precos && vindo.precos.TABELA)  || {}),
         ARTE:    (vindo.precos && vindo.precos.ARTE)   || PADRAO.precos.ARTE.slice(),
@@ -359,6 +395,7 @@ async function carregar(){
     };
     pintarFotos();
     pintarPrecos();
+    pintarAvaliacoes();
     sujo = false;
     $("btn-publicar").disabled = true;
     estado(snap.exists() ? "Tudo publicado." : "Primeira vez aqui — os valores abaixo são os que já estão no site.", snap.exists() ? "ok" : "");
@@ -373,6 +410,7 @@ document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () =>
   document.querySelectorAll(".aba").forEach(o => o.setAttribute("aria-selected", String(o === b)));
   $("sec-fotos").hidden  = b.dataset.aba !== "fotos";
   $("sec-precos").hidden = b.dataset.aba !== "precos";
+  $("sec-avaliacoes").hidden = b.dataset.aba !== "avaliacoes";
 }));
 
 /* ---------------------------- fotos ---------------------------- */
@@ -525,6 +563,92 @@ function pintarPrecos(){
     }));
 }
 
+/* ---------------------------- avaliações ---------------------------- */
+function pintarAvaliacoes(){
+  const cx = $("avals-ed");
+  cx.innerHTML = "";
+  $("p-google").value = dados.googlePerfil || "";
+  $("avals-vazio").hidden = dados.avaliacoes.length > 0;
+
+  dados.avaliacoes.forEach((a, i) => {
+    const bloco = document.createElement("div");
+    bloco.className = "aval-ed";
+    bloco.innerHTML = `
+      <div class="linha">
+        <div>
+          <label>Nome de quem escreveu</label>
+          <input type="text" data-c="nome" placeholder="Ex.: Maria Souza">
+        </div>
+        <div>
+          <label>Nota</label>
+          <select data-c="nota">
+            ${[5,4,3,2,1].map(n => `<option value="${n}">${n} ${n === 1 ? "estrela" : "estrelas"}</option>`).join("")}
+          </select>
+        </div>
+        <div>
+          <label>O que foi feito</label>
+          <input type="text" data-c="servico" placeholder="Ex.: Fachada em ACM">
+        </div>
+        <div>
+          <label>Quando</label>
+          <input type="text" data-c="data" placeholder="Ex.: março de 2026">
+        </div>
+      </div>
+      <div>
+        <label>Texto da avaliação</label>
+        <textarea data-c="texto" placeholder="Copie exatamente como a pessoa escreveu."></textarea>
+      </div>
+      <div class="pe">
+        <span class="conta">Avaliação ${i + 1}</span>
+        <button class="btn btn-ghost btn-sm" type="button" data-remover="${i}">Remover</button>
+      </div>`;
+
+    bloco.querySelector('[data-c="nome"]').value    = a.nome    || "";
+    bloco.querySelector('[data-c="servico"]').value = a.servico || "";
+    bloco.querySelector('[data-c="data"]').value    = a.data    || "";
+    bloco.querySelector('[data-c="texto"]').value   = a.texto   || "";
+    bloco.querySelector('[data-c="nota"]').value    = String(a.nota || 5);
+
+    bloco.querySelectorAll("[data-c]").forEach(campo => {
+      campo.addEventListener("input", () => {
+        const chave = campo.dataset.c;
+        dados.avaliacoes[i][chave] = chave === "nota" ? Number(campo.value) : campo.value;
+        marcarSujo();
+      });
+      campo.addEventListener("change", () => {
+        const chave = campo.dataset.c;
+        dados.avaliacoes[i][chave] = chave === "nota" ? Number(campo.value) : campo.value;
+        marcarSujo();
+      });
+    });
+
+    bloco.querySelector("[data-remover]").addEventListener("click", () => {
+      dados.avaliacoes.splice(i, 1);
+      pintarAvaliacoes();
+      marcarSujo();
+    });
+
+    cx.appendChild(bloco);
+  });
+}
+
+$("btn-add-aval").addEventListener("click", () => {
+  dados.avaliacoes.push({ nome:"", nota:5, servico:"", data:"", texto:"" });
+  pintarAvaliacoes();
+  marcarSujo();
+});
+
+$("p-google").addEventListener("input", () => {
+  dados.googlePerfil = $("p-google").value.trim();
+  marcarSujo();
+});
+
+/* avaliação sem nome ou sem texto não vai para o site: o leitor da home já
+   descarta, mas avisar aqui evita a pessoa achar que publicou e não aparecer */
+function avaliacoesIncompletas(){
+  return dados.avaliacoes.filter(a => !(a.nome || "").trim() || !(a.texto || "").trim()).length;
+}
+
 /* ---------------------------- publicar ---------------------------- */
 $("btn-publicar").addEventListener("click", async () => {
   $("btn-publicar").disabled = true;
@@ -534,11 +658,16 @@ $("btn-publicar").addEventListener("click", async () => {
       fotos:  dados.fotos,
       ativos: dados.ativos,
       precos: dados.precos,
+      avaliacoes: dados.avaliacoes,
+      googlePerfil: dados.googlePerfil,
       atualizadoEm: serverTimestamp(),
       atualizadoPor: auth.currentUser ? auth.currentUser.email : ""
     }, { merge: true });
     sujo = false;
-    estado("Publicado. O site já mostra as mudanças.", "ok");
+    const faltando = avaliacoesIncompletas();
+    estado(faltando
+      ? "Publicado — mas " + faltando + (faltando === 1 ? " avaliação está" : " avaliações estão") + " sem nome ou sem texto, e por isso não aparecem no site."
+      : "Publicado. O site já mostra as mudanças.", faltando ? "" : "ok");
   }catch(err){
     $("btn-publicar").disabled = false;
     estado("Não deu para publicar: " + (err.code || err.message), "ruim");

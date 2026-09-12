@@ -90,8 +90,12 @@ escolher a região na primeira vez.
 | 1 — Fotos dos trabalhos | **pronta** |
 | 4 — Preços e quais produtos entram no orçamento | **pronta** |
 | 2 — Logos de clientes | falta a faixa existir na home |
-| 3 — Avaliações do Google | falta a seção existir na home |
+| 3 — Avaliações de clientes | **pronta** — falta a primeira avaliação real |
 | 5 — Clientes do portfólio | falta a página de portfólio existir |
 
-As três de baixo são a mesma mecânica das duas de cima; o que falta é o lugar
-no site público onde elas apareceriam.
+As duas de baixo são a mesma mecânica das de cima; o que falta é o lugar no
+site público onde elas apareceriam.
+
+A seção de avaliações só aparece na home quando existe pelo menos uma avaliação
+cadastrada. Enquanto a lista estiver vazia, a home não tem essa seção — melhor
+não ter do que ter uma vazia ou preenchida com elogio inventado.

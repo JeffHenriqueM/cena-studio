@@ -107,9 +107,9 @@ coladas no console, somadas às que já estão lá. O passo a passo está em
 
 ## 4. O que já está escrito
 
-- `painel/index.html` — login, fatia 1 (fotos) e fatia 4 (preços e chave de
-  ligar/desligar produto no orçamento). Grava um documento só,
-  `artsivos_site/publico`.
+- `painel/index.html` — login, fatia 1 (fotos), fatia 4 (preços e chave de
+  ligar/desligar produto no orçamento) e fatia 3 (avaliações de clientes).
+  Grava um documento só, `artsivos_site/publico`.
 - `dados.js` — leitura pública, por REST, sem SDK. Carregado na home. Se falhar,
   a página fica como está escrita no HTML.
 - O `index.html` da home passou a aceitar preços vindos do painel: quando os
@@ -120,6 +120,11 @@ coladas no console, somadas às que já estão lá. O passo a passo está em
 Falta ligar no console (login por e-mail/senha, regras do Firestore, regras do
 Storage) — `painel/CONFIGURAR.md`.
 
-As fatias 2 (logos), 3 (avaliações) e 5 (portfólio) são a mesma mecânica das duas
-já feitas. O que falta nelas não é o painel: é o lugar no site público onde
-apareceriam, que ainda não existe.
+A seção de avaliações existe na home desde a mesma leva, e nasce escondida: só
+aparece quando há pelo menos uma avaliação cadastrada. Enquanto não houver, a
+home não tem essa seção — é melhor não ter do que ter uma vazia, e muito melhor
+do que ter uma com elogio inventado.
+
+As fatias 2 (logos) e 5 (portfólio) são a mesma mecânica das já feitas. O que
+falta nelas não é o painel: é o lugar no site público onde apareceriam, que
+ainda não existe.
