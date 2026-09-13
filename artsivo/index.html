@@ -753,6 +753,58 @@
     if(d.avaliacoes && d.avaliacoes.length) montarAvaliacoes(d.avaliacoes);
   });
 
+  /* -------------------------------------------------------------------
+     GUARDAR O ORÇAMENTO
+     Grava o pedido antes de a pessoa sair para o WhatsApp. É o que permite
+     recuperar quem preencheu e não mandou a mensagem — até aqui esse
+     contato evaporava.
+
+     Sem SDK, como o resto do site: uma chamada REST. Se falhar, falha em
+     silêncio — o pedido vai para o WhatsApp do mesmo jeito. O site nunca
+     deixa de funcionar por causa disto.
+
+     `keepalive` existe porque a página está saindo no mesmo instante: sem
+     ele o navegador cancela a requisição no meio.
+     ------------------------------------------------------------------- */
+  function guardarOrcamento(){
+    if(typeof fetch !== 'function') return;
+
+    var PROJETO = 'finpay-134b0';
+    var CHAVE   = 'AIzaSyDHsfm8CPaaJE7_Kf0MMrIK8i39W5ekGhg';
+    var base    = 'projects/' + PROJETO + '/databases/(default)/documents';
+    var id      = 'orc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+
+    var est = estimar();
+    var resumo = pedido().map(function(l){ return l[0] + ': ' + l[1]; }).join(' | ');
+
+    function txt(v, max){ return {stringValue: String(v == null ? '' : v).slice(0, max)}; }
+
+    try{
+      fetch('https://firestore.googleapis.com/v1/' + base + ':commit?key=' + CHAVE, {
+        method: 'POST',
+        keepalive: true,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({writes: [{
+          update: {
+            name: base + '/artsivos_orcamentos/' + id,
+            fields: {
+              nome:     txt(nome.value.trim(), 80),
+              whatsapp: txt(fone.value.trim(), 25),
+              produto:  txt(prod.value, 60),
+              pedido:   txt(resumo, 2000),
+              valor:    txt(est ? brl(est.total) : 'Sob consulta', 40),
+              origem:   txt('site artsivos', 40)
+            }
+          },
+          /* a data é a do servidor, não a do aparelho de quem preencheu:
+             a regra de segurança exige isso justamente para ninguém
+             cadastrar pedido com data inventada */
+          updateTransforms: [{fieldPath: 'criadoEm', setToServerValue: 'REQUEST_TIME'}]
+        }]})
+      })['catch'](function(){});
+    }catch(e){}
+  }
+
   /* o contato é pedido antes de sair: assim dá para retomar quem não fecha na hora */
   [wa, melhor].forEach(function(botao){ botao.addEventListener('click', function(e){
     var faltaNome = !nome.value.trim(), faltaFone = nome.value.trim() && fone.value.replace(/\D/g,'').length < 10;
@@ -766,6 +818,8 @@
       return;
     }
     aviso.hidden = true;
+
+    guardarOrcamento();
 
     var LEAD_ENDPOINT = endpoint();
     if(LEAD_ENDPOINT){

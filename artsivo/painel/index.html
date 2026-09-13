@@ -168,6 +168,7 @@ select{appearance:none}
       <button class="aba" type="button" role="tab" aria-selected="true"  data-aba="fotos">Fotos dos trabalhos</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="precos">Preços do orçamento</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="avaliacoes">Avaliações</button>
+      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="orcamentos">Orçamentos</button>
     </div>
 
     <main>
@@ -177,6 +178,26 @@ select{appearance:none}
           <p>Uma foto por produto. Ela aparece na seção “Trabalhos” da home. Escolha o arquivo direto da câmera ou do computador — o painel corta, encolhe e converte sozinho (no máximo 1600 px de largura, alvo de 250 KB). Enquanto não houver foto, o site mostra um espaço marcado, nunca uma imagem quebrada.</p>
         </div>
         <div class="grade" id="grade-fotos"></div>
+      </section>
+
+      <section id="sec-orcamentos" hidden>
+        <div class="sec-head">
+          <h2>Orçamentos pedidos pelo site</h2>
+          <p>Cada vez que alguém preenche a calculadora e clica para falar no WhatsApp, o pedido é guardado aqui — <b>inclusive quando a pessoa desiste no meio do caminho</b> e a mensagem nunca chega. Esses são os contatos que antes se perdiam.</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+          <button class="btn btn-ghost btn-sm" type="button" id="btn-recarregar">Atualizar</button>
+          <span class="estado" id="estado-orc"></span>
+        </div>
+        <div class="rolagem">
+          <table class="tabela">
+            <thead>
+              <tr><th>Quando</th><th>Nome</th><th>WhatsApp</th><th>Produto</th><th>Estimativa</th><th></th></tr>
+            </thead>
+            <tbody id="linhas-orc"></tbody>
+          </table>
+        </div>
+        <p class="vazio-lista" id="orc-vazio" hidden>Nenhum orçamento pedido ainda.</p>
       </section>
 
       <section id="sec-avaliacoes" hidden>
@@ -267,7 +288,8 @@ select{appearance:none}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp }
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp,
+         collection, query, orderBy, limit, getDocs, deleteDoc }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
@@ -411,6 +433,10 @@ document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () =>
   $("sec-fotos").hidden  = b.dataset.aba !== "fotos";
   $("sec-precos").hidden = b.dataset.aba !== "precos";
   $("sec-avaliacoes").hidden = b.dataset.aba !== "avaliacoes";
+  $("sec-orcamentos").hidden = b.dataset.aba !== "orcamentos";
+  /* a lista é buscada quando a aba abre, não junto com o resto: são
+     documentos que crescem sem parar e quase sempre ninguém vai olhar */
+  if(b.dataset.aba === "orcamentos") carregarOrcamentos();
 }));
 
 /* ---------------------------- fotos ---------------------------- */
@@ -648,6 +674,89 @@ $("p-google").addEventListener("input", () => {
 function avaliacoesIncompletas(){
   return dados.avaliacoes.filter(a => !(a.nome || "").trim() || !(a.texto || "").trim()).length;
 }
+
+/* ---------------------------- orçamentos ---------------------------- */
+/* Lista só de leitura (mais apagar). Não tem "publicar": o que está aqui foi
+   escrito pelo site, não por esta tela — por isso nada aqui marca o painel
+   como sujo. */
+const ORCS = collection(db, "artsivos_orcamentos");
+let orcsCarregados = false;
+
+function quando(ts){
+  if(!ts || typeof ts.toDate !== "function") return "—";
+  const d = ts.toDate();
+  return d.toLocaleDateString("pt-BR", { day:"2-digit", month:"2-digit" }) + " " +
+         d.toLocaleTimeString("pt-BR", { hour:"2-digit", minute:"2-digit" });
+}
+
+/* só os dígitos: é o que o wa.me aceita. 55 na frente quando vier sem */
+function zap(fone){
+  const so = String(fone || "").replace(/\D/g, "");
+  if(so.length < 10) return null;
+  return so.length <= 11 ? "55" + so : so;
+}
+
+function estadoOrc(txt, tipo){
+  const e = $("estado-orc");
+  e.textContent = txt || "";
+  e.className = "estado" + (tipo ? " " + tipo : "");
+}
+
+async function carregarOrcamentos(forcar){
+  if(orcsCarregados && !forcar) return;
+  estadoOrc("Carregando…");
+  try{
+    const snap = await getDocs(query(ORCS, orderBy("criadoEm", "desc"), limit(200)));
+    const corpo = $("linhas-orc");
+    corpo.innerHTML = "";
+
+    snap.forEach(d => {
+      const o = d.data();
+      const tr = document.createElement("tr");
+      const numero = zap(o.whatsapp);
+
+      tr.innerHTML = `
+        <td style="white-space:nowrap">${esc(quando(o.criadoEm))}</td>
+        <td>${esc(o.nome || "—")}</td>
+        <td style="white-space:nowrap">${numero
+            ? `<a href="https://wa.me/${numero}" target="_blank" rel="noopener">${esc(o.whatsapp)}</a>`
+            : esc(o.whatsapp || "—")}</td>
+        <td>${esc(o.produto || "—")}</td>
+        <td style="white-space:nowrap">${esc(o.valor || "—")}</td>
+        <td style="text-align:right"><button class="btn btn-ghost btn-sm" type="button" data-apagar="${esc(d.id)}">Apagar</button></td>`;
+
+      /* o pedido inteiro numa linha embaixo, para não espremer a tabela */
+      const det = document.createElement("tr");
+      det.innerHTML = `<td colspan="6" style="padding-top:0;color:var(--ink-mute);font-size:13px">${esc(o.pedido || "")}</td>`;
+
+      tr.querySelector("[data-apagar]").addEventListener("click", async () => {
+        if(!confirm("Apagar este orçamento? Não tem como desfazer.")) return;
+        try{
+          await deleteDoc(doc(db, "artsivos_orcamentos", d.id));
+          tr.remove(); det.remove();
+          estadoOrc("Apagado.", "ok");
+        }catch(err){
+          estadoOrc("Não deu para apagar: " + (err.code || err.message), "ruim");
+        }
+      });
+
+      corpo.appendChild(tr);
+      corpo.appendChild(det);
+    });
+
+    $("orc-vazio").hidden = snap.size > 0;
+    estadoOrc(snap.size === 0 ? "" : snap.size === 1 ? "1 orçamento" : snap.size + " orçamentos");
+    orcsCarregados = true;
+  }catch(err){
+    estadoOrc("Não deu para carregar: " + (err.code || err.message), "ruim");
+  }
+}
+
+function esc(t){
+  return String(t == null ? "" : t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+}
+
+$("btn-recarregar").addEventListener("click", () => carregarOrcamentos(true));
 
 /* ---------------------------- publicar ---------------------------- */
 $("btn-publicar").addEventListener("click", async () => {

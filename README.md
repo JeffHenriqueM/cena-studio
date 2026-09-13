@@ -85,7 +85,8 @@ Não compartilha nada com o CENA além da hospedagem.
 ### Painel do admin (`artsivo/painel/`)
 
 Fora do índice de busca, com login. A empresa troca **as fotos dos trabalhos**,
-**os preços do orçamento** e **as avaliações de clientes** sem mexer em código. O painel encolhe a foto no próprio
+**os preços do orçamento** e **as avaliações de clientes** sem mexer em código, e vê
+**os orçamentos pedidos pelo site**. O painel encolhe a foto no próprio
 navegador (máx. 1600 px, WebP, alvo de 250 KB) e grava um documento só no Firestore,
 `artsivos_site/publico`; a home lê esse documento por REST em `dados.js`, sem SDK.
 **Se a leitura falhar, a página fica exatamente como está escrita no HTML** — o site
@@ -96,6 +97,15 @@ seção **nasce escondida e só aparece quando existe avaliação cadastrada** �
 mesmo para a home do CENA, onde a lista fica escrita no próprio `index.html` (em
 `AVALIACOES`). Seção de avaliação vazia, ou preenchida com elogio inventado, faz
 mais mal do que não ter.
+
+Os orçamentos são gravados em `artsivos_orcamentos` no instante em que a pessoa
+clica para falar no WhatsApp — **antes de sair da página**, não depois. É o que
+recupera quem preenche e desiste no meio do caminho. A gravação falha em
+silêncio se der errado: o pedido vai para o WhatsApp do mesmo jeito.
+
+A regra de segurança dessa coleção deixa **qualquer visitante criar** (o site não
+tem login) mas **só o admin ler** — telefone de cliente não fica exposto — e exige
+que a data seja a do servidor, para ninguém cadastrar pedido com data inventada.
 
 Cada produto tem uma chave de ligar/desligar: desligado, ele sai do orçamento
 automático e o pedido cai em "Projetos Especiais", preço feito à mão. Produto sem
