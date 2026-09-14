@@ -291,6 +291,11 @@ details p{padding:0 0 22px;font-size:15.5px;margin:0}
 @media (min-width:700px){ .avals{grid-template-columns:repeat(2,1fr)} }
 @media (min-width:1000px){ .avals{grid-template-columns:repeat(3,1fr)} }
 
+/* print e vídeo nas avaliações */
+.aval-midia{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--edge);background:var(--stage-2)}
+.aval-midia.print img{width:100%;height:auto;display:block;max-height:420px;object-fit:contain}
+.aval-midia.video video{width:100%;display:block;max-height:460px;background:#000}
+
 /* ---------- CTA FINAL + RODAPÉ ---------- */
 .final{position:relative;overflow:hidden;border-radius:26px;border:1px solid rgba(255,77,141,.35);padding:56px 26px;text-align:center;background:var(--stage)}
 .final .set-light{background:radial-gradient(90% 120% at 20% 0%,rgba(255,77,141,.42),transparent 62%),radial-gradient(80% 110% at 90% 100%,rgba(53,224,214,.28),transparent 62%)}
@@ -874,7 +879,9 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
      enquanto a lista estiver vazia a seção inteira fica escondida, e é
      assim que ela deve ficar até a primeira avaliação real existir.
 
-     Cada item: { nome, texto, nota (1 a 5), servico, data }
+     Cada item: { tipo, nome, texto, nota (1 a 5), servico, data, midia }
+     tipo: 'texto' (padrão), 'print' (imagem de conversa) ou 'video'.
+     Em print e vídeo, `midia` é o caminho do arquivo e o texto é opcional.
      GOOGLE_PERFIL é o link do perfil, para o "Ver no Google".
      ----------------------------------------------------------------- */
   var AVALIACOES = [];
@@ -898,16 +905,29 @@ footer{border-top:1px solid var(--edge);margin-top:86px;padding:44px 0 60px;colo
     var cx  = document.getElementById('avals');
     if(!sec || !cx) return;
 
-    var lista = AVALIACOES.filter(function(a){ return a && a.texto && a.nome; });
+    var lista = AVALIACOES.filter(function(a){
+      if(!a || !a.nome) return false;
+      return (a.tipo === 'print' || a.tipo === 'video') ? !!a.midia : !!a.texto;
+    });
     if(!lista.length){ sec.hidden = true; return; }
 
     var soma = 0, html = '';
     lista.forEach(function(a){
       var nota = Number(a.nota) || 5;
       soma += nota;
+      var m = '';
+      if(a.tipo === 'video' && a.midia){
+        m = '<div class="aval-midia video"><video controls playsinline preload="metadata"' +
+            (a.capa ? ' poster="' + esc(a.capa) + '"' : '') +
+            '><source src="' + esc(a.midia) + '"></video></div>';
+      } else if(a.tipo === 'print' && a.midia){
+        m = '<a class="aval-midia print" href="' + esc(a.midia) + '" target="_blank" rel="noopener">' +
+            '<img src="' + esc(a.midia) + '" alt="Print da mensagem de ' + esc(a.nome) + '" loading="lazy"></a>';
+      }
       html += '<article class="aval">' +
                 '<span class="estrelas" aria-label="' + nota + ' de 5 estrelas">' + estrelasHTML(nota) + '</span>' +
-                '<blockquote>' + esc(a.texto) + '</blockquote>' +
+                m +
+                (a.texto ? '<blockquote>' + esc(a.texto) + '</blockquote>' : '') +
                 '<div class="quem"><span class="ini" aria-hidden="true">' + esc(a.nome.trim().charAt(0).toUpperCase()) + '</span>' +
                   '<div><b>' + esc(a.nome) + '</b>' +
                   (a.servico || a.data ? '<span>' + esc([a.servico, a.data].filter(Boolean).join(' · ')) + '</span>' : '') +

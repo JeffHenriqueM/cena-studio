@@ -621,3 +621,20 @@ body.travado{overflow:hidden}
 .como-foto summary:hover{color:var(--ink)}
 .como-foto ul{margin:11px 0 0;padding-left:19px;color:var(--ink-mute);font-size:13.5px;line-height:1.65}
 .como-foto li{margin-bottom:5px}
+
+
+/* ---------- AVALIAÇÃO COM PRINT OU VÍDEO ----------
+   O print é a prova mais forte que existe nesse ramo: é a conversa real,
+   com a cara do WhatsApp. Por isso ele aparece inteiro, sem corte, e abre
+   em tamanho real no clique. */
+.aval-midia{display:block;border-radius:10px;overflow:hidden;border:1px solid var(--edge);
+  background:var(--panel-2)}
+.aval-midia.print img{width:100%;height:auto;display:block;max-height:420px;object-fit:contain}
+.aval-midia.print{position:relative}
+.aval-midia.print::after{content:"ampliar";position:absolute;right:8px;bottom:8px;
+  font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(0,0,0,.62);color:#fff;padding:3px 8px;border-radius:999px;opacity:0;transition:opacity .2s ease}
+.aval-midia.print:hover::after{opacity:1}
+.aval-midia.video video{width:100%;display:block;max-height:460px;background:#000}
+.aval.tem-video blockquote{font-size:14.5px}
+@media (prefers-reduced-motion:reduce){ .aval-midia.print::after{transition:none} }

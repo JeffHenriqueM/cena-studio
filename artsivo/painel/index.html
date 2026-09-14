@@ -121,6 +121,9 @@ select{appearance:none}
 .vazio-lista{color:var(--ink-mute);font-size:14px;border:1px dashed var(--edge-2);border-radius:var(--r);
   padding:22px;text-align:center;margin-top:20px}
 .dica-campo{color:var(--ink-mute);font-size:12px;margin:6px 0 0}
+.midia-aval{margin-bottom:12px}
+.previa-img{max-width:180px;border-radius:8px;border:1px solid var(--edge);display:block}
+.previa-video{max-width:260px;border-radius:8px;border:1px solid var(--edge);display:block;background:#000}
 .miniaturas{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .miniaturas a{display:block;width:62px;height:62px;border-radius:8px;overflow:hidden;border:1px solid var(--edge)}
 .miniaturas img{width:100%;height:100%;object-fit:cover;display:block}
@@ -212,9 +215,9 @@ select{appearance:none}
       <section id="sec-avaliacoes" hidden>
         <div class="sec-head">
           <h2>Avaliações de clientes</h2>
-          <p>Aparecem numa seção própria da home, logo antes do orçamento. <b>Enquanto não houver nenhuma cadastrada, a seção não existe no site</b> — é de propósito: seção de avaliação vazia, ou com elogio inventado, faz mais mal do que não ter.</p>
+          <p>Aparecem numa seção própria em <b>todas as páginas do site</b>, logo antes do rodapé. Pode ser texto, <b>print de conversa</b> ou <b>vídeo</b> — o print costuma convencer mais que qualquer texto, porque é a conversa real. <b>Enquanto não houver nenhuma cadastrada, a seção não existe no site</b>: seção vazia, ou com elogio inventado, faz mais mal do que não ter.</p>
         </div>
-        <div class="aviso">Copie o texto como a pessoa escreveu, sem melhorar. Se ela escreveu no Google, o mais seguro é copiar de lá — assim o que está no site bate com o que qualquer um pode conferir.</div>
+        <div class="aviso">Copie o texto como a pessoa escreveu, sem melhorar. <b>Antes de publicar print ou vídeo de alguém, peça autorização</b> — é a conversa e a imagem de outra pessoa, e o print costuma trazer o nome e a foto dela junto. Se der, corte o número de telefone.</div>
 
         <div class="campo" style="max-width:520px">
           <label for="p-google">Link do perfil no Google (opcional)</label>
@@ -621,6 +624,14 @@ function pintarAvaliacoes(){
     bloco.innerHTML = `
       <div class="linha">
         <div>
+          <label>Tipo</label>
+          <select data-c="tipo">
+            <option value="texto">Texto</option>
+            <option value="print">Print de conversa</option>
+            <option value="video">Vídeo</option>
+          </select>
+        </div>
+        <div>
           <label>Nome de quem escreveu</label>
           <input type="text" data-c="nome" placeholder="Ex.: Maria Souza">
         </div>
@@ -639,8 +650,16 @@ function pintarAvaliacoes(){
           <input type="text" data-c="data" placeholder="Ex.: março de 2026">
         </div>
       </div>
+      <div class="midia-aval" data-midia hidden>
+        <label>Arquivo (imagem do print, ou o vídeo)</label>
+        <input type="file" data-arq hidden>
+        <button class="btn btn-ghost btn-sm" type="button" data-escolher>Escolher arquivo</button>
+        <span class="peso" data-peso></span>
+        <div data-previa style="margin-top:10px"></div>
+      </div>
+
       <div>
-        <label>Texto da avaliação</label>
+        <label data-rot-texto>Texto da avaliação</label>
         <textarea data-c="texto" placeholder="Copie exatamente como a pessoa escreveu."></textarea>
       </div>
       <div class="pe">
@@ -653,6 +672,66 @@ function pintarAvaliacoes(){
     bloco.querySelector('[data-c="data"]').value    = a.data    || "";
     bloco.querySelector('[data-c="texto"]').value   = a.texto   || "";
     bloco.querySelector('[data-c="nota"]').value    = String(a.nota || 5);
+    bloco.querySelector('[data-c="tipo"]').value    = a.tipo || "texto";
+
+    /* o bloco de arquivo só existe para print e vídeo */
+    const midia   = bloco.querySelector("[data-midia]");
+    const previa  = bloco.querySelector("[data-previa]");
+    const arq     = bloco.querySelector("[data-arq]");
+    const peso    = bloco.querySelector("[data-peso]");
+    const rotulo  = bloco.querySelector("[data-rot-texto]");
+
+    function ajustarTipo(){
+      const t = bloco.querySelector('[data-c="tipo"]').value;
+      midia.hidden = t === "texto";
+      arq.setAttribute("accept", t === "video" ? "video/*" : "image/*");
+      rotulo.textContent = t === "texto" ? "Texto da avaliação" : "Legenda (opcional)";
+      previa.innerHTML = !a.midia ? "" :
+        t === "video"
+          ? `<video class="previa-video" src="${esc(a.midia)}" controls preload="metadata"></video>`
+          : `<img class="previa-img" src="${esc(a.midia)}" alt="">`;
+    }
+    ajustarTipo();
+
+    bloco.querySelector("[data-escolher]").addEventListener("click", () => arq.click());
+
+    arq.addEventListener("change", async () => {
+      const f = arq.files && arq.files[0];
+      if(!f) return;
+      const tipoAval = bloco.querySelector('[data-c="tipo"]').value;
+      try{
+        let blob = f, mime = f.type, ext = (f.name.split(".").pop() || "bin").toLowerCase();
+
+        if(tipoAval === "video"){
+          /* vídeo não dá para comprimir aqui no navegador. Então o limite é
+             um corte seco: acima disso a página do cliente fica pesada e a
+             conta do Storage começa a doer. */
+          if(f.size > 30 * 1024 * 1024){
+            peso.textContent = "vídeo grande demais (" + Math.round(f.size/1024/1024) + " MB). O limite é 30 MB — corte antes de subir.";
+            arq.value = "";
+            return;
+          }
+          peso.textContent = "enviando " + Math.round(f.size/1024/1024) + " MB…";
+        } else {
+          peso.textContent = "preparando…";
+          const pronto = await preparar(f);
+          blob = pronto.blob; mime = pronto.tipo;
+          ext = mime === "image/webp" ? "webp" : "jpg";
+          peso.textContent = "enviando " + Math.round(blob.size/1024) + " KB…";
+        }
+
+        const caminho = "artsivos/fotos/avaliacoes/" + Date.now() + "-" +
+                        Math.random().toString(36).slice(2,7) + "." + ext;
+        const r = ref(st, caminho);
+        await uploadBytes(r, blob, { contentType: mime });
+        a.midia = await getDownloadURL(r);
+        peso.textContent = "pronto";
+        ajustarTipo();
+        marcarSujo();
+      }catch(err){
+        peso.textContent = "não deu: " + (err.code || err.message);
+      }
+    });
 
     bloco.querySelectorAll("[data-c]").forEach(campo => {
       campo.addEventListener("input", () => {
@@ -663,6 +742,7 @@ function pintarAvaliacoes(){
       campo.addEventListener("change", () => {
         const chave = campo.dataset.c;
         dados.avaliacoes[i][chave] = chave === "nota" ? Number(campo.value) : campo.value;
+        if(chave === "tipo") ajustarTipo();
         marcarSujo();
       });
     });
@@ -679,7 +759,7 @@ function pintarAvaliacoes(){
 }
 
 $("btn-add-aval").addEventListener("click", () => {
-  dados.avaliacoes.push({ nome:"", nota:5, servico:"", data:"", texto:"" });
+  dados.avaliacoes.push({ tipo:"texto", nome:"", nota:5, servico:"", data:"", texto:"", midia:"" });
   pintarAvaliacoes();
   marcarSujo();
 });
@@ -692,7 +772,10 @@ $("p-google").addEventListener("input", () => {
 /* avaliação sem nome ou sem texto não vai para o site: o leitor da home já
    descarta, mas avisar aqui evita a pessoa achar que publicou e não aparecer */
 function avaliacoesIncompletas(){
-  return dados.avaliacoes.filter(a => !(a.nome || "").trim() || !(a.texto || "").trim()).length;
+  return dados.avaliacoes.filter(a => {
+    if(!(a.nome || "").trim()) return true;
+    return (a.tipo === "print" || a.tipo === "video") ? !a.midia : !(a.texto || "").trim();
+  }).length;
 }
 
 /* ---------------------------- orçamentos ---------------------------- */

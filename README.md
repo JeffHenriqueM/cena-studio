@@ -92,11 +92,17 @@ navegador (máx. 1600 px, WebP, alvo de 250 KB) e grava um documento só no Fire
 **Se a leitura falhar, a página fica exatamente como está escrita no HTML** — o site
 não depende do painel para funcionar.
 
-As avaliações aparecem numa seção própria da home, logo antes do orçamento. Essa
-seção **nasce escondida e só aparece quando existe avaliação cadastrada** — vale o
-mesmo para a home do CENA, onde a lista fica escrita no próprio `index.html` (em
-`AVALIACOES`). Seção de avaliação vazia, ou preenchida com elogio inventado, faz
-mais mal do que não ter.
+As avaliações aparecem em **todas as páginas** do site da ARTsivos, logo antes do
+rodapé. A seção é montada por `artsivo/avaliacoes.js` e injetada na página — um
+lugar só para mexer, em vez de sete cópias do mesmo HTML. Uma avaliação pode ser
+**texto**, **print de conversa** ou **vídeo**; print e vídeo valem sem texto junto.
+A seção **nasce escondida e só aparece quando existe avaliação cadastrada** — vale
+o mesmo para a home do CENA, onde a lista fica escrita no próprio `index.html` (em
+`AVALIACOES`). Seção vazia, ou preenchida com elogio inventado, faz mais mal do
+que não ter.
+
+⚠️ Print e vídeo são a conversa e a imagem de outra pessoa: **peça autorização
+antes de publicar**, e corte o número de telefone quando aparecer.
 
 O cliente pode **anexar fotos do local** no orçamento (opcional, até 6). A foto é
 encolhida no navegador dele e enviada na hora em que é escolhida — não no clique
