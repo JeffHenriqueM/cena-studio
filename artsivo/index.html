@@ -742,34 +742,55 @@
     });
   }
 
+  /* O envio usa o SDK do Firebase, carregado só neste momento — quem nunca
+     anexa foto não baixa nada. É a única parte do site com SDK, e tem
+     motivo: o endereço "cru" do Storage recusa o envio do navegador
+     (devolve 412 na verificação de CORS), e o endereço comum do Google
+     Cloud não passa pelas regras de segurança do Firebase. O SDK é o único
+     caminho que respeita a regra que diz "qualquer um manda, só o admin lê".
+
+     Guardamos o CAMINHO do arquivo, não o endereço: ler essas fotos é
+     privilégio do painel, então nem o próprio site consegue buscá-las de
+     volta. A miniatura que a pessoa vê é a imagem dela mesma, local. */
+  var storagePronto = null;
+  function abrirStorage(){
+    if(storagePronto) return storagePronto;
+    storagePronto = Promise.all([
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js'),
+      import('https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js')
+    ]).then(function(mods){
+      var app = mods[0].initializeApp({
+        apiKey: 'AIzaSyDHsfm8CPaaJE7_Kf0MMrIK8i39W5ekGhg',
+        authDomain: 'finpay-134b0.firebaseapp.com',
+        projectId: 'finpay-134b0',
+        storageBucket: 'finpay-134b0.appspot.com',
+        messagingSenderId: '641806492628',
+        appId: '1:641806492628:web:a67f8d94f4afb97271ac41'
+      }, 'envio-orcamento');
+      return {st: mods[1].getStorage(app), ref: mods[1].ref, enviar: mods[1].uploadBytes};
+    });
+    return storagePronto;
+  }
+
   function subirFoto(item){
-    var BUCKET = 'finpay-134b0.appspot.com';
     var caminho = 'artsivos/orcamentos/' + Date.now() + '-' +
                   Math.random().toString(36).slice(2, 8) +
                   (item.tipo === 'image/webp' ? '.webp' : '.jpg');
 
-    return fetch('https://firebasestorage.googleapis.com/v0/b/' + BUCKET +
-                 '/o?uploadType=media&name=' + encodeURIComponent(caminho), {
-      method: 'POST',
-      headers: {'Content-Type': item.tipo},
-      body: item.blob
-    }).then(function(r){
-      if(!r.ok) throw new Error('upload');
-      return r.json();
-    }).then(function(meta){
-      var token = (meta.downloadTokens || '').split(',')[0];
-      return 'https://firebasestorage.googleapis.com/v0/b/' + BUCKET + '/o/' +
-             encodeURIComponent(caminho) + '?alt=media&token=' + token;
+    return abrirStorage().then(function(fb){
+      return fb.enviar(fb.ref(fb.st, caminho), item.blob, {contentType: item.tipo});
+    }).then(function(){
+      return {caminho: caminho, previa: URL.createObjectURL(item.blob)};
     });
   }
 
   function pintarFotos(){
     var cx = document.getElementById('fotos-escolhidas');
     cx.innerHTML = '';
-    FOTOS.forEach(function(url, i){
+    FOTOS.forEach(function(f, i){
       var d = document.createElement('div');
       d.className = 'foto-mini';
-      d.innerHTML = '<img src="' + esc(url) + '" alt="Foto do local enviada por você">' +
+      d.innerHTML = '<img src="' + esc(f.previa) + '" alt="Foto do local enviada por você">' +
                     '<button class="tirar" type="button" title="Tirar esta foto">×</button>';
       d.querySelector('.tirar').addEventListener('click', function(){
         FOTOS.splice(i, 1);
@@ -806,8 +827,8 @@
         encolher(f).then(function(item){
           if(!item) throw new Error('imagem');
           return subirFoto(item);
-        }).then(function(url){
-          FOTOS.push(url);
+        }).then(function(item){
+          FOTOS.push(item);
           feitas++;
           pintarFotos();
           estadoFoto(FOTOS.length + ' foto(s) enviada(s)');
@@ -859,8 +880,8 @@
               pedido:   txt(resumo, 2000),
               valor:    txt(est ? brl(est.total) : 'Sob consulta', 40),
               origem:   txt('site artsivos', 40),
-              fotos:    {arrayValue: {values: FOTOS.slice(0, 6).map(function(u){
-                          return {stringValue: String(u).slice(0, 500)};
+              fotos:    {arrayValue: {values: FOTOS.slice(0, 6).map(function(f){
+                          return {stringValue: String(f.caminho).slice(0, 500)};
                         })}}
             }
           },
