@@ -588,3 +588,36 @@ body.travado{overflow:hidden}
 .avals-nota{margin-top:20px;font-size:14.5px;color:var(--ink-mute);max-width:58ch}
 @media (min-width:700px){ .avals{grid-template-columns:repeat(2,1fr)} }
 @media (min-width:1000px){ .avals{grid-template-columns:repeat(3,1fr)} }
+
+
+/* ---------- FOTOS DO LOCAL (no orçamento) ----------
+   Opcional de propósito: quem não tiver foto não pode ficar travado. */
+.opc{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-mute);border:1px solid var(--edge);border-radius:999px;padding:2px 7px;margin-left:6px}
+.btn-foto{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px dashed var(--edge-2);
+  border-radius:12px;padding:13px 18px;color:var(--ink-soft);font:inherit;font-size:14.5px;font-weight:600;
+  cursor:pointer;width:100%;justify-content:center;transition:border-color .2s ease,color .2s ease}
+.btn-foto::before{content:"＋";font-size:17px;line-height:1}
+.btn-foto:hover{border-color:var(--red);color:var(--ink)}
+.fotos-escolhidas{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.fotos-escolhidas:empty{display:none}
+.foto-mini{position:relative;width:78px;height:78px;border-radius:10px;overflow:hidden;
+  border:1px solid var(--edge);background:var(--panel-2)}
+.foto-mini img{width:100%;height:100%;object-fit:cover;display:block}
+.foto-mini .tirar{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;border:0;
+  background:rgba(0,0,0,.66);color:#fff;font-size:14px;line-height:1;cursor:pointer;padding:0}
+.foto-mini.subindo{opacity:.5}
+.foto-estado{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-mute);
+  margin:9px 0 0;min-height:15px}
+.foto-estado.ruim{color:var(--red-hot)}
+.como-foto{margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}
+.como-foto summary{cursor:pointer;font-size:13.5px;color:var(--ink-mute);list-style:none}
+.como-foto summary::-webkit-details-marker{display:none}
+/* o "+" vermelho é do FAQ lá de cima; aqui o marcador é a setinha */
+.como-foto summary::after{content:none}
+.como-foto details,.como-foto{border-bottom:0}
+.como-foto summary::before{content:"›";display:inline-block;margin-right:7px;transition:transform .2s ease}
+.como-foto[open] summary::before{transform:rotate(90deg)}
+.como-foto summary:hover{color:var(--ink)}
+.como-foto ul{margin:11px 0 0;padding-left:19px;color:var(--ink-mute);font-size:13.5px;line-height:1.65}
+.como-foto li{margin-bottom:5px}

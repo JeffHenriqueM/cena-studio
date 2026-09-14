@@ -317,6 +317,21 @@
           </select>
         </div>
 
+        <div class="calc-field" id="wrap-fotos">
+          <label for="f-fotos">Fotos do local <span class="opc">opcional</span></label>
+          <p class="dica">Se você tiver uma foto da fachada, do carro ou da parede, manda — com foto o orçamento sai mais perto do preço final e a gente evita ir medir à toa.</p>
+
+          <button class="btn-foto" type="button" id="btn-fotos">Escolher fotos</button>
+          <input id="f-fotos" type="file" accept="image/*" multiple hidden>
+          <div class="fotos-escolhidas" id="fotos-escolhidas"></div>
+          <p class="foto-estado" id="foto-estado"></p>
+
+          <details class="como-foto">
+            <summary>Como tirar a foto</summary>
+            <ul id="foto-dicas"></ul>
+          </details>
+        </div>
+
         <fieldset>
           <legend>Precisa também de</legend>
           <div class="addons">
@@ -518,6 +533,8 @@
   var ARTE   = [0, 90, 140, 200];       /* na ordem do select de arte */
   var PRESSA = {'Esta semana':.10, 'É urgente':.25};
   var ENTREGA = 50, RETIRADA = 140, MARGEM = .12;
+  /* 0 = visita de graça, que é como estava antes de existir esse campo */
+  var VISITA = 0;
 
   /* Onde os contatos são guardados: definido uma única vez em radar.js (LEAD_ENDPOINT).
      Enquanto estiver vazio, o pedido só vira mensagem de WhatsApp — nada fica
@@ -589,7 +606,8 @@
       if(rot === 'Instalação no local') v = base * t.inst;
       else if(rot === 'Entrega') v = ENTREGA;
       else if(rot === 'Retirada da peça antiga') v = RETIRADA;
-      else return;                       /* visita para medir não custa */
+      else if(rot === 'Visita para medir'){ if(!VISITA) return; v = VISITA; }
+      else return;
       total += v; itens.push([rot, v]);
     });
 
@@ -734,6 +752,7 @@
       if(p.PRESSA)  PRESSA  = p.PRESSA;
       if(typeof p.ENTREGA  === 'number') ENTREGA  = p.ENTREGA;
       if(typeof p.RETIRADA === 'number') RETIRADA = p.RETIRADA;
+      if(typeof p.VISITA   === 'number') VISITA   = p.VISITA;
       if(typeof p.MARGEM   === 'number') MARGEM   = p.MARGEM;
     }
     /* produto desligado sai do orçamento automático e vira Projetos Especiais */
@@ -751,7 +770,142 @@
     update();
 
     if(d.avaliacoes && d.avaliacoes.length) montarAvaliacoes(d.avaliacoes);
+
+    /* orientações da foto, escritas no painel */
+    if(d.fotoDicas && d.fotoDicas.length) pintarDicas(d.fotoDicas);
   });
+
+  /* -------------------------------------------------------------------
+     FOTOS DO LOCAL
+     Opcional. A foto é escolhida, encolhida aqui mesmo no navegador e
+     mandada na hora — não no clique final. Dois motivos: a pessoa vê que
+     deu certo, e o envio não corre contra a saída da página para o
+     WhatsApp, que cancelaria o upload no meio.
+
+     Se der qualquer errado, o orçamento continua funcionando sem foto.
+     ------------------------------------------------------------------- */
+  var DICAS_PADRAO = [
+    'De frente, com o local inteiro dentro da foto — nada cortado.',
+    'De dia, com o sol atrás de você, não na sua frente.',
+    'Se for fachada, dê uns passos para trás e pegue a largura toda.',
+    'Uma foto de perto do lugar exato onde a peça vai, se souber.',
+    'Se já tem alguma coisa instalada, fotografe também — ajuda a orçar a retirada.'
+  ];
+  var FOTOS = [];                /* endereços já enviados */
+  var MAX_FOTOS = 6;
+
+  function pintarDicas(lista){
+    var ul = document.getElementById('foto-dicas');
+    if(!ul) return;
+    ul.innerHTML = (lista && lista.length ? lista : DICAS_PADRAO)
+      .map(function(d){ return '<li>' + esc(d) + '</li>'; }).join('');
+  }
+  pintarDicas(DICAS_PADRAO);
+
+  function estadoFoto(txt, ruim){
+    var e = document.getElementById('foto-estado');
+    e.textContent = txt || '';
+    e.className = 'foto-estado' + (ruim ? ' ruim' : '');
+  }
+
+  /* encolhe antes de subir: foto de celular tem 4 MB, e quem está pedindo
+     orçamento na rua costuma estar no 4G */
+  function encolher(file){
+    return createImageBitmap(file).then(function(bm){
+      var escala = Math.min(1, 1400 / bm.width);
+      var w = Math.round(bm.width * escala), h = Math.round(bm.height * escala);
+      var cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(bm, 0, 0, w, h);
+      var tipo = cv.toDataURL('image/webp').indexOf('image/webp') === 5 ? 'image/webp' : 'image/jpeg';
+      return new Promise(function(ok){
+        (function tentar(fila){
+          var q = fila.shift();
+          cv.toBlob(function(b){
+            if(!b) return ok(null);
+            if(b.size <= 220 * 1024 || !fila.length) ok({blob: b, tipo: tipo});
+            else tentar(fila);
+          }, tipo, q);
+        })([.8, .68, .56, .44]);
+      });
+    });
+  }
+
+  function subirFoto(item){
+    var BUCKET = 'finpay-134b0.firebasestorage.app';
+    var caminho = 'artsivos/orcamentos/' + Date.now() + '-' +
+                  Math.random().toString(36).slice(2, 8) +
+                  (item.tipo === 'image/webp' ? '.webp' : '.jpg');
+
+    return fetch('https://firebasestorage.googleapis.com/v0/b/' + BUCKET +
+                 '/o?uploadType=media&name=' + encodeURIComponent(caminho), {
+      method: 'POST',
+      headers: {'Content-Type': item.tipo},
+      body: item.blob
+    }).then(function(r){
+      if(!r.ok) throw new Error('upload');
+      return r.json();
+    }).then(function(meta){
+      var token = (meta.downloadTokens || '').split(',')[0];
+      return 'https://firebasestorage.googleapis.com/v0/b/' + BUCKET + '/o/' +
+             encodeURIComponent(caminho) + '?alt=media&token=' + token;
+    });
+  }
+
+  function pintarFotos(){
+    var cx = document.getElementById('fotos-escolhidas');
+    cx.innerHTML = '';
+    FOTOS.forEach(function(url, i){
+      var d = document.createElement('div');
+      d.className = 'foto-mini';
+      d.innerHTML = '<img src="' + esc(url) + '" alt="Foto do local enviada por você">' +
+                    '<button class="tirar" type="button" title="Tirar esta foto">×</button>';
+      d.querySelector('.tirar').addEventListener('click', function(){
+        FOTOS.splice(i, 1);
+        pintarFotos();
+        estadoFoto(FOTOS.length ? FOTOS.length + ' foto(s)' : '');
+      });
+      cx.appendChild(d);
+    });
+  }
+
+  (function ligarFotos(){
+    var botao = document.getElementById('btn-fotos');
+    var campo = document.getElementById('f-fotos');
+    if(!botao || !campo || typeof fetch !== 'function' || typeof createImageBitmap !== 'function'){
+      if(document.getElementById('wrap-fotos')) document.getElementById('wrap-fotos').hidden = true;
+      return;
+    }
+
+    botao.addEventListener('click', function(){ campo.click(); });
+
+    campo.addEventListener('change', function(){
+      var arquivos = Array.prototype.slice.call(campo.files || []);
+      campo.value = '';
+      if(!arquivos.length) return;
+
+      var cabem = MAX_FOTOS - FOTOS.length;
+      if(cabem <= 0){ estadoFoto('Já são ' + MAX_FOTOS + ' fotos, que é o limite.', true); return; }
+      arquivos = arquivos.slice(0, cabem);
+
+      var feitas = 0;
+      estadoFoto('preparando ' + arquivos.length + ' foto(s)…');
+
+      arquivos.forEach(function(f){
+        encolher(f).then(function(item){
+          if(!item) throw new Error('imagem');
+          return subirFoto(item);
+        }).then(function(url){
+          FOTOS.push(url);
+          feitas++;
+          pintarFotos();
+          estadoFoto(FOTOS.length + ' foto(s) enviada(s)');
+        })['catch'](function(){
+          estadoFoto('Uma foto não subiu. Pode mandar depois no WhatsApp — o orçamento segue normal.', true);
+        });
+      });
+    });
+  })();
 
   /* -------------------------------------------------------------------
      GUARDAR O ORÇAMENTO
@@ -793,7 +947,10 @@
               produto:  txt(prod.value, 60),
               pedido:   txt(resumo, 2000),
               valor:    txt(est ? brl(est.total) : 'Sob consulta', 40),
-              origem:   txt('site artsivos', 40)
+              origem:   txt('site artsivos', 40),
+              fotos:    {arrayValue: {values: FOTOS.slice(0, 6).map(function(u){
+                          return {stringValue: String(u).slice(0, 500)};
+                        })}}
             }
           },
           /* a data é a do servidor, não a do aparelho de quem preencheu:

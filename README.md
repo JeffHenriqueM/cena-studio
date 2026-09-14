@@ -98,6 +98,16 @@ mesmo para a home do CENA, onde a lista fica escrita no próprio `index.html` (e
 `AVALIACOES`). Seção de avaliação vazia, ou preenchida com elogio inventado, faz
 mais mal do que não ter.
 
+O cliente pode **anexar fotos do local** no orçamento (opcional, até 6). A foto é
+encolhida no navegador dele e enviada na hora em que é escolhida — não no clique
+final, que cancelaria o envio no meio da saída para o WhatsApp. As orientações de
+como tirar a foto são escritas no painel; sem nada escrito, valem as padrão.
+Essas fotos ficam em `artsivos/orcamentos/` e **só o admin lê** — foto da loja de
+um cliente não é conteúdo público.
+
+A **visita para medir** já existia como opção e agora tem preço, configurável no
+painel. Zero deixa a visita de graça, que é como era antes.
+
 Os orçamentos são gravados em `artsivos_orcamentos` no instante em que a pessoa
 clica para falar no WhatsApp — **antes de sair da página**, não depois. É o que
 recupera quem preenche e desiste no meio do caminho. A gravação falha em

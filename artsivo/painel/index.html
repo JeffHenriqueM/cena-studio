@@ -120,6 +120,10 @@ select{appearance:none}
   text-transform:uppercase;color:var(--ink-mute)}
 .vazio-lista{color:var(--ink-mute);font-size:14px;border:1px dashed var(--edge-2);border-radius:var(--r);
   padding:22px;text-align:center;margin-top:20px}
+.dica-campo{color:var(--ink-mute);font-size:12px;margin:6px 0 0}
+.miniaturas{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.miniaturas a{display:block;width:62px;height:62px;border-radius:8px;overflow:hidden;border:1px solid var(--edge)}
+.miniaturas img{width:100%;height:100%;object-fit:cover;display:block}
 .extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px}
 
 /* barra de publicar */
@@ -189,6 +193,11 @@ select{appearance:none}
           <button class="btn btn-ghost btn-sm" type="button" id="btn-recarregar">Atualizar</button>
           <span class="estado" id="estado-orc"></span>
         </div>
+        <div class="aviso">
+          <b>Orientações da foto.</b> Uma por linha. É o que aparece no site, dentro de “Como tirar a foto”, quando o cliente vai anexar. Deixe vazio para usar as orientações padrão.
+          <textarea id="p-dicas" rows="5" style="margin-top:10px"></textarea>
+        </div>
+
         <div class="rolagem">
           <table class="tabela">
             <thead>
@@ -267,6 +276,11 @@ select{appearance:none}
             <input id="p-retirada" type="number" min="0" step="1">
           </div>
           <div>
+            <label for="p-visita">Visita para medir (R$)</label>
+            <input id="p-visita" type="number" min="0" step="1">
+            <p class="dica-campo">Zero deixa a visita de graça, como era antes.</p>
+          </div>
+          <div>
             <label for="p-margem">Faixa da estimativa (± %)</label>
             <input id="p-margem" type="number" min="0" max="50" step="1">
           </div>
@@ -342,7 +356,7 @@ const PADRAO = {
     },
     ARTE: [0, 90, 140, 200],
     PRESSA: {"Esta semana":.10, "É urgente":.25},
-    ENTREGA: 50, RETIRADA: 140, MARGEM: .12
+    ENTREGA: 50, RETIRADA: 140, MARGEM: .12, VISITA: 0
   }
 };
 PRODUTOS.forEach(p => { PADRAO.ativos[p] = true; });
@@ -405,6 +419,7 @@ async function carregar(){
       fotos:  Object.assign({}, PADRAO.fotos,  vindo.fotos  || {}),
       ativos: Object.assign({}, PADRAO.ativos, vindo.ativos || {}),
       avaliacoes: Array.isArray(vindo.avaliacoes) ? vindo.avaliacoes.slice() : [],
+      fotoDicas:  Array.isArray(vindo.fotoDicas)  ? vindo.fotoDicas.slice()  : [],
       googlePerfil: typeof vindo.googlePerfil === "string" ? vindo.googlePerfil : "",
       precos: {
         TABELA:  Object.assign({}, PADRAO.precos.TABELA,  (vindo.precos && vindo.precos.TABELA)  || {}),
@@ -412,12 +427,14 @@ async function carregar(){
         PRESSA:  Object.assign({}, PADRAO.precos.PRESSA, (vindo.precos && vindo.precos.PRESSA) || {}),
         ENTREGA:  numOu(vindo.precos && vindo.precos.ENTREGA,  PADRAO.precos.ENTREGA),
         RETIRADA: numOu(vindo.precos && vindo.precos.RETIRADA, PADRAO.precos.RETIRADA),
-        MARGEM:   numOu(vindo.precos && vindo.precos.MARGEM,   PADRAO.precos.MARGEM)
+        MARGEM:   numOu(vindo.precos && vindo.precos.MARGEM,   PADRAO.precos.MARGEM),
+        VISITA:   numOu(vindo.precos && vindo.precos.VISITA,   PADRAO.precos.VISITA)
       }
     };
     pintarFotos();
     pintarPrecos();
     pintarAvaliacoes();
+    $("p-dicas").value = (dados.fotoDicas || []).join("\n");
     sujo = false;
     $("btn-publicar").disabled = true;
     estado(snap.exists() ? "Tudo publicado." : "Primeira vez aqui — os valores abaixo são os que já estão no site.", snap.exists() ? "ok" : "");
@@ -575,15 +592,17 @@ function pintarPrecos(){
   $("p-pressa2").value = Math.round((P.PRESSA["É urgente"]   || 0) * 100);
   $("p-entrega").value  = P.ENTREGA;
   $("p-retirada").value = P.RETIRADA;
+  $("p-visita").value   = P.VISITA;
   $("p-margem").value   = Math.round(P.MARGEM * 100);
 
-  ["p-arte1","p-arte2","p-arte3","p-pressa1","p-pressa2","p-entrega","p-retirada","p-margem"]
+  ["p-arte1","p-arte2","p-arte3","p-pressa1","p-pressa2","p-entrega","p-retirada","p-margem","p-visita"]
     .forEach(id => $(id).addEventListener("change", () => {
       const n = id => { const v = parseFloat($(id).value); return isFinite(v) && v >= 0 ? v : 0; };
       P.ARTE = [0, n("p-arte1"), n("p-arte2"), n("p-arte3")];
       P.PRESSA = { "Esta semana": n("p-pressa1") / 100, "É urgente": n("p-pressa2") / 100 };
       P.ENTREGA  = n("p-entrega");
       P.RETIRADA = n("p-retirada");
+      P.VISITA   = n("p-visita");
       P.MARGEM   = Math.min(.5, n("p-margem") / 100);
       marcarSujo();
     }));
@@ -651,6 +670,7 @@ function pintarAvaliacoes(){
     bloco.querySelector("[data-remover]").addEventListener("click", () => {
       dados.avaliacoes.splice(i, 1);
       pintarAvaliacoes();
+    $("p-dicas").value = (dados.fotoDicas || []).join("\n");
       marcarSujo();
     });
 
@@ -726,8 +746,14 @@ async function carregarOrcamentos(forcar){
         <td style="text-align:right"><button class="btn btn-ghost btn-sm" type="button" data-apagar="${esc(d.id)}">Apagar</button></td>`;
 
       /* o pedido inteiro numa linha embaixo, para não espremer a tabela */
+      const fotos = Array.isArray(o.fotos) ? o.fotos : [];
       const det = document.createElement("tr");
-      det.innerHTML = `<td colspan="6" style="padding-top:0;color:var(--ink-mute);font-size:13px">${esc(o.pedido || "")}</td>`;
+      det.innerHTML = `<td colspan="6" style="padding-top:0;color:var(--ink-mute);font-size:13px">
+        ${esc(o.pedido || "")}
+        ${fotos.length ? `<div class="miniaturas">${fotos.map(u =>
+            `<a href="${esc(u)}" target="_blank" rel="noopener" title="Abrir a foto em tamanho real"><img src="${esc(u)}" alt="Foto do local mandada pelo cliente" loading="lazy"></a>`
+          ).join("")}</div>` : ""}
+      </td>`;
 
       tr.querySelector("[data-apagar]").addEventListener("click", async () => {
         if(!confirm("Apagar este orçamento? Não tem como desfazer.")) return;
@@ -758,6 +784,12 @@ function esc(t){
 
 $("btn-recarregar").addEventListener("click", () => carregarOrcamentos(true));
 
+$("p-dicas").addEventListener("input", () => {
+  dados.fotoDicas = $("p-dicas").value.split("\n")
+    .map(l => l.trim()).filter(Boolean);
+  marcarSujo();
+});
+
 /* ---------------------------- publicar ---------------------------- */
 $("btn-publicar").addEventListener("click", async () => {
   $("btn-publicar").disabled = true;
@@ -768,6 +800,7 @@ $("btn-publicar").addEventListener("click", async () => {
       ativos: dados.ativos,
       precos: dados.precos,
       avaliacoes: dados.avaliacoes,
+      fotoDicas: dados.fotoDicas,
       googlePerfil: dados.googlePerfil,
       atualizadoEm: serverTimestamp(),
       atualizadoPor: auth.currentUser ? auth.currentUser.email : ""
