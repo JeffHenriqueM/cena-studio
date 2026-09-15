@@ -141,7 +141,17 @@ select{appearance:none}
 <body>
 
 <!-- ================= LOGIN ================= -->
-<div class="login" id="tela-login">
+<!-- Enquanto o Firebase não diz se já existe sessão, ninguém deve ver o
+     formulário: quem já estava logado começava a digitar e era jogado para
+     dentro no meio da senha. Primeiro descobrir quem é, depois mostrar. -->
+<div class="login" id="tela-checando">
+  <div class="login-card" style="text-align:center">
+    <h1><span class="marca"><span class="a">ART</span><span class="b">sivos</span></span></h1>
+    <p class="sub" style="margin:10px 0 0">Verificando sua sessão…</p>
+  </div>
+</div>
+
+<div class="login" id="tela-login" hidden>
   <form class="login-card" id="form-login">
     <h1><span class="marca"><span class="a">ART</span><span class="b">sivos</span></span></h1>
     <p class="sub">Painel do site. Só quem tem conta cadastrada entra.</p>
@@ -154,11 +164,36 @@ select{appearance:none}
       <input id="senha" type="password" autocomplete="current-password" required>
     </div>
     <p class="erro" id="erro-login"></p>
-    <button class="btn btn-primary" type="submit" id="btn-entrar" style="width:100%;justify-content:center">Entrar</button>
+    <button class="btn btn-primary" type="submit" id="btn-entrar" style="width:100%;justify-content:center" disabled>Carregando…</button>
   </form>
 </div>
 
 <!-- ================= PAINEL ================= -->
+<script>
+/* O painel depende de arquivos que vêm da internet (o Firebase). Se eles não
+   chegarem — rede ruim, túnel, Wi-Fi que caiu — a tela ficaria presa em
+   "verificando" para sempre, ou o formulário apareceria morto. Este pedaço
+   existe para isso não acontecer calado. */
+(function(){
+  var f = document.getElementById("form-login");
+  if(f) f.addEventListener("submit", function(e){ e.preventDefault(); });
+
+  setTimeout(function(){
+    if(window.__painelPronto) return;
+    document.getElementById("tela-checando").hidden = true;
+    document.getElementById("tela-login").hidden = false;
+    var erro = document.getElementById("erro-login");
+    if(erro) erro.textContent = "Não deu para carregar o painel — parece a conexão. Toque em Recarregar.";
+    var b = document.getElementById("btn-entrar");
+    if(b){
+      b.disabled = false;
+      b.textContent = "Recarregar";
+      b.addEventListener("click", function(){ location.reload(); });
+    }
+  }, 9000);
+})();
+</script>
+
 <div id="tela-painel" hidden>
   <div class="top">
     <div class="top-in">
@@ -402,7 +437,13 @@ $("form-login").addEventListener("submit", async e => {
 });
 $("btn-sair").addEventListener("click", () => signOut(auth));
 
+/* daqui para baixo o painel responde a clique: libera o botão e desarma o vigia */
+window.__painelPronto = true;
+$("btn-entrar").disabled = false;
+$("btn-entrar").textContent = "Entrar";
+
 onAuthStateChanged(auth, async user => {
+  $("tela-checando").hidden = true;
   $("tela-login").hidden   = !!user;
   $("tela-painel").hidden  = !user;
   if(!user) return;
