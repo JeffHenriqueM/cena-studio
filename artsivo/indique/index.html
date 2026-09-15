@@ -185,7 +185,7 @@
         <a href="https://www.instagram.com/artsivospb" target="_blank" rel="noopener">@artsivospb</a>
       </div>
     </div>
-    <p class="legal">ARTsivos Comunicação Visual · Imagens meramente ilustrativas.</p>
+    <p class="legal">ARTsivos Comunicação Visual · Imagens meramente ilustrativas. · <a href="../privacidade/" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Privacidade</a></p>
   </div>
 </footer>
 
@@ -236,7 +236,32 @@
 
     /* deixa o código guardado para o próprio cliente não precisar gerar de novo */
     try{ localStorage.setItem('artsivos.meucodigo', JSON.stringify({codigo: codigo, nome: n, url: url})); }catch(e){}
+
+    /* e guarda do lado da ARTsivos: sem isso, chega alguém dizendo "vim pelo
+       código TAL" e não há como saber de quem é o código nem quem descontar */
+    registrar(codigo, n, url);
     saida.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  /* ---- o código, do lado da ARTsivos ----
+     É o mínimo: o código, o nome de quem gerou e o link. Vai junto com a
+     geração porque é parte do serviço que a pessoa pediu — ela escreveu o
+     nome justamente para o desconto sair no nome dela. Só o painel lê. */
+  function registrar(codigo, nome, url){
+    if(typeof fetch !== "function" || !codigo || !nome) return;
+    var base = "projects/finpay-134b0/databases/(default)/documents";
+    function txt(v, max){ return {stringValue: String(v == null ? "" : v).slice(0, max)}; }
+    fetch("https://firestore.googleapis.com/v1/" + base + ":commit?key=AIzaSyDHsfm8CPaaJE7_Kf0MMrIK8i39W5ekGhg", {
+      method: "POST", keepalive: true,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({writes: [{
+        update: {
+          name: base + "/artsivos_indicacoes/" + encodeURIComponent(codigo),
+          fields: {codigo: txt(codigo, 24), nome: txt(nome, 80), url: txt(url, 300)}
+        },
+        updateTransforms: [{fieldPath: "criadoEm", setToServerValue: "REQUEST_TIME"}]
+      }]})
+    })["catch"](function(){ /* se falhar, o link do cliente continua funcionando */ });
   }
 
   /* transforma o QR em PNG para quem quiser imprimir */

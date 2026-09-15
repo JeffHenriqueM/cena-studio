@@ -136,6 +136,21 @@ select{appearance:none}
 .estado{font-size:13px;color:var(--ink-mute)}
 .estado.ok{color:var(--ok)} .estado.ruim{color:var(--red-hot)}
 @media (max-width:520px){ .top-in{flex-wrap:wrap} .quem{width:100%} }
+
+/* ---- aba Visitas ---- */
+.med-linha{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0 6px}
+.med-caixa{background:var(--panel-2);border:1px solid var(--edge);border-radius:var(--r);padding:16px 18px;
+  display:flex;flex-direction:column;gap:4px}
+.med-caixa b{font-family:Archivo,Arial,sans-serif;font-weight:800;font-size:27px;color:var(--ink)}
+.med-caixa span{font-size:12.5px;color:var(--ink-mute)}
+.med-tit{font-size:17px;margin:34px 0 4px}
+.med-nota{margin:0 0 12px;font-size:13.5px;color:var(--ink-mute);line-height:1.55;max-width:70ch}
+.med-barras{display:grid;gap:8px;max-width:640px}
+.med-barra{display:grid;grid-template-columns:minmax(90px,150px) 1fr auto;gap:12px;align-items:center;font-size:13.5px}
+.med-barra .rot{color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.med-barra .trilho{height:9px;background:var(--panel-2);border:1px solid var(--edge);border-radius:99px;overflow:hidden}
+.med-barra .trilho i{display:block;height:100%;background:var(--red)}
+.med-barra .val{color:var(--ink-mute);font-family:"DM Mono",monospace;font-size:12px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -211,6 +226,7 @@ select{appearance:none}
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="precos">Preços do orçamento</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="avaliacoes">Avaliações</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="orcamentos">Orçamentos</button>
+      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="medicao">Visitas</button>
     </div>
 
     <main>
@@ -245,6 +261,40 @@ select{appearance:none}
           </table>
         </div>
         <p class="vazio-lista" id="orc-vazio" hidden>Nenhum orçamento pedido ainda.</p>
+      </section>
+
+      <section id="sec-medicao" hidden>
+        <div class="sec-head">
+          <h2>Visitas e indicações</h2>
+          <p>O que as pessoas fazem no site, somado. <b>Só entra quem autorizou</b> a medição no aviso da primeira visita — quem recusou não aparece aqui, e ninguém aqui tem nome: o que se mede é a página, não a pessoa.</p>
+          <span class="estado" id="estado-med"></span>
+        </div>
+
+        <div class="med-linha">
+          <div class="med-caixa"><b id="med-visitas">—</b><span>visitas medidas</span></div>
+          <div class="med-caixa"><b id="med-tempo">—</b><span>tempo médio</span></div>
+          <div class="med-caixa"><b id="med-inds">—</b><span>códigos de indicação</span></div>
+        </div>
+
+        <h3 class="med-tit">Onde a pessoa passa mais tempo</h3>
+        <p class="med-nota">Soma do tempo de todo mundo, por seção da página.</p>
+        <div id="med-secoes" class="med-barras"></div>
+
+        <h3 class="med-tit">Por onde ela sai</h3>
+        <p class="med-nota">A última seção na tela antes de fechar. Saída concentrada em um lugar costuma ser sinal de que ali falta alguma coisa.</p>
+        <div id="med-saidas" class="med-barras"></div>
+
+        <h3 class="med-tit">Produtos mais olhados</h3>
+        <div id="med-produtos" class="med-barras"></div>
+
+        <h3 class="med-tit">De onde vieram</h3>
+        <div id="med-origens" class="med-barras"></div>
+
+        <h3 class="med-tit">Códigos de indicação gerados</h3>
+        <p class="med-nota">Quem gerou um link para indicar. Quando o código aparecer num orçamento, o desconto é dessa pessoa.</p>
+        <div class="rolagem"><table class="tabela"><thead><tr>
+          <th>Quando</th><th>Código</th><th>Quem gerou</th></tr></thead>
+          <tbody id="linhas-ind"></tbody></table></div>
       </section>
 
       <section id="sec-avaliacoes" hidden>
@@ -495,10 +545,104 @@ document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () =>
   $("sec-precos").hidden = b.dataset.aba !== "precos";
   $("sec-avaliacoes").hidden = b.dataset.aba !== "avaliacoes";
   $("sec-orcamentos").hidden = b.dataset.aba !== "orcamentos";
+  $("sec-medicao").hidden = b.dataset.aba !== "medicao";
   /* a lista é buscada quando a aba abre, não junto com o resto: são
      documentos que crescem sem parar e quase sempre ninguém vai olhar */
   if(b.dataset.aba === "orcamentos") carregarOrcamentos();
+  if(b.dataset.aba === "medicao") carregarMedicao();
 }));
+
+
+/* ---------------------------- visitas e indicações ----------------------------
+   Leitura pura: nada aqui é editado, só somado. As linhas do radar vêm sem
+   nome, sem telefone e sem endereço de rede — é assim de propósito, e a regra
+   do banco recusa qualquer campo além destes. */
+const RADAR = collection(db, "artsivos_radar");
+const INDS  = collection(db, "artsivos_indicacoes");
+let medCarregada = false;
+
+function estadoMed(txt){ $("estado-med").textContent = txt || ""; }
+
+function tempoCurto(seg){
+  seg = Math.round(seg || 0);
+  if(seg < 60) return seg + "s";
+  const m = Math.floor(seg / 60), s = seg % 60;
+  if(m < 60) return m + "min" + (s ? " " + s + "s" : "");
+  return Math.floor(m / 60) + "h" + (m % 60 ? " " + (m % 60) + "min" : "");
+}
+
+/* "orcamento:61" -> ["orcamento", 61] */
+function parPara(txt){
+  const i = String(txt).lastIndexOf(":");
+  if(i < 0) return [String(txt), 1];
+  const n = Number(String(txt).slice(i + 1));
+  return [String(txt).slice(0, i), isNaN(n) ? 1 : n];
+}
+
+function barras(alvo, mapa, formatar){
+  const itens = Object.keys(mapa).map(k => [k, mapa[k]]).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const maior = itens.length ? itens[0][1] : 1;
+  $(alvo).innerHTML = itens.length
+    ? itens.map(([k, v]) => `
+        <div class="med-barra">
+          <span class="rot">${esc(k)}</span>
+          <span class="trilho"><i style="width:${Math.max(3, Math.round(v / maior * 100))}%"></i></span>
+          <span class="val">${esc(formatar ? formatar(v) : String(v))}</span>
+        </div>`).join("")
+    : `<p class="med-nota">Ainda não há dado suficiente.</p>`;
+}
+
+async function carregarMedicao(forcar){
+  if(medCarregada && !forcar) return;
+  estadoMed("Carregando…");
+  try{
+    const [visitas, indicacoes] = await Promise.all([
+      getDocs(query(RADAR, orderBy("emAte", "desc"), limit(500))),
+      getDocs(query(INDS,  orderBy("criadoEm", "desc"), limit(200)))
+    ]);
+
+    let total = 0, soma = 0;
+    const secoes = {}, saidas = {}, produtos = {}, origens = {};
+
+    visitas.forEach(d => {
+      const v = d.data();
+      total++;
+      soma += Number(v.segundos || 0);
+      (v.secoes || []).forEach(x => { const [k, n] = parPara(x); secoes[k] = (secoes[k] || 0) + n; });
+      (v.produtos || []).forEach(x => { const [k, n] = parPara(x); produtos[k] = (produtos[k] || 0) + n; });
+      if(v.saida)  saidas[v.saida]   = (saidas[v.saida] || 0) + 1;
+      if(v.origem) origens[v.origem] = (origens[v.origem] || 0) + 1;
+    });
+
+    $("med-visitas").textContent = total;
+    $("med-tempo").textContent   = total ? tempoCurto(soma / total) : "—";
+    $("med-inds").textContent    = indicacoes.size;
+
+    barras("med-secoes",   secoes,   tempoCurto);
+    barras("med-saidas",   saidas,   n => n + (n === 1 ? " visita" : " visitas"));
+    barras("med-produtos", produtos, n => n + (n === 1 ? " olhada" : " olhadas"));
+    barras("med-origens",  origens,  n => n + (n === 1 ? " visita" : " visitas"));
+
+    const corpo = $("linhas-ind");
+    corpo.innerHTML = "";
+    indicacoes.forEach(d => {
+      const i = d.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td style="white-space:nowrap">${esc(quando(i.criadoEm))}</td>
+                      <td class="mono">${esc(i.codigo || d.id)}</td>
+                      <td>${esc(i.nome || "—")}</td>`;
+      corpo.appendChild(tr);
+    });
+    if(!indicacoes.size){
+      corpo.innerHTML = `<tr><td colspan="3" style="color:var(--ink-mute)">Ninguém gerou link de indicação ainda.</td></tr>`;
+    }
+
+    medCarregada = true;
+    estadoMed(total ? "" : "Nenhuma visita medida ainda.");
+  }catch(err){
+    estadoMed("Não deu para carregar (" + (err.code || err.message) + ").");
+  }
+}
 
 /* ---------------------------- fotos ---------------------------- */
 function pintarFotos(){

@@ -348,7 +348,7 @@
         <p class="note">Em horário comercial, respondemos em até 2 horas. Sem compromisso.</p>
         <a class="btn btn-primary" id="out-wa" href="#" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a>
         <a class="btn btn-ghost" id="out-melhor" href="#" target="_blank" rel="noopener">Quero um preço melhor</a>
-        <p class="note" style="margin:12px 0 0">Guardamos seu contato só para responder este orçamento.</p>
+        <p class="note" style="margin:12px 0 0">Guardamos seu contato e as fotos só para responder este orçamento. <a href="privacidade/" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Como tratamos seus dados</a>.</p>
       </div>
     </div>
   </div>
@@ -474,6 +474,7 @@
         <a href="sobre/">Sobre a ARTsivos</a>
         <a href="blog/">Blog</a>
         <a href="#duvidas">Dúvidas</a>
+        <a href="privacidade/">Privacidade</a>
         <span>Seg a sex, 8h às 18h · Sáb, 8h às 12h</span>
       </div>
       <div class="col">
@@ -482,7 +483,7 @@
         <a href="mailto:contato@artsivos.com.br">contato@artsivos.com.br</a>
       </div>
     </div>
-    <p class="legal">ARTsivos Comunicação Visual · CNPJ 00.000.000/0001-00 · Imagens meramente ilustrativas.</p>
+    <p class="legal">ARTsivos Comunicação Visual · CNPJ 00.000.000/0001-00 · Imagens meramente ilustrativas. · <a href="privacidade/" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Privacidade</a></p>
   </div>
 </footer>
 
@@ -865,6 +866,15 @@
 
     function txt(v, max){ return {stringValue: String(v == null ? '' : v).slice(0, max)}; }
 
+    /* se a pessoa chegou por um link de indicação, o código vai junto do
+       pedido — é o que permite descontar os R$ 50 de quem indicou */
+    function quemIndicou(){
+      try{
+        var r = JSON.parse(localStorage.getItem('artsivos.radar.v1') || 'null');
+        return (r && r.indicacao) || '';
+      }catch(e){ return ''; }
+    }
+
     try{
       fetch('https://firestore.googleapis.com/v1/' + base + ':commit?key=' + CHAVE, {
         method: 'POST',
@@ -880,6 +890,7 @@
               pedido:   txt(resumo, 2000),
               valor:    txt(est ? brl(est.total) : 'Sob consulta', 40),
               origem:   txt('site artsivos', 40),
+              indicadoPor: txt(quemIndicou(), 24),
               fotos:    {arrayValue: {values: FOTOS.slice(0, 6).map(function(f){
                           return {stringValue: String(f.caminho).slice(0, 500)};
                         })}}

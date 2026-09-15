@@ -65,11 +65,34 @@
 
   /* ---------- tempo de verdade: só conta com a aba na frente ---------- */
   var ultimo = Date.now();
+
+  /* Qual seção está no meio da tela agora. É o que responde "onde a pessoa
+     para" e "por onde ela sai" — a última que estava no meio quando saiu. */
+  if(!d.secoes) d.secoes = {};
+  var ultimaSecao = "";
+  function secaoNoMeio(){
+    if(!document.elementFromPoint) return "";
+    var el = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+    while(el && el !== document.body){
+      if(el.id && (el.tagName === "SECTION" || el.className.indexOf("hero") > -1)) return el.id;
+      el = el.parentNode;
+    }
+    return "";
+  }
+
   setInterval(function(){
     var agora = Date.now();
     if(!document.hidden){
       var dt = (agora - ultimo) / 1000;
-      if(dt > 0 && dt < 30) d.segundos += dt;
+      if(dt > 0 && dt < 30){
+        d.segundos += dt;
+        var s = secaoNoMeio();
+        if(s){
+          d.secoes[s] = (d.secoes[s] || 0) + dt;
+          ultimaSecao = s;
+          d.saida = s;
+        }
+      }
     }
     ultimo = agora;
     gravar();
@@ -100,6 +123,131 @@
     var outras = d.paginas.filter(function(x){ return x.indexOf('ARTsivos') === -1; });
     return outras.length ? outras.join(', ') : '';
   }
+
+
+  /* =======================================================================
+     MEDIÇÃO — o que a visita vira do nosso lado
+     Até aqui tudo o que o radar sabe mora no navegador da pessoa e morre lá.
+     Para a ARTsivos poder ver onde o cliente para e por onde ele sai, a visita
+     precisa ser gravada. E aí muda de figura: sai dado do aparelho dela, então
+     só entra com consentimento — é o que a LGPD pede, e é o certo a fazer.
+
+     O que vai: quanto tempo durou, que páginas e seções viu, que produtos
+     olhou, por onde saiu, de onde veio e o tamanho da tela.
+     O que NÃO vai: nome, telefone, e-mail, endereço de rede, nada que
+     identifique a pessoa. O que se mede é a página, não quem está do outro
+     lado. Nome e telefone só existem quando ela mesma escreve no orçamento.
+     ======================================================================= */
+  var PROJETO = "finpay-134b0";
+  var CHAVE_API = "AIzaSyDHsfm8CPaaJE7_Kf0MMrIK8i39W5ekGhg";
+  var CONSENT = "artsivos.consentimento";
+
+  function resposta(){
+    try{ return localStorage.getItem(CONSENT); }catch(e){ return "nao"; }
+  }
+  function responder(v){
+    try{ localStorage.setItem(CONSENT, v); }catch(e){}
+    var b = document.getElementById("aviso-dados");
+    if(b) b.parentNode.removeChild(b);
+    if(v === "sim") enviarMedicao();
+  }
+
+  if(!d.sessao){
+    d.sessao = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    gravar();
+  }
+
+  function paresOrdenados(obj, quantos){
+    var saida = [], k;
+    for(k in obj) if(Object.prototype.hasOwnProperty.call(obj, k)) saida.push([k, obj[k]]);
+    saida.sort(function(a, b){ return b[1] - a[1]; });
+    return saida.slice(0, quantos).map(function(p){
+      return String(p[0]).slice(0, 40) + ":" + Math.round(p[1]);
+    });
+  }
+
+  function deOndeVeio(){
+    if(d.indicacao) return "indicacao:" + d.indicacao;
+    try{
+      if(!document.referrer) return "direto";
+      var h = new URL(document.referrer).hostname;
+      /* só o site de origem, nunca o endereço inteiro: endereço de busca leva
+         junto o que a pessoa digitou, e isso não é da nossa conta */
+      return h && h !== location.hostname ? h : "direto";
+    }catch(e){ return "direto"; }
+  }
+
+  var enviando = false;
+  function enviarMedicao(){
+    if(enviando) return;
+    if(resposta() !== "sim") return;
+    if(d.segundos < 5) return;              /* quique não é visita */
+    if(typeof fetch !== "function") return;
+    enviando = true;
+
+    function txt(v, max){ return {stringValue: String(v == null ? "" : v).slice(0, max)}; }
+    function lista(arr){
+      return {arrayValue: {values: arr.map(function(x){ return txt(x, 60); })}};
+    }
+
+    var base = "projects/" + PROJETO + "/databases/(default)/documents";
+    var campos = {
+      sessao:   txt(d.sessao, 40),
+      segundos: {integerValue: String(Math.round(d.segundos))},
+      paginas:  lista(d.paginas.slice(0, 40)),
+      secoes:   lista(paresOrdenados(d.secoes || {}, 40)),
+      produtos: lista(paresOrdenados(d.produtos || {}, 20)),
+      saida:    txt(d.saida || ultimaSecao || "", 60),
+      origem:   txt(deOndeVeio(), 120),
+      tela:     txt(window.innerWidth + "x" + window.innerHeight, 20)
+    };
+
+    fetch("https://firestore.googleapis.com/v1/" + base + ":commit?key=" + CHAVE_API, {
+      method: "POST", keepalive: true,
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({writes: [{
+        update: {name: base + "/artsivos_radar/" + d.sessao, fields: campos},
+        updateTransforms: [{fieldPath: "emAte", setToServerValue: "REQUEST_TIME"}]
+      }]})
+    })["catch"](function(){ /* medição não pode atrapalhar a visita */ });
+
+    setTimeout(function(){ enviando = false; }, 4000);
+  }
+
+  /* a hora certa de mandar é quando a pessoa sai da página */
+  document.addEventListener("visibilitychange", function(){ if(document.hidden) enviarMedicao(); });
+  window.addEventListener("pagehide", enviarMedicao);
+
+  /* ---------- o aviso, uma vez só ---------- */
+  function avisar(){
+    if(resposta()) return;                       /* já respondeu, não insiste */
+    if(document.getElementById("aviso-dados")) return;
+
+    var raiz = location.pathname.split("/").filter(Boolean);
+    var sobe = "";
+    var i = raiz.indexOf("artsivo");
+    var fundo = raiz.length - (i >= 0 ? i + 1 : 0);
+    for(var k = 0; k < fundo; k++) sobe += "../";
+
+    var cx = document.createElement("div");
+    cx.className = "aviso-dados";
+    cx.id = "aviso-dados";
+    cx.innerHTML =
+      '<p>A gente mede como as pessoas usam este site — quanto tempo ficam e que ' +
+      'partes olham — para melhorá-lo. <b>Nada disso identifica você</b>: não guardamos ' +
+      'nome, telefone nem endereço de rede nessa medição. ' +
+      '<a href="' + sobe + 'privacidade/">Como tratamos seus dados</a></p>' +
+      '<div class="aviso-bts">' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-nao>Não medir</button>' +
+        '<button type="button" class="btn btn-primary btn-sm" data-sim>Pode medir</button>' +
+      '</div>';
+    document.body.appendChild(cx);
+    cx.querySelector("[data-sim]").addEventListener("click", function(){ responder("sim"); });
+    cx.querySelector("[data-nao]").addEventListener("click", function(){ responder("nao"); });
+  }
+
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", avisar);
+  else avisar();
 
   /* ---------- o convite ---------- */
   var aberto = false, fechado = false, jaTentouSaida = false;
@@ -270,6 +418,7 @@
     dados: function(){ return d; },
     convidar: convidar,
     enviar: enviar,
+    medir: enviarMedicao,
     sufixo: sufixo,
     codigoDe: codigoDe,
     indicacao: function(){ return d.indicacao || ''; },
