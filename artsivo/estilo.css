@@ -572,6 +572,16 @@ body.travado{overflow:hidden}
 .estrelas svg{width:17px;height:17px;fill:var(--edge-2)}
 .estrelas svg.on{fill:var(--red)}
 
+/* avaliações de exemplo: precisam gritar que são exemplo, inclusive num print
+   de um cartão sozinho — por isso o selo fica no cartão, não só no topo */
+.aval-exemplo{margin:18px 0 0;padding:12px 14px;border-radius:var(--r);
+  border:1px dashed var(--edge-2);background:var(--panel-2);
+  font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
+.aval-exemplo b{color:var(--ink)}
+.aval.e-exemplo{position:relative;border-style:dashed}
+.aval .selo-ex{position:absolute;top:12px;right:12px;
+  font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-mute);border:1px solid var(--edge-2);border-radius:999px;padding:3px 8px}
 .avals{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px}
 .aval{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);padding:22px 20px;
   display:flex;flex-direction:column;gap:12px}

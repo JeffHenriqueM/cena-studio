@@ -12,10 +12,28 @@
    Print e vídeo podem vir com texto junto; texto sozinho também vale.
 
    Regra que não muda: sem avaliação cadastrada, a seção não existe. Nada de
-   seção vazia, e muito menos de elogio inventado para encher espaço.
+   seção vazia.
+
+   As três de baixo são de EXEMPLO, e estão marcadas como tal na tela: servem
+   para a empresa ver o formato antes de cadastrar as reais. Elogio inventado
+   passando por verdadeiro não entra aqui de jeito nenhum — por isso cada
+   cartão leva o selo "exemplo" e a seção leva o aviso em cima. No instante em
+   que a primeira avaliação real for cadastrada no painel, estas somem.
 --------------------------------------------------------------------------- */
 (function(){
-  var LOCAIS = [];   /* avaliações escritas à mão, quando não houver painel */
+  /* Exemplos. A ARTsivos tem 5,0 com 42 avaliações no Google — o material
+     real está lá, é só escolher quais destacar e cadastrar no painel. */
+  var LOCAIS = [
+    { exemplo:true, nome:"Nome do cliente", nota:5, servico:"Fachada em ACM", data:"março de 2026",
+      texto:"Aqui entra o que o cliente escreveu, do jeito que ele escreveu. " +
+            "Este texto é só um exemplo para mostrar como o depoimento aparece na página." },
+    { exemplo:true, nome:"Nome do cliente", nota:5, servico:"Envelopamento de frota", data:"fevereiro de 2026",
+      texto:"Exemplo de uma avaliação mais curta. Depoimento curto e direto costuma " +
+            "convencer tanto quanto um longo." },
+    { exemplo:true, nome:"Nome do cliente", nota:5, servico:"Letra caixa iluminada", data:"janeiro de 2026",
+      texto:"Exemplo de um terceiro depoimento. No lugar destes três entram as " +
+            "avaliações reais do Google, ou prints de conversa, ou um v\u00eddeo." }
+  ];
 
   function esc(t){
     return String(t == null ? "" : t).replace(/[&<>"]/g, function(c){
@@ -48,6 +66,10 @@
         '<div class="sec-head rv in">' +
           '<p class="eyebrow">Quem já contratou</p>' +
           '<h2>O que os clientes falam depois que a placa sobe.</h2>' +
+          '<p class="aval-exemplo" id="aval-exemplo" hidden>' +
+            '<b>Avaliações de exemplo.</b> Estão aqui só para mostrar o formato. ' +
+            'Cadastre as reais no painel — elas substituem estas na hora.' +
+          '</p>' +
           '<div class="aval-nota">' +
             '<b class="media" id="aval-media">—</b>' +
             '<span class="estrelas" id="aval-estrelas" aria-hidden="true"></span>' +
@@ -96,7 +118,9 @@
     lista.forEach(function(a){
       var nota = Number(a.nota) || 5;
       soma += nota;
-      html += '<article class="aval' + (a.tipo === "video" ? " tem-video" : "") + '">' +
+      html += '<article class="aval' + (a.tipo === "video" ? " tem-video" : "") +
+                (a.exemplo ? " e-exemplo" : "") + '">' +
+                (a.exemplo ? '<span class="selo-ex">exemplo</span>' : '') +
                 '<span class="estrelas" aria-label="' + nota + ' de 5 estrelas">' + estrelas(nota) + '</span>' +
                 midia(a) +
                 (a.texto ? '<blockquote>' + esc(a.texto) + '</blockquote>' : '') +
@@ -112,11 +136,16 @@
 
     document.getElementById("avals").innerHTML = html;
 
+    /* enquanto for exemplo, a página diz que é exemplo — em cima e em cada cartão */
+    var demo = lista.some(function(a){ return a && a.exemplo; });
+    document.getElementById("aval-exemplo").hidden = !demo;
+
     var media = soma / lista.length;
     document.getElementById("aval-media").textContent = media.toFixed(1).replace(".", ",");
     document.getElementById("aval-estrelas").innerHTML = estrelas(media);
-    document.getElementById("aval-de").textContent =
-      lista.length === 1 ? "de 1 avaliação" : "de " + lista.length + " avaliações";
+    document.getElementById("aval-de").textContent = demo
+      ? "de " + lista.length + " avaliações de exemplo"
+      : (lista.length === 1 ? "de 1 avaliação" : "de " + lista.length + " avaliações");
 
     var fonte = document.getElementById("aval-fonte");
     var perfil = (window.ARTSIVOS_DADOS && window.ARTSIVOS_DADOS.googlePerfil) || "";
