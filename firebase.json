@@ -1,28 +1,56 @@
 {
-  "hosting": {
-    "target": "cena-studio",
-    "public": ".",
-    "ignore": [
-      "firebase.json",
-      ".firebaserc",
-      "**/*.md",
-      ".git/**",
-      ".gitignore",
-      ".nojekyll",
-      ".firebase/**",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(js|css)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "cena-studio",
+      "public": ".",
+      "ignore": [
+        "firebase.json",
+        ".firebaserc",
+        "**/*.md",
+        ".git/**",
+        ".gitignore",
+        ".nojekyll",
+        ".firebase/**",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "**/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "artsivo",
+      "public": "artsivo",
+      "ignore": [
+        "firebase.json",
+        ".firebaserc",
+        "**/*.md",
+        ".git/**",
+        ".gitignore",
+        ".firebase/**",
+        "**/.*",
+        "**/node_modules/**",
+        "fotos/LEIA-ME.txt"
+      ],
+      "headers": [
+        {
+          "source": "**/*.@(js|css)",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
