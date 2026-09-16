@@ -1,0 +1,6 @@
+# O site é para ser achado. O painel, não: é ferramenta interna.
+User-agent: *
+Allow: /
+Disallow: /painel/
+
+Sitemap: https://artsivo.fias.com.br/sitemap.xml
