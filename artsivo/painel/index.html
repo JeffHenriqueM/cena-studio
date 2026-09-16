@@ -907,7 +907,7 @@ function pintarAvaliacoes(){
 
         const caminho = "artsivos/fotos/avaliacoes/" + Date.now() + "-" +
                         Math.random().toString(36).slice(2,7) + "." + ext;
-        const r = ref(st, caminho);
+        const r = ref(storage, caminho);
         await uploadBytes(r, blob, { contentType: mime });
         a.midia = await getDownloadURL(r);
         peso.textContent = "pronto";
