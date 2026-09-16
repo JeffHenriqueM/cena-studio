@@ -94,8 +94,10 @@
              '</div>';
     }
     if(a.tipo === "print" && a.midia){
+      /* o href continua ali para quem abre em outra aba de propósito, ou
+         para quem está sem JavaScript; o clique normal a gente intercepta */
       return '<a class="aval-midia print" href="' + esc(a.midia) + '" target="_blank" rel="noopener" ' +
-             'title="Abrir o print inteiro">' +
+             'title="Ver o print inteiro">' +
              '<img src="' + esc(a.midia) + '" alt="Print da mensagem de ' + esc(a.nome) + '" loading="lazy">' +
              '</a>';
     }
@@ -153,6 +155,49 @@
 
     sec.hidden = false;
   }
+
+  /* ------------------------------ a lupa ------------------------------
+     Print pequeno não se lê, e avaliação que não se lê não convence. Antes o
+     clique abria outra aba com o endereço cru do arquivo: a pessoa saía do
+     site para ver a prova de que devia confiar no site. Agora abre por cima,
+     e fechar devolve ela onde estava.                                     */
+  var lupa = null;
+
+  function fecharLupa(){
+    if(!lupa) return;
+    lupa.hidden = true;
+    lupa.querySelector("img").removeAttribute("src");
+  }
+
+  function abrirLupa(url, descricao){
+    if(!lupa){
+      lupa = document.createElement("div");
+      lupa.className = "lupa";
+      lupa.hidden = true;
+      lupa.innerHTML = '<button class="fechar" type="button" aria-label="Fechar">×</button><img alt="">';
+      lupa.addEventListener("click", function(e){ if(e.target === lupa) fecharLupa(); });
+      lupa.querySelector(".fechar").addEventListener("click", fecharLupa);
+      document.body.appendChild(lupa);
+      document.addEventListener("keydown", function(e){
+        if(e.key === "Escape" && lupa && !lupa.hidden) fecharLupa();
+      });
+    }
+    var img = lupa.querySelector("img");
+    img.src = url;
+    img.alt = descricao || "";
+    lupa.hidden = false;
+    lupa.querySelector(".fechar").focus();
+  }
+
+  /* um ouvinte só, na seção, em vez de um por cartão: a lista é remontada
+     toda vez que o painel manda dados novos */
+  document.addEventListener("click", function(e){
+    var alvo = e.target.closest ? e.target.closest(".aval-midia.print") : null;
+    if(!alvo) return;
+    e.preventDefault();
+    var img = alvo.querySelector("img");
+    abrirLupa(alvo.getAttribute("href"), img ? img.getAttribute("alt") : "");
+  });
 
   montar(LOCAIS);
 

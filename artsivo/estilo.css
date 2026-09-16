@@ -651,6 +651,21 @@ body.travado{overflow:hidden}
 .aval.tem-video blockquote{font-size:14.5px}
 @media (prefers-reduced-motion:reduce){ .aval-midia.print::after{transition:none} }
 
+/* o print aberto na própria página: antes ele jogava a pessoa numa aba nova,
+   com o endereço cru do arquivo. Quem estava lendo a avaliação perdia o site
+   de vista para ver a prova da avaliação — justamente o contrário do que ela
+   serve para fazer. */
+.lupa{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.86);
+  display:grid;place-items:center;padding:24px}
+.lupa[hidden]{display:none}
+.lupa img{max-width:min(96vw,1000px);max-height:92vh;border-radius:10px;display:block;
+  box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.lupa .fechar{position:absolute;top:16px;right:18px;border:0;border-radius:999px;
+  background:rgba(255,255,255,.14);color:#fff;font-size:22px;line-height:1;
+  width:40px;height:40px;cursor:pointer}
+.lupa .fechar:hover{background:rgba(255,255,255,.26)}
+
+
 /* ---- aviso de medição (LGPD) ----
    Discreto, mas com as duas opções do mesmo tamanho: consentimento em que
    recusar é mais difícil que aceitar não é consentimento. */
