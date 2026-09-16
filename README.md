@@ -14,8 +14,10 @@ Publica pra `cena-studio.web.app` (site "cena-studio" dentro do projeto Firebase
 configurado em `.firebaserc`/`firebase.json`). Precisa do Firebase CLI logado (`firebase login`)
 com acesso a esse projeto.
 
-O GitHub Pages (`jeffhenriquem.github.io/cena-studio`) continua ativo automaticamente a cada push
-na `main`, mas deixou de ser o endereço oficial — é só um espelho até decidirmos desligar.
+**O GitHub Pages não existe mais.** `jeffhenriquem.github.io/cena-studio` responde 404, na raiz e
+no ARTsivos — conferido em 16/09/2026. Push na `main` guarda o código e mais nada: quem publica é
+o Firebase, pelo comando acima. Se alguém chegar reclamando de link quebrado, é esse endereço
+antigo que a pessoa tem na mão.
 
 | Arquivo | O que é | URL |
 |---|---|---|
@@ -26,8 +28,8 @@ na `main`, mas deixou de ser o endereço oficial — é só um espelho até deci
 
 ## Como editar
 
-Os dois arquivos são HTML puro com CSS e JS embutidos. Edite, faça commit e o Pages
-republica sozinho em ~1 minuto.
+Os arquivos são HTML puro com CSS e JS embutidos. Edite, faça commit — e **rode o deploy**.
+Commit sozinho não muda o que está no ar.
 
 ## Antes de divulgar — trocar os placeholders
 
