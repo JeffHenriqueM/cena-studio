@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
+<script>/* tema antes da primeira pintura, para a tela nao piscar */(function(){try{var t=localStorage.getItem("artsivos.tema");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
@@ -10,15 +11,44 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
-/* Ferramenta interna: um tema só, o escuro da marca. */
+/* Mesmos três estados do site: sem escolha segue o aparelho, claro forçado,
+   escuro forçado. A escolha é a mesma do site — dividem a chave no
+   localStorage, então quem põe o site no claro acha o painel no claro. */
 :root{
   --void:#0A0A0C; --panel:#141417; --panel-2:#1C1C21;
   --edge:#2B2B32; --edge-2:#3C3C46;
   --ink:#F3F3F5; --ink-soft:#B4B4BD; --ink-mute:#7E7E8A;
   --red:#E4262C; --red-hot:#FF3B41;
   --ok:#37C87A; --warn:#F0A83A;
+  --barra:rgba(10,10,12,.9); --barra-2:rgba(10,10,12,.94);
+  --vidro:rgba(20,20,23,.7);
+  --sombra:rgba(0,0,0,.6);
   --r:14px;
   color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --void:#F7F6F4; --panel:#FFFFFF; --panel-2:#F1EFEC;
+    --edge:#E3E0DB; --edge-2:#C9C5BF;
+    --ink:#17161A; --ink-soft:#4C4B53; --ink-mute:#6A6874;
+    --red:#CE1F26; --red-hot:#E4262C;
+    --ok:#1E9E5A; --warn:#B4700F;
+    --barra:rgba(247,246,244,.88); --barra-2:rgba(247,246,244,.94);
+    --vidro:rgba(255,255,255,.72);
+    --sombra:rgba(20,18,16,.22);
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --void:#F7F6F4; --panel:#FFFFFF; --panel-2:#F1EFEC;
+  --edge:#E3E0DB; --edge-2:#C9C5BF;
+  --ink:#17161A; --ink-soft:#4C4B53; --ink-mute:#6A6874;
+  --red:#CE1F26; --red-hot:#E4262C;
+  --ok:#1E9E5A; --warn:#B4700F;
+  --barra:rgba(247,246,244,.88); --barra-2:rgba(247,246,244,.94);
+  --vidro:rgba(255,255,255,.72);
+  --sombra:rgba(20,18,16,.22);
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--void);color:var(--ink);
@@ -31,7 +61,7 @@ button,input,select{font:inherit;color:inherit}
 .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
 /* topo */
-.top{position:sticky;top:0;z-index:20;background:rgba(10,10,12,.9);backdrop-filter:blur(10px);
+.top{position:sticky;top:0;z-index:20;background:var(--barra);backdrop-filter:blur(10px);
   border-bottom:1px solid var(--edge)}
 .top-in{display:flex;align-items:center;gap:16px;padding:14px 20px;max-width:1040px;margin:0 auto}
 .marca{font-family:"Archivo",sans-serif;font-weight:900;font-size:17px;letter-spacing:.01em}
@@ -52,6 +82,22 @@ button,input,select{font:inherit;color:inherit}
 .btn-ghost{background:var(--panel);border-color:var(--edge);color:var(--ink-soft)}
 .btn-ghost:hover{border-color:var(--edge-2);color:var(--ink)}
 .btn-sm{padding:7px 13px;font-size:13px}
+
+/* botão de tema — mesmo desenho do site, para quem vem de lá reconhecer */
+.tema{flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border:1px solid var(--edge);border-radius:9px;background:var(--vidro);color:var(--ink-soft);
+  cursor:pointer;padding:0;transition:color .2s ease,border-color .2s ease,transform .2s ease}
+.tema:hover{color:var(--ink);border-color:var(--edge-2);transform:translateY(-1px)}
+.tema svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tema .sol{display:none}
+.tema .lua{display:block}
+:root[data-theme="light"] .tema .sol{display:block}
+:root[data-theme="light"] .tema .lua{display:none}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]) .tema .sol{display:block}
+  :root:not([data-theme="dark"]) .tema .lua{display:none}
+}
+@media (prefers-reduced-motion:reduce){ .tema{transition:none} .tema:hover{transform:none} }
 
 /* login */
 .login{min-height:78vh;display:grid;place-items:center;padding:40px 20px}
@@ -133,7 +179,7 @@ select{appearance:none}
   display:grid;place-items:center;padding:24px}
 .lupa[hidden]{display:none}
 .lupa img{max-width:min(96vw,1100px);max-height:92vh;border-radius:10px;display:block;
-  box-shadow:0 20px 60px rgba(0,0,0,.6)}
+  box-shadow:0 20px 60px var(--sombra)}
 .lupa .fechar{position:absolute;top:16px;right:18px;border:0;border-radius:999px;
   background:rgba(255,255,255,.14);color:#fff;font-size:20px;line-height:1;
   width:38px;height:38px;cursor:pointer}
@@ -145,7 +191,7 @@ select{appearance:none}
 .extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px}
 
 /* barra de publicar */
-.rodape{position:fixed;left:0;right:0;bottom:0;background:rgba(10,10,12,.94);backdrop-filter:blur(10px);
+.rodape{position:fixed;left:0;right:0;bottom:0;background:var(--barra-2);backdrop-filter:blur(10px);
   border-top:1px solid var(--edge);z-index:30}
 .rodape-in{display:flex;align-items:center;gap:14px;padding:12px 20px;max-width:1040px;margin:0 auto}
 .estado{font-size:13px;color:var(--ink-mute)}
@@ -230,6 +276,10 @@ select{appearance:none}
       <span class="marca"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Painel do site</span></span>
       <span class="esp"></span>
       <span class="quem mono" id="quem"></span>
+      <button class="tema" id="btn-tema" type="button" aria-label="Mudar o tema">
+        <svg class="lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+        <svg class="sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M6.1 6.1 4.6 4.6M19.4 19.4l-1.5-1.5M17.9 6.1l1.5-1.5M4.6 19.4l1.5-1.5"/></svg>
+      </button>
       <a class="btn btn-ghost btn-sm" href="../" target="_blank" rel="noopener">Ver o site</a>
       <button class="btn btn-ghost btn-sm" id="btn-sair" type="button">Sair</button>
     </div>
@@ -1128,6 +1178,49 @@ window.addEventListener("beforeunload", e => { if(sujo){ e.preventDefault(); e.r
   <button class="fechar" type="button" id="lupa-fechar" aria-label="Fechar">×</button>
   <img id="lupa-img" alt="">
 </div>
+
+<script>
+/* Tema do painel.
+   Escrito fora do módulo de propósito: o resto da página só roda depois do
+   login e do Firebase; o botão de tema precisa funcionar antes disso, na
+   tela de entrar. A chave é a mesma do site (artsivos.tema), então a escolha
+   atravessa de um para o outro. */
+(function(){
+  var CHAVE = "artsivos.tema", raiz = document.documentElement;
+  var b = document.getElementById("btn-tema");
+  if(!b) return;
+
+  function doAparelho(){
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  }
+  function atual(){ return raiz.getAttribute("data-theme") || doAparelho(); }
+  function marcar(t){
+    b.setAttribute("aria-label", "Mudar para o tema " + (t === "dark" ? "claro" : "escuro"));
+    b.setAttribute("title", "Tema " + (t === "dark" ? "claro" : "escuro"));
+    var m = document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", t === "dark" ? "#0A0A0C" : "#F7F6F4");
+  }
+  b.addEventListener("click", function(){
+    var t = atual() === "dark" ? "light" : "dark";
+    raiz.setAttribute("data-theme", t);
+    try{ localStorage.setItem(CHAVE, t); }catch(e){}
+    marcar(t);
+  });
+
+  /* quem nunca tocou no botão continua acompanhando o aparelho ao vivo */
+  if(window.matchMedia){
+    var mq = window.matchMedia("(prefers-color-scheme: light)");
+    var ouvir = function(){
+      var salvo = null;
+      try{ salvo = localStorage.getItem(CHAVE); }catch(e){}
+      if(!salvo) marcar(doAparelho());
+    };
+    if(mq.addEventListener) mq.addEventListener("change", ouvir);
+    else if(mq.addListener) mq.addListener(ouvir);
+  }
+  marcar(atual());
+})();
+</script>
 
 </body>
 </html>
