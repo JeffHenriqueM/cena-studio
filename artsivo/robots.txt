@@ -1,6 +1,8 @@
-# O site é para ser achado. O painel, não: é ferramenta interna.
+# O site é para ser achado. O painel e a proposta, não: um é ferramenta
+# interna, a outra é documento comercial com preço escrito.
 User-agent: *
 Allow: /
 Disallow: /painel/
+Disallow: /proposta/
 
 Sitemap: https://artsivo.fias.com.br/sitemap.xml

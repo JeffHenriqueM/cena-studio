@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<script>/* tema antes da primeira pintura, para a tela nao piscar */(function(){try{var t=localStorage.getItem("artsivos.tema");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Proposta comercial: endereço para mandar, não para ser achado. Fora do
+     sitemap e bloqueada no robots.txt — tem valor e preço escritos aqui. -->
+<meta name="robots" content="noindex,nofollow">
+<title>Proposta comercial · ARTsivos</title>
+<meta name="theme-color" content="#0A0A0C">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+/* ---------------------------------------------------------------------------
+   PROPOSTA — mesmo tema do site da ARTsivos.
+   Nasce escuro, que é a identidade; o claro entra pela preferência do
+   aparelho ou pela escolha gravada no site. Nenhuma cor escrita nas regras.
+--------------------------------------------------------------------------- */
+:root{
+  --void:#0A0A0C;
+  --panel:#141417;
+  --panel-2:#1C1C21;
+  --edge:#2B2B32;
+  --edge-2:#3C3C46;
+  --ink:#F3F3F5;
+  --ink-soft:#B4B4BD;
+  --ink-mute:#7E7E8A;
+  --red:#E4262C;
+  --red-hot:#FF3B41;
+
+  --nav-bg:rgba(10,10,12,.78);
+  --nav-edge:rgba(43,43,50,.8);
+  --glass:rgba(20,20,23,.7);
+  --rule:rgba(43,43,50,.7);
+  --grid-line:rgba(60,60,70,.16);
+  --glow:rgba(228,38,44,.42);
+  --shadow:rgba(0,0,0,.6);
+  --marca-a:#D9D9DE;
+
+  --maxw:1040px;
+  --r:16px;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --void:#F7F6F4;
+    --panel:#FFFFFF;
+    --panel-2:#F1EFEC;
+    --edge:#E3E0DB;
+    --edge-2:#C9C5BF;
+    --ink:#17161A;
+    --ink-soft:#4C4B53;
+    --ink-mute:#6A6874;
+    --red:#CE1F26;
+    --red-hot:#E4262C;
+
+    --nav-bg:rgba(247,246,244,.84);
+    --nav-edge:rgba(0,0,0,.10);
+    --glass:rgba(255,255,255,.72);
+    --rule:rgba(0,0,0,.11);
+    --grid-line:rgba(0,0,0,.06);
+    --glow:rgba(228,38,44,.16);
+    --shadow:rgba(20,18,16,.20);
+    --marca-a:#1A191E;
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --void:#F7F6F4;
+  --panel:#FFFFFF;
+  --panel-2:#F1EFEC;
+  --edge:#E3E0DB;
+  --edge-2:#C9C5BF;
+  --ink:#17161A;
+  --ink-soft:#4C4B53;
+  --ink-mute:#6A6874;
+  --red:#CE1F26;
+  --red-hot:#E4262C;
+
+  --nav-bg:rgba(247,246,244,.84);
+  --nav-edge:rgba(0,0,0,.10);
+  --glass:rgba(255,255,255,.72);
+  --rule:rgba(0,0,0,.11);
+  --grid-line:rgba(0,0,0,.06);
+  --glow:rgba(228,38,44,.16);
+  --shadow:rgba(20,18,16,.20);
+  --marca-a:#1A191E;
+  color-scheme:light;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+img{max-width:100%}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+
+h1,h2,h3,.display{
+  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:800;font-stretch:112%;
+  letter-spacing:-.024em;line-height:.98;text-wrap:balance;margin:0;
+}
+p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
+p:last-child{margin-bottom:0}
+strong{color:var(--ink);font-weight:600}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4.2vw,44px)}
+
+.eyebrow{
+  font-family:"DM Mono",ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-mute);display:flex;align-items:center;gap:10px;margin:0 0 18px;
+}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--red);flex:none}
+
+/* ---------- topo ---------- */
+header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:var(--nav-bg);border-bottom:1px solid var(--nav-edge)}
+.nav-in{display:flex;align-items:center;gap:18px;min-height:68px;flex-wrap:wrap;padding-block:12px}
+.marca{display:inline-flex;align-items:baseline;gap:1px;text-decoration:none;margin-right:auto;
+  font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:900;font-stretch:112%;
+  letter-spacing:-.03em;font-size:23px;line-height:1}
+.marca .a{color:var(--marca-a)}
+.marca .b{color:var(--red)}
+.marca .sub{font-family:"DM Mono",monospace;font-weight:400;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-mute);margin-left:8px;align-self:center}
+.selo-doc{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-mute);border:1px solid var(--edge);border-radius:6px;padding:7px 12px;background:var(--glass)}
+
+/* ---------- abertura ---------- */
+.hero{position:relative;overflow:hidden;padding:72px 0 58px}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg .glow{position:absolute;left:-10vw;top:-26vw;width:70vw;height:70vw;max-width:900px;max-height:900px;
+  border-radius:50%;background:radial-gradient(circle at 50% 50%,var(--glow),rgba(228,38,44,0) 66%);filter:blur(30px)}
+.hero-bg .grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:64px 64px;
+  -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%);
+  mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%)}
+.hero .wrap{position:relative;z-index:2}
+.hero h1{font-size:clamp(36px,6.6vw,68px);max-width:16ch}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero p.lead{font-size:clamp(16.5px,1.5vw,19px);margin-top:24px;max-width:52ch;text-wrap:pretty}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.tag{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:var(--glass)}
+
+section{padding:64px 0;position:relative;border-top:1px solid var(--rule)}
+.sec-head{margin-bottom:34px}
+.sec-head h2{font-size:clamp(27px,4.4vw,40px)}
+.sec-head p{margin-top:14px}
+
+/* ---------- diagnóstico ---------- */
+.numeros{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:14px;margin-bottom:30px}
+.num{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel);padding:20px 19px;
+  position:relative;overflow:hidden}
+.num::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--edge-2)}
+.num.grave::before{background:var(--red)}
+.num b{display:block;font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;
+  font-size:clamp(28px,4vw,36px);letter-spacing:-.03em;color:var(--ink);line-height:1;
+  font-variant-numeric:tabular-nums}
+.num.grave b{color:var(--red)}
+.num span{display:block;margin-top:9px;font-size:14px;line-height:1.45;color:var(--ink-mute)}
+
+/* ---------- escopo ---------- */
+.frentes{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:760px){ .frentes{grid-template-columns:1fr 1fr} }
+.frente{position:relative;overflow:hidden;border:1px solid var(--edge);border-radius:var(--r);
+  background:var(--panel);padding:22px 21px;display:flex;flex-direction:column;gap:9px}
+.frente::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);
+  transform:scaleY(0);transform-origin:top;transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+.frente:hover::before{transform:scaleY(1)}
+.frente .n{font-family:"DM Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-mute);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.frente .pronto{color:var(--red);border:1px solid var(--red);border-radius:99px;padding:2px 8px;font-size:9.5px}
+.frente h3{font-size:19px;letter-spacing:-.02em}
+.frente p{margin:0;font-size:15px;line-height:1.55;max-width:none}
+
+/* ---------- valores ---------- */
+.precos{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:24px}
+@media (min-width:600px){ .precos{grid-template-columns:1fr 1fr} }
+.preco{border:1px solid var(--edge-2);border-radius:var(--r);background:var(--panel);padding:24px 22px}
+.preco .tit{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-mute)}
+.preco .medida{font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;
+  font-size:clamp(34px,6vw,46px);letter-spacing:-.03em;color:var(--ink);line-height:1;margin-top:12px;
+  font-variant-numeric:tabular-nums}
+.preco .medida small{font-family:"DM Mono",monospace;font-size:13px;font-weight:400;color:var(--ink-mute);
+  letter-spacing:.06em;margin-left:6px}
+.preco p{margin:12px 0 0;font-size:14.5px;line-height:1.5;max-width:none}
+.preco.destaque{border-color:var(--red);box-shadow:0 18px 50px -30px var(--glow)}
+
+.linhas{display:flex;flex-direction:column;gap:1px;background:var(--edge);
+  border:1px solid var(--edge);border-radius:var(--r);overflow:hidden}
+.linhas div{background:var(--panel);padding:16px 19px;font-size:15px;line-height:1.55;color:var(--ink-soft)}
+.linhas div b{color:var(--ink);font-weight:600}
+
+/* ---------- medição ---------- */
+.marcos{display:grid;grid-template-columns:1fr;gap:14px;margin-top:26px}
+@media (min-width:600px){ .marcos{grid-template-columns:1fr 1fr} }
+.marco{border:1px dashed var(--edge-2);border-radius:var(--r);background:var(--panel-2);padding:20px 19px}
+.marco .tit{font-family:"DM Mono",monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--red);margin-bottom:10px}
+.marco b{display:block;font-family:Archivo,Arial,sans-serif;font-weight:800;font-stretch:112%;font-size:21px;
+  letter-spacing:-.02em;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.marco span{display:block;margin-top:9px;font-size:14.2px;line-height:1.5;color:var(--ink-mute)}
+
+.ressalva{border-left:3px solid var(--red);padding:4px 0 4px 18px;margin-top:26px;font-size:15.5px;
+  color:var(--ink-soft);max-width:64ch}
+
+footer.pe{border-top:1px solid var(--rule);padding:30px 0 60px}
+footer.pe p{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-mute);
+  max-width:none;margin:0}
+footer.pe a{color:var(--red);text-decoration:none}
+footer.pe a:hover{text-decoration:underline}
+
+@media (prefers-reduced-motion:reduce){ .frente::before{transition:none} }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="marca" href="../"><span class="a">ART</span><span class="b">sivos</span><span class="sub">Comunicação Visual</span></a>
+    <span class="selo-doc">Proposta · 18.09.2026</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-bg"><span class="glow"></span><span class="grid"></span></div>
+  <div class="wrap">
+    <p class="eyebrow">Proposta comercial</p>
+    <h1>O marketing da ARTsivos, <em>inteiro</em>, e pago pelo que fechar.</h1>
+    <p class="lead">Instagram, TikTok, site, Google Meu Negócio, tráfego pago e pós-venda sob um
+      responsável só — com um fixo que cobre o trabalho diário e uma comissão amarrada à venda
+      que realmente sair.</p>
+    <div class="tags">
+      <span class="tag">Instagram</span>
+      <span class="tag">TikTok</span>
+      <span class="tag">Site</span>
+      <span class="tag">Google Meu Negócio</span>
+      <span class="tag">Tráfego pago</span>
+      <span class="tag">Pós-venda</span>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">01 · Diagnóstico</p>
+      <h2>Onde a ARTsivos está hoje</h2>
+    </div>
+
+    <div class="numeros">
+      <div class="num"><b>10,7 mil</b><span>seguidores no Instagram — hoje é praticamente o único canal que traz gente</span></div>
+      <div class="num grave"><b>8 dias</b><span>sem publicar no início de setembro, seguidos de picos concentrados</span></div>
+      <div class="num"><b>R$ 200</b><span>por mês em tráfego pago, sem foco em gerar orçamento</span></div>
+      <div class="num grave"><b>Zero</b><span>TikTok, YouTube e qualquer fluxo de pós-venda</span></div>
+    </div>
+
+    <p>Quem compra fachada é <strong>dono de loja, de clínica, de oficina</strong> — gente que
+      decide pesquisando no Google, não rolando o feed. E é exatamente aí que a empresa está mais
+      descoberta: o <strong>Google Meu Negócio está desatualizado</strong> e o site acabou de
+      nascer.</p>
+
+    <p>Também não existe nada depois da entrega. Placa instalada, cliente satisfeito, e ninguém
+      pede a avaliação nem a indicação — que é o cliente mais barato que uma empresa de
+      comunicação visual pode ter.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">02 · Escopo</p>
+      <h2>O que eu assumo</h2>
+      <p>Seis frentes, um responsável. Nenhuma delas depende de vocês lembrarem de mandar material.</p>
+    </div>
+
+    <div class="frentes">
+      <article class="frente">
+        <span class="n">Frente 01</span>
+        <h3>Instagram</h3>
+        <p>Calendário editorial fixo, no mínimo 3 a 4 posts por semana, mostrando placa entregue e
+          obra feita. Acaba o rali de postar sete vezes numa semana e sumir na outra.</p>
+      </article>
+
+      <article class="frente">
+        <span class="n">Frente 02</span>
+        <h3>TikTok</h3>
+        <p>Reaproveitamento do que já foi produzido para o Instagram. Instalação de fachada é
+          conteúdo pronto para vídeo curto — só não estava sendo usado.</p>
+      </article>
+
+      <article class="frente">
+        <span class="n">Frente 03 <span class="pronto">Entregue</span></span>
+        <h3>Site</h3>
+        <p>Ativo central de SEO e captação de orçamento. Já está no ar; a partir de agora passa a
+          ser alimentado e medido.</p>
+      </article>
+
+      <article class="frente">
+        <span class="n">Frente 04</span>
+        <h3>Google Meu Negócio</h3>
+        <p>Perfil otimizado, avaliações pedidas de forma sistemática e resposta a todas as
+          interações. É o canal que mais pesa para quem procura fachada na região.</p>
+      </article>
+
+      <article class="frente">
+        <span class="n">Frente 05</span>
+        <h3>Tráfego pago</h3>
+        <p>Redesenho da campanha mantendo o orçamento atual, mirando pedido de orçamento em vez de
+          curtida.</p>
+      </article>
+
+      <article class="frente">
+        <span class="n">Frente 06</span>
+        <h3>Pós-venda</h3>
+        <p>Fluxo de follow-up por WhatsApp depois da entrega, pedindo avaliação e indicação.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">03 · Remuneração</p>
+      <h2>Como eu cobro</h2>
+      <p>Fixo mensal cobrindo o trabalho operacional diário, mais comissão sobre o resultado real.
+        Uma parte não substitui a outra: as seis frentes dão trabalho todo dia,
+        <strong>fechando venda ou não</strong>.</p>
+    </div>
+
+    <div class="precos">
+      <div class="preco">
+        <span class="tit">Fixo</span>
+        <div class="medida">R$ 1.000<small>/mês</small></div>
+        <p>O mesmo valor que a empresa anterior cobrava só pelo Instagram — agora cobrindo as seis
+          frentes. Desde o mês 1.</p>
+      </div>
+      <div class="preco destaque">
+        <span class="tit">Comissão</span>
+        <div class="medida">3%<small>por venda</small></div>
+        <p>Sobre venda fechada atribuída ao trabalho de marketing. Também desde o mês 1.</p>
+      </div>
+    </div>
+
+    <div class="linhas">
+      <div><b>Base de cálculo:</b> venda fechada. Não lead, não proposta enviada — assim o meu
+        incentivo fica no mesmo lugar que o resultado de vocês.</div>
+      <div><b>Atribuição no começo:</b> estimativa conjunta com o casal ("esse cliente veio do
+        Instagram", "esse veio do site") até o rastreamento formal estar de pé.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">04 · Medição</p>
+      <h2>Como a gente confere se está funcionando</h2>
+      <p>Nos primeiros meses entra um mecanismo simples de origem: a pergunta
+        <strong>"como conheceu a ARTsivos?"</strong> no primeiro contato, e um link de WhatsApp
+        próprio na bio do Instagram e no site. A atribuição deixa de ser memória e vira registro.</p>
+    </div>
+
+    <div class="marcos">
+      <div class="marco">
+        <div class="tit">Mês 3</div>
+        <b>Revisão do percentual</b>
+        <span>Com dado real de ticket médio, taxa de conversão e volume de venda atribuída —
+          não no escuro.</span>
+      </div>
+      <div class="marco">
+        <div class="tit">Referência</div>
+        <b>5% ≈ R$ 20 mil/mês</b>
+        <span>É quanto de venda atribuída precisaria existir para a comissão empatar com o fixo.
+          Nos 3%, o equivalente fica em torno de R$ 33 mil por mês.</span>
+      </div>
+    </div>
+
+    <p class="ressalva">Essa referência está aqui para deixar o combinado claro: enquanto o volume
+      atribuído for menor que isso, é o fixo que sustenta o trabalho. Quando passar, a comissão
+      passa a valer mais que ele — e aí é sinal de que deu certo para os dois lados.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="pe">
+  <div class="wrap">
+    <p>Preparado por Jeff · 18.09.2026 · documento para conversa, não é contrato ·
+      <a href="../">artsivo.fias.com.br</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
