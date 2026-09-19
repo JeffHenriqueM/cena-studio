@@ -656,14 +656,18 @@ const EQUIPE = collection(db, "artsivos_equipe");
 const DONO = "admin@artsivos.com.br";
 let souAdmin = false, meuNome = "", equipe = [];
 
+let souDaCasa = false;
+
 async function descobrirPapel(user){
   souAdmin = user.email === DONO;
+  souDaCasa = souAdmin;
   meuNome  = user.email;
   try{
     const m = await getDoc(doc(EQUIPE, user.email));
     if(m.exists()){
       const d = m.data();
       meuNome = d.nome || user.email;
+      if(d.ativo !== false) souDaCasa = true;
       if(d.papel === "admin") souAdmin = true;
     }
   }catch(err){ /* sem cadastro: vale o e-mail do dono, e só */ }
@@ -695,6 +699,18 @@ onAuthStateChanged(auth, async user => {
   q.textContent = user.email;
   q.style.display = "block";
   await descobrirPapel(user);
+  /* O Firebase é um só para todos os sites da casa: quem entrou no painel da
+     FIAS chega aqui logado. Sem cadastro na equipe, toda consulta voltaria
+     "permission-denied" — que é a regra funcionando e a tela explicando mal. */
+  if(!souDaCasa){
+    $("tela-painel").hidden = true;
+    $("tela-login").hidden = false;
+    $("erro-login").textContent =
+      "A conta " + user.email + " não está cadastrada na equipe da ARTsivos. "
+      + "Peça para o administrador cadastrar, ou entre com outra conta.";
+    signOut(auth);
+    return;
+  }
   mostrarAbas();
   if(souAdmin) await carregar();
 });
