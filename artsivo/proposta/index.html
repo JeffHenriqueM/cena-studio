@@ -41,7 +41,7 @@
   --shadow:rgba(0,0,0,.6);
   --marca-a:#D9D9DE;
 
-  --maxw:1040px;
+  --maxw:1280px;
   --r:16px;
   color-scheme:dark;
 }
@@ -60,7 +60,7 @@ h1,h2,h3,.display{
   font-family:Archivo,"Arial Black",Arial,sans-serif;font-weight:800;font-stretch:112%;
   letter-spacing:-.024em;line-height:.98;text-wrap:balance;margin:0;
 }
-p{margin:0 0 1em;max-width:62ch;color:var(--ink-soft)}
+p{margin:0 0 1em;max-width:none;color:var(--ink-soft)}
 p:last-child{margin-bottom:0}
 strong{color:var(--ink);font-weight:600}
 .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4.2vw,44px)}
@@ -96,9 +96,9 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
   -webkit-mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%);
   mask-image:radial-gradient(120% 90% at 50% 0%,#000 20%,transparent 78%)}
 .hero .wrap{position:relative;z-index:2}
-.hero h1{font-size:clamp(36px,6.6vw,68px);max-width:16ch}
+.hero h1{font-size:clamp(36px,6.6vw,68px);max-width:none}
 .hero h1 em{font-style:normal;color:var(--red)}
-.hero p.lead{font-size:clamp(16.5px,1.5vw,19px);margin-top:24px;max-width:52ch;text-wrap:pretty}
+.hero p.lead{font-size:clamp(16.5px,1.5vw,19px);margin-top:24px;max-width:none;text-wrap:pretty}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
 .tag{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
   padding:7px 13px;border-radius:6px;border:1px solid var(--edge);color:var(--ink-soft);background:var(--glass)}
@@ -170,7 +170,7 @@ section{padding:64px 0;position:relative;border-top:1px solid var(--rule)}
 .marco span{display:block;margin-top:9px;font-size:14.2px;line-height:1.5;color:var(--ink-mute)}
 
 .ressalva{border-left:3px solid var(--red);padding:4px 0 4px 18px;margin-top:26px;font-size:15.5px;
-  color:var(--ink-soft);max-width:64ch}
+  color:var(--ink-soft);max-width:none}
 
 footer.pe{border-top:1px solid var(--rule);padding:30px 0 60px}
 footer.pe p{font-family:"DM Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-mute);
@@ -195,9 +195,8 @@ footer.pe a:hover{text-decoration:underline}
   <div class="wrap">
     <p class="eyebrow">Plano de trabalho</p>
     <h1>O que vai ser feito, e <em>quanto custa</em> cada parte.</h1>
-    <p class="lead">Três frentes, três formas de cobrança — uma fixa, para o trabalho que
-      acontece todo dia, e duas ligadas ao que realmente entrar de venda. Este documento existe
-      para ninguém depender de memória depois.</p>
+    <p class="lead">Projeto de marketing focado em gerar resultados, em diferentes frentes,
+      cada uma com seu objetivo claro e sua maneira de organização.</p>
     <div class="tags">
       <span class="tag">Instagram</span>
       <span class="tag">TikTok</span>
@@ -216,24 +215,24 @@ footer.pe a:hover{text-decoration:underline}
     <div class="sec-head">
       <p class="eyebrow">01 · Ponto de partida</p>
       <h2>De onde a gente está saindo</h2>
-      <p>Estes números não estão aqui para convencer ninguém — o trabalho já está fechado. Eles
+      <p>Estes números não estão aqui para convencer ninguém: o trabalho já está fechado. Eles
         estão escritos para que, daqui a três meses, dê para comparar com o que mudou.</p>
     </div>
 
     <div class="numeros">
-      <div class="num"><b>10,7 mil</b><span>seguidores no Instagram — hoje é praticamente o único canal que traz gente</span></div>
+      <div class="num"><b>10,7 mil</b><span>seguidores no Instagram, hoje praticamente o único canal que traz gente</span></div>
       <div class="num grave"><b>8 dias</b><span>sem publicar no início de setembro, seguidos de picos concentrados</span></div>
       <div class="num"><b>R$ 200</b><span>por mês em tráfego pago, sem foco em gerar orçamento</span></div>
-      <div class="num grave"><b>Zero</b><span>TikTok, YouTube e qualquer fluxo de pós-venda</span></div>
+      <div class="num grave"><b>Zero</b><span>TikTok, YouTube e pós-venda estruturado</span></div>
     </div>
 
-    <p>Quem compra fachada é <strong>dono de loja, de clínica, de oficina</strong> — gente que
+    <p>Quem compra fachada é <strong>dono de loja, de clínica, de oficina</strong>, gente que
       decide pesquisando no Google, não rolando o feed. E é exatamente aí que a empresa está mais
       descoberta: o <strong>Google Meu Negócio está desatualizado</strong> e o site acabou de
       nascer.</p>
 
     <p>Também não existe nada depois da entrega. Placa instalada, cliente satisfeito, e ninguém
-      pede a avaliação nem a indicação — que é o cliente mais barato que uma empresa de
+      pede a avaliação nem a indicação, que é o cliente mais barato que uma empresa de
       comunicação visual pode ter.</p>
   </div>
 </section>
@@ -251,7 +250,7 @@ footer.pe a:hover{text-decoration:underline}
       <article class="frente">
         <span class="n">Frente 01 <span class="paga">no fixo</span></span>
         <h3>Instagram</h3>
-        <p>Calendário editorial fixo, no mínimo 3 a 4 posts por semana, mostrando placa entregue e
+        <p>Calendário editorial fixo, no mínimo um post por dia, mostrando placa entregue e
           obra feita. Acaba o rali de postar sete vezes numa semana e sumir na outra.</p>
       </article>
 
@@ -259,7 +258,7 @@ footer.pe a:hover{text-decoration:underline}
         <span class="n">Frente 02 <span class="paga">no fixo</span></span>
         <h3>TikTok</h3>
         <p>Reaproveitamento do que já foi produzido para o Instagram. Instalação de fachada é
-          conteúdo pronto para vídeo curto — só não estava sendo usado.</p>
+          conteúdo pronto para vídeo curto, só não estava sendo usado.</p>
       </article>
 
       <article class="frente">
@@ -286,7 +285,9 @@ footer.pe a:hover{text-decoration:underline}
       <article class="frente">
         <span class="n">Frente 06 <span class="paga">no fixo</span></span>
         <h3>Pós-venda</h3>
-        <p>Fluxo de follow-up por WhatsApp depois da entrega, pedindo avaliação e indicação.</p>
+        <p>Fluxo de follow-up por WhatsApp depois da entrega, pedindo avaliação e indicação.
+          Nada disso fica na memória de ninguém: roda dentro do <strong>FIAS CRM</strong>, sistema
+          já pronto, que guarda cada cliente entregue e avisa a hora de voltar a falar com ele.</p>
       </article>
     </div>
   </div>
@@ -298,7 +299,7 @@ footer.pe a:hover{text-decoration:underline}
       <p class="eyebrow">03 · Custo</p>
       <h2>Quanto custa cada coisa</h2>
       <p>Três linhas separadas de propósito. A primeira é trabalho que acontece toda semana,
-        tendo venda ou não, e por isso é fixa. As outras duas só existem quando entra dinheiro —
+        tendo venda ou não, e por isso é fixa. As outras duas só existem quando entra dinheiro,
         e a diferença entre elas é quem trouxe a venda.</p>
     </div>
 
@@ -322,20 +323,20 @@ footer.pe a:hover{text-decoration:underline}
         <span class="tit">Quando eu vendo</span>
         <div class="medida">15%<small>da venda</small></div>
         <p><b>Marketing de afiliados.</b> Sobre o pedido que eu trouxer e conduzir do começo ao
-          fim — prospecção, atendimento, medida e acompanhamento até fechar. Vocês produzem,
+          fim: prospecção, atendimento, medida e acompanhamento até fechar. Vocês produzem,
           instalam e garantem.</p>
       </div>
     </div>
 
     <div class="linhas">
-      <div><b>Cada venda paga uma comissão só.</b> Ou 10%, ou 15% — nunca as duas. Vale a que
+      <div><b>Cada venda paga uma comissão só.</b> Ou 10%, ou 15%, nunca as duas. Vale a que
         corresponde a quem realmente trouxe o cliente.</div>
       <div><b>O fixo não se mistura com a comissão.</b> Ele paga o trabalho de conteúdo e
         anúncio, que existe toda semana; a comissão paga resultado. Um não desconta o outro.</div>
       <div><b>A comissão vence quando o cliente paga,</b> não quando ele assina. Pedido que cair
         ou for cancelado não gera comissão.</div>
       <div><b>Preço é o de tabela da ARTsivos.</b> Desconto, quando fizer sentido, é decisão de
-        vocês — e entra na conta dos dois lados.</div>
+        vocês, e entra na conta dos dois lados.</div>
     </div>
   </div>
 </section>
@@ -353,26 +354,30 @@ footer.pe a:hover{text-decoration:underline}
     <div class="marcos">
       <div class="marco">
         <div class="tit">Bloco 1 · 3 horas</div>
-        <b>Em obra, na instalação</b>
-        <span>Acompanhando um serviço de verdade: antes e depois, o detalhe do acabamento, a
-          reação do cliente. É o material que nenhum concorrente tem, porque exige estar lá.</span>
+        <b>À disposição da equipe</b>
+        <span>Três horas na agenda da ARTsivos, para usar onde a empresa estiver produzindo:
+          dentro da oficina ou na rua, num trabalho sendo feito. Quem decide o destino é quem
+          sabe o que vai acontecer naquela semana.</span>
       </div>
       <div class="marco">
         <div class="tit">Bloco 2 · 2 horas</div>
-        <b>Na oficina, com roteiro</b>
-        <span>Dúvidas que cliente sempre faz, comparação entre materiais, bastidor da produção.
-          Sai de uma lista escrita antes, não do que der na hora.</span>
+        <b>Visita a trabalho já entregue</b>
+        <span>Gravação em serviços que já estão instalados e funcionando, nos clientes que
+          autorizarem. Entra junto um documento de autorização de gravação, assinado na hora,
+          para o material poder ser publicado sem dúvida depois.</span>
       </div>
     </div>
 
     <div class="linhas" style="margin-top:22px">
-      <div><b>O bloco de oficina acontece mesmo sem obra na semana.</b> Se a gravação depender de
-        ter instalação, a semana parada vira semana sem post — e é exatamente assim que
-        calendário editorial morre.</div>
+      <div><b>O bloco de visita acontece mesmo sem obra na semana.</b> Se a gravação depender de
+        ter instalação marcada, a semana parada vira semana sem post, e é exatamente assim que
+        calendário editorial morre. Trabalho já entregue nunca falta.</div>
+      <div><b>10% de desconto no próximo pedido para quem gravar um feedback.</b> É a moeda de
+        troca que faz o cliente aceitar aparecer, e traz ele de volta para comprar outra vez.</div>
       <div><b>Cinco horas bem planejadas rendem de 12 a 16 peças por mês,</b> que é o que
-        sustenta 3 a 4 posts semanais no Instagram mais o reaproveitamento no TikTok.</div>
+        sustenta um post por dia no Instagram mais o reaproveitamento no TikTok.</div>
       <div><b>Uma pessoa da equipe precisa aparecer.</b> Rosto conhecido vende fachada melhor que
-        vídeo sem ninguém — ainda mais em cidade onde o cliente compra de quem ele reconhece.</div>
+        vídeo sem ninguém, ainda mais em cidade onde o cliente compra de quem ele reconhece.</div>
       <div><b>Dia e horário fixos,</b> combinados no começo do mês. Gravação que fica para
         "quando der" não acontece.</div>
     </div>
@@ -395,19 +400,19 @@ footer.pe a:hover{text-decoration:underline}
       <div class="marco">
         <div class="tit">Enquanto não tem registro</div>
         <b>A origem é combinada</b>
-        <span>Nos primeiros pedidos, a gente decide junto de onde veio cada um — "esse veio do
+        <span>Nos primeiros pedidos, a gente decide junto de onde veio cada um: "esse veio do
           site", "esse eu trouxe". Na dúvida, vale a versão de vocês.</span>
       </div>
       <div class="marco">
         <div class="tit">Mês 3</div>
         <b>Revisão dos percentuais</b>
         <span>Com dado real de ticket médio, taxa de conversão e volume por canal. Se algum dos
-          números estiver fora da realidade — para mais ou para menos —, é aí que muda.</span>
+          números estiver fora da realidade, para mais ou para menos, é aí que muda.</span>
       </div>
     </div>
 
     <p class="ressalva">Nenhum desses números é definitivo. O combinado é justamente o
-      contrário: começar com eles escritos, medir três meses e ajustar com dado na mão — em vez
+      contrário: começar com eles escritos, medir três meses e ajustar com dado na mão, em vez
       de descobrir daqui a um ano que um dos lados achava outra coisa.</p>
   </div>
 </section>
