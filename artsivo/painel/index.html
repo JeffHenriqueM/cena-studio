@@ -51,6 +51,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 body{margin:0;background:var(--void);color:var(--ink);
   font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.55;
   -webkit-font-smoothing:antialiased}
@@ -150,6 +151,52 @@ main{padding:0 0 90px}
 .tabela td.num input{width:104px;text-align:right;font-variant-numeric:tabular-nums;padding:8px 10px}
 .tabela td.prod{font-weight:600;white-space:nowrap}
 .rolagem{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ---------- pedidos ---------- */
+/* Cada status tem cor própria: numa lista longa, a cor é o que deixa ver o
+   estado sem ler. Só "atrasado" grita, porque é o único que pede ação hoje. */
+.filtros-pedido{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filtro{border:1px solid var(--edge);background:var(--panel);color:var(--ink-soft);
+  border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer;font-family:inherit;
+  display:inline-flex;align-items:center;gap:7px}
+.filtro:hover{border-color:var(--edge-2);color:var(--ink)}
+.filtro[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff;font-weight:600}
+.filtro .conta{font-family:"DM Mono",monospace;font-size:11px;opacity:.75}
+
+select.status{border:1px solid var(--edge);background:var(--void);color:var(--ink);
+  border-radius:8px;padding:6px 8px;font:inherit;font-size:13px;max-width:150px}
+select.status[data-s="novo"]{border-color:var(--edge-2)}
+select.status[data-s="orçado"]{border-color:#3B82F6;color:#93C5FD}
+select.status[data-s="aprovado"]{border-color:var(--ok);color:var(--ok)}
+select.status[data-s="em andamento"]{border-color:var(--warn);color:var(--warn)}
+select.status[data-s="finalizado"]{border-color:var(--edge-2);color:var(--ink-mute)}
+select.status[data-s="cancelado"]{border-color:var(--edge);color:var(--ink-mute);text-decoration:line-through}
+select.resp{border:1px solid var(--edge);background:var(--void);color:var(--ink);
+  border-radius:8px;padding:6px 8px;font:inherit;font-size:13px;max-width:150px}
+input.prazo{border:1px solid var(--edge);background:var(--void);color:var(--ink);
+  border-radius:8px;padding:5px 8px;font:inherit;font-size:13px;width:140px}
+tr.atrasado input.prazo{border-color:var(--red);color:var(--red)}
+.selo-atraso{display:inline-block;margin-left:7px;font-family:"DM Mono",monospace;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--red);border:1px solid var(--red);
+  border-radius:99px;padding:1px 7px;vertical-align:middle}
+.anotacao{width:100%;margin-top:8px;border:1px solid var(--edge);background:var(--void);
+  color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit;font-size:13px;min-height:44px;resize:vertical}
+
+/* ---------- equipe ---------- */
+.linha-nova{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0 10px}
+.linha-nova input,.linha-nova select{border:1px solid var(--edge);background:var(--void);color:var(--ink);
+  border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;flex:1;min-width:170px}
+.lista-equipe{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.membro{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--panel);
+  border:1px solid var(--edge);border-radius:var(--r);padding:14px 16px}
+.membro .quem-nome{font-weight:600}
+.membro .quem-mail{font-family:"DM Mono",monospace;font-size:12px;color:var(--ink-mute)}
+.membro .papel{font-family:"DM Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--edge-2);border-radius:99px;padding:3px 9px;color:var(--ink-soft)}
+.membro .papel.chefe{border-color:var(--red);color:var(--red)}
+.membro .direita{margin-left:auto;display:flex;gap:8px;align-items:center}
+.membro.desligado{opacity:.5}
+.membro.desligado .quem-nome{text-decoration:line-through}
 .chave{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--ink-soft)}
 .chave input{accent-color:var(--red);width:16px;height:16px}
 .aviso{background:var(--panel);border:1px solid var(--edge);border-left:3px solid var(--warn);
@@ -290,8 +337,9 @@ select{appearance:none}
       <button class="aba" type="button" role="tab" aria-selected="true"  data-aba="fotos">Fotos dos trabalhos</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="precos">Preços do orçamento</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="avaliacoes">Avaliações</button>
-      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="orcamentos">Orçamentos</button>
+      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="orcamentos">Pedidos</button>
       <button class="aba" type="button" role="tab" aria-selected="false" data-aba="medicao">Visitas</button>
+      <button class="aba" type="button" role="tab" aria-selected="false" data-aba="equipe">Equipe</button>
     </div>
 
     <main>
@@ -300,32 +348,54 @@ select{appearance:none}
           <h2>Fotos dos trabalhos</h2>
           <p>Uma foto por produto. Ela aparece na seção “Trabalhos” da home. Escolha o arquivo direto da câmera ou do computador — o painel corta, encolhe e converte sozinho (no máximo 1600 px de largura, alvo de 250 KB). Enquanto não houver foto, o site mostra um espaço marcado, nunca uma imagem quebrada.</p>
         </div>
+        <div class="aviso">
+          <b>Orientações da foto.</b> Uma por linha. É o que aparece no site, dentro de “Como tirar a foto”, quando o cliente vai anexar. Deixe vazio para usar as orientações padrão.
+          <textarea id="p-dicas" rows="5" style="margin-top:10px"></textarea>
+        </div>
         <div class="grade" id="grade-fotos"></div>
       </section>
 
       <section id="sec-orcamentos" hidden>
         <div class="sec-head">
-          <h2>Orçamentos pedidos pelo site</h2>
-          <p>Cada vez que alguém preenche a calculadora e clica para falar no WhatsApp, o pedido é guardado aqui — <b>inclusive quando a pessoa desiste no meio do caminho</b> e a mensagem nunca chega. Esses são os contatos que antes se perdiam.</p>
+          <h2>Pedidos</h2>
+          <p>Cada orçamento pedido no site entra aqui sozinho — <b>inclusive quando a pessoa desiste no meio do caminho</b> e a mensagem nunca chega no WhatsApp. Daqui em diante é trabalho: quem está com ele, em que pé está e para quando ficou.</p>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+        <div class="filtros-pedido" id="filtros-pedido"></div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap">
           <button class="btn btn-ghost btn-sm" type="button" id="btn-recarregar">Atualizar</button>
           <span class="estado" id="estado-orc"></span>
         </div>
-        <div class="aviso">
-          <b>Orientações da foto.</b> Uma por linha. É o que aparece no site, dentro de “Como tirar a foto”, quando o cliente vai anexar. Deixe vazio para usar as orientações padrão.
-          <textarea id="p-dicas" rows="5" style="margin-top:10px"></textarea>
-        </div>
-
         <div class="rolagem">
           <table class="tabela">
             <thead>
-              <tr><th>Quando</th><th>Nome</th><th>WhatsApp</th><th>Produto</th><th>Estimativa</th><th></th></tr>
+              <tr><th>Quando</th><th>Cliente</th><th>Produto</th><th>Estimativa</th><th>Status</th><th>Responsável</th><th>Prazo</th><th></th></tr>
             </thead>
             <tbody id="linhas-orc"></tbody>
           </table>
         </div>
         <p class="vazio-lista" id="orc-vazio" hidden>Nenhum orçamento pedido ainda.</p>
+      </section>
+
+      <section id="sec-equipe" hidden>
+        <div class="sec-head">
+          <h2>Equipe</h2>
+          <p>Quem pode entrar neste painel. O cadastro aqui <b>é</b> o acesso: quem está nesta lista, com o acesso ligado, entra com o e-mail cadastrado; quem sai da lista perde o acesso na hora.</p>
+        </div>
+        <div class="aviso">
+          <b>A conta em si é criada no Firebase.</b> Cadastrar a pessoa aqui diz o que ela pode fazer; para ela conseguir entrar, o e-mail precisa existir como usuário no Firebase Authentication — é lá que a senha mora. Quem cria essa conta é você, no console.
+        </div>
+        <div class="linha-nova">
+          <input id="eq-nome" type="text" placeholder="Nome" maxlength="80" autocomplete="off">
+          <input id="eq-email" type="email" placeholder="e-mail de acesso" maxlength="120" autocomplete="off">
+          <select id="eq-papel">
+            <option value="equipe">Equipe — só os pedidos</option>
+            <option value="admin">Admin — tudo, inclusive a equipe</option>
+          </select>
+          <button class="btn btn-primary btn-sm" type="button" id="btn-add-membro">Cadastrar</button>
+        </div>
+        <span class="estado" id="estado-eq"></span>
+        <div class="lista-equipe" id="lista-equipe"></div>
+        <p class="vazio-lista" id="eq-vazio" hidden>Ninguém cadastrado ainda — só você entra.</p>
       </section>
 
       <section id="sec-medicao" hidden>
@@ -455,7 +525,7 @@ select{appearance:none}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp,
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp,
          collection, query, orderBy, limit, getDocs, deleteDoc }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL }
@@ -577,6 +647,45 @@ window.__painelPronto = true;
 $("btn-entrar").disabled = false;
 $("btn-entrar").textContent = "Entrar";
 
+/* ---------------------------- quem entrou ----------------------------
+   O cadastro da equipe é o controle de acesso, e o papel decide o que a
+   pessoa vê. Quem é "equipe" só enxerga Pedidos: as outras abas mexem no
+   site, e o banco recusaria a gravação de qualquer jeito — melhor não
+   mostrar botão que vai dar erro. */
+const EQUIPE = collection(db, "artsivos_equipe");
+const DONO = "admin@artsivos.com.br";
+let souAdmin = false, meuNome = "", equipe = [];
+
+async function descobrirPapel(user){
+  souAdmin = user.email === DONO;
+  meuNome  = user.email;
+  try{
+    const m = await getDoc(doc(EQUIPE, user.email));
+    if(m.exists()){
+      const d = m.data();
+      meuNome = d.nome || user.email;
+      if(d.papel === "admin") souAdmin = true;
+    }
+  }catch(err){ /* sem cadastro: vale o e-mail do dono, e só */ }
+}
+
+function mostrarAbas(){
+  /* a barra de publicar é do dono do site: quem só toca pedido não publica
+     nada, e as regras do banco recusariam — botão que dá erro é pior que
+     botão que não existe */
+  const barra = document.querySelector(".rodape");
+  if(barra) barra.hidden = !souAdmin;
+  document.querySelectorAll(".aba").forEach(b => {
+    const soAdmin = b.dataset.aba !== "orcamentos";
+    b.hidden = soAdmin && !souAdmin;
+  });
+  /* quem não é admin abre direto nos pedidos, que é a aba dele */
+  if(!souAdmin){
+    const alvo = document.querySelector('.aba[data-aba="orcamentos"]');
+    if(alvo) alvo.click();
+  }
+}
+
 onAuthStateChanged(auth, async user => {
   $("tela-checando").hidden = true;
   $("tela-login").hidden   = !!user;
@@ -585,7 +694,9 @@ onAuthStateChanged(auth, async user => {
   const q = $("quem");
   q.textContent = user.email;
   q.style.display = "block";
-  await carregar();
+  await descobrirPapel(user);
+  mostrarAbas();
+  if(souAdmin) await carregar();
 });
 
 /* ---------------------------- carregar ---------------------------- */
@@ -631,10 +742,12 @@ document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () =>
   $("sec-avaliacoes").hidden = b.dataset.aba !== "avaliacoes";
   $("sec-orcamentos").hidden = b.dataset.aba !== "orcamentos";
   $("sec-medicao").hidden = b.dataset.aba !== "medicao";
+  $("sec-equipe").hidden = b.dataset.aba !== "equipe";
   /* a lista é buscada quando a aba abre, não junto com o resto: são
      documentos que crescem sem parar e quase sempre ninguém vai olhar */
   if(b.dataset.aba === "orcamentos") carregarOrcamentos();
   if(b.dataset.aba === "medicao") carregarMedicao();
+  if(b.dataset.aba === "equipe") carregarEquipe();
 }));
 
 
@@ -1052,10 +1165,24 @@ function avaliacoesIncompletas(){
 }
 
 /* ---------------------------- orçamentos ---------------------------- */
-/* Lista só de leitura (mais apagar). Não tem "publicar": o que está aqui foi
-   escrito pelo site, não por esta tela — por isso nada aqui marca o painel
-   como sujo. */
+/* ----------------------------------------------------------------------
+   PEDIDOS
+   O pedido nasce sozinho: quem preenche a calculadora no site cria a linha.
+   O que esta tela acrescenta é a gestão — status, responsável, prazo e uma
+   anotação. O que veio do cliente (nome, WhatsApp, texto, data) é congelado
+   pelas regras do banco: nem sem querer dá para reescrever.
+
+   Cada mudança grava na hora. Não existe "publicar" aqui de propósito: numa
+   lista de trabalho, mudança que espera botão é mudança que se perde.
+   ---------------------------------------------------------------------- */
 const ORCS = collection(db, "artsivos_orcamentos");
+const STATUS = ["novo", "orçado", "aprovado", "em andamento", "finalizado", "cancelado"];
+/* finalizado e cancelado saem da mesa: continuam na lista, mas não contam
+   como trabalho em aberto nem cobram prazo */
+const ENCERRADOS = ["finalizado", "cancelado"];
+
+let pedidos = [];
+let filtro = "abertos";
 let orcsCarregados = false;
 
 function quando(ts){
@@ -1078,61 +1205,240 @@ function estadoOrc(txt, tipo){
   e.className = "estado" + (tipo ? " " + tipo : "");
 }
 
+function hojeISO(){
+  const d = new Date();
+  return [d.getFullYear(), String(d.getMonth()+1).padStart(2,"0"),
+          String(d.getDate()).padStart(2,"0")].join("-");
+}
+/* atrasado é prazo vencido em pedido que ainda está de pé */
+function atrasado(p){
+  return !!p.prazo && p.prazo < hojeISO() && ENCERRADOS.indexOf(p.status || "novo") === -1;
+}
+
+async function carregarEquipeParaSelect(){
+  if(equipe.length) return;
+  try{
+    const r = await getDocs(EQUIPE);
+    equipe = r.docs.map(d => ({ email: d.id, ...d.data() })).filter(m => m.ativo !== false);
+  }catch(err){ equipe = []; }
+}
+
 async function carregarOrcamentos(forcar){
   if(orcsCarregados && !forcar) return;
   estadoOrc("Carregando…");
   try{
+    await carregarEquipeParaSelect();
     const snap = await getDocs(query(ORCS, orderBy("criadoEm", "desc"), limit(200)));
-    const corpo = $("linhas-orc");
-    corpo.innerHTML = "";
-
-    snap.forEach(d => {
-      const o = d.data();
-      const tr = document.createElement("tr");
-      const numero = zap(o.whatsapp);
-
-      tr.innerHTML = `
-        <td style="white-space:nowrap">${esc(quando(o.criadoEm))}</td>
-        <td>${esc(o.nome || "—")}</td>
-        <td style="white-space:nowrap">${numero
-            ? `<a href="https://wa.me/${numero}" target="_blank" rel="noopener">${esc(o.whatsapp)}</a>`
-            : esc(o.whatsapp || "—")}</td>
-        <td>${esc(o.produto || "—")}</td>
-        <td style="white-space:nowrap">${esc(o.valor || "—")}</td>
-        <td style="text-align:right"><button class="btn btn-ghost btn-sm" type="button" data-apagar="${esc(d.id)}">Apagar</button></td>`;
-
-      /* o pedido inteiro numa linha embaixo, para não espremer a tabela */
-      const fotos = Array.isArray(o.fotos) ? o.fotos : [];
-      const det = document.createElement("tr");
-      det.innerHTML = `<td colspan="6" style="padding-top:0;color:var(--ink-mute);font-size:13px">
-        ${esc(o.pedido || "")}
-        ${fotos.length ? `<div class="miniaturas">${fotos.map(u =>
-            `<a href="${esc(u)}" target="_blank" rel="noopener" title="Abrir a foto em tamanho real"><img src="${esc(u)}" alt="Foto do local mandada pelo cliente" loading="lazy"></a>`
-          ).join("")}</div>` : ""}
-      </td>`;
-
-      tr.querySelector("[data-apagar]").addEventListener("click", async () => {
-        if(!confirm("Apagar este orçamento? Não tem como desfazer.")) return;
-        try{
-          await deleteDoc(doc(db, "artsivos_orcamentos", d.id));
-          tr.remove(); det.remove();
-          estadoOrc("Apagado.", "ok");
-        }catch(err){
-          estadoOrc("Não deu para apagar: " + (err.code || err.message), "ruim");
-        }
-      });
-
-      corpo.appendChild(tr);
-      corpo.appendChild(det);
-    });
-
-    $("orc-vazio").hidden = snap.size > 0;
-    estadoOrc(snap.size === 0 ? "" : snap.size === 1 ? "1 orçamento" : snap.size + " orçamentos");
+    pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     orcsCarregados = true;
+    pintarPedidos();
   }catch(err){
     estadoOrc("Não deu para carregar: " + (err.code || err.message), "ruim");
   }
 }
+
+function contar(f){
+  if(f === "todos")    return pedidos.length;
+  if(f === "abertos")  return pedidos.filter(p => ENCERRADOS.indexOf(p.status || "novo") === -1).length;
+  if(f === "atrasados") return pedidos.filter(atrasado).length;
+  return pedidos.filter(p => (p.status || "novo") === f).length;
+}
+
+function pintarFiltros(){
+  const caixa = $("filtros-pedido");
+  const lista = [["abertos","Em aberto"], ["atrasados","Atrasados"], ["todos","Todos"]]
+    .concat(STATUS.map(x => [x, x.charAt(0).toUpperCase() + x.slice(1)]));
+  caixa.innerHTML = lista.map(([chave, rot]) =>
+    `<button class="filtro" type="button" data-f="${esc(chave)}" aria-pressed="${filtro === chave}">` +
+    `${esc(rot)} <span class="conta">${contar(chave)}</span></button>`).join("");
+  caixa.querySelectorAll("[data-f]").forEach(b => b.addEventListener("click", () => {
+    filtro = b.dataset.f;
+    pintarPedidos();
+  }));
+}
+
+function visiveis(){
+  if(filtro === "todos")     return pedidos;
+  if(filtro === "abertos")   return pedidos.filter(p => ENCERRADOS.indexOf(p.status || "novo") === -1);
+  if(filtro === "atrasados") return pedidos.filter(atrasado);
+  return pedidos.filter(p => (p.status || "novo") === filtro);
+}
+
+async function gravarPedido(p, mudanca){
+  Object.assign(p, mudanca);
+  try{
+    await updateDoc(doc(db, "artsivos_orcamentos", p.id), Object.assign({}, mudanca, {
+      atualizadoEm: serverTimestamp(),
+      atualizadoPor: meuNome
+    }));
+    estadoOrc("Salvo.", "ok");
+    pintarFiltros();
+  }catch(err){
+    estadoOrc("Não deu para salvar: " + (err.code || err.message), "ruim");
+  }
+}
+
+function pintarPedidos(){
+  pintarFiltros();
+  const corpo = $("linhas-orc");
+  corpo.innerHTML = "";
+  const lista = visiveis();
+
+  lista.forEach(p => {
+    const numero = zap(p.whatsapp);
+    const st = p.status || "novo";
+    const tr = document.createElement("tr");
+    if(atrasado(p)) tr.className = "atrasado";
+
+    tr.innerHTML = `
+      <td style="white-space:nowrap">${esc(quando(p.criadoEm))}</td>
+      <td>${esc(p.nome || "—")}<br>${numero
+          ? `<a class="quem-mail" href="https://wa.me/${numero}" target="_blank" rel="noopener">${esc(p.whatsapp)}</a>`
+          : `<span class="quem-mail">${esc(p.whatsapp || "—")}</span>`}</td>
+      <td>${esc(p.produto || "—")}</td>
+      <td style="white-space:nowrap">${esc(p.valor || "—")}</td>
+      <td><select class="status" data-s="${esc(st)}">${
+        STATUS.map(x => `<option value="${esc(x)}"${x === st ? " selected" : ""}>${esc(x)}</option>`).join("")
+      }</select></td>
+      <td><select class="resp"><option value="">— ninguém —</option>${
+        equipe.filter(m => m.ativo !== false || m.email === p.responsavel)
+              .map(m => `<option value="${esc(m.email)}"${m.email === p.responsavel ? " selected" : ""}>${esc(m.nome || m.email)}${m.ativo === false ? " (sem acesso)" : ""}</option>`).join("")
+      }</select></td>
+      <td style="white-space:nowrap"><input class="prazo" type="date" value="${esc(p.prazo || "")}">${
+        atrasado(p) ? '<span class="selo-atraso">atrasado</span>' : ""}</td>
+      <td style="text-align:right">${souAdmin
+        ? '<button class="btn btn-ghost btn-sm" type="button" data-apagar>Apagar</button>' : ""}</td>`;
+
+    const fotos = Array.isArray(p.fotos) ? p.fotos : [];
+    const det = document.createElement("tr");
+    det.innerHTML = `<td colspan="8" style="padding-top:0;color:var(--ink-mute);font-size:13px">
+      ${esc(p.pedido || "")}
+      ${fotos.length ? `<div class="miniaturas">${fotos.map(u =>
+          `<a href="${esc(u)}" target="_blank" rel="noopener" title="Abrir a foto em tamanho real"><img src="${esc(u)}" alt="Foto do local mandada pelo cliente" loading="lazy"></a>`
+        ).join("")}</div>` : ""}
+      <textarea class="anotacao" placeholder="Anotação da equipe — o que ficou combinado, o que falta" maxlength="1000">${esc(p.anotacao || "")}</textarea>
+    </td>`;
+
+    const sel = tr.querySelector("select.status");
+    sel.addEventListener("change", () => {
+      sel.dataset.s = sel.value;
+      gravarPedido(p, { status: sel.value }).then(pintarPedidos);
+    });
+    tr.querySelector("select.resp").addEventListener("change", e => {
+      gravarPedido(p, { responsavel: e.target.value });
+    });
+    tr.querySelector("input.prazo").addEventListener("change", e => {
+      gravarPedido(p, { prazo: e.target.value }).then(pintarPedidos);
+    });
+
+    /* a anotação grava quando o campo perde o foco: gravar a cada tecla
+       seria uma escrita por letra digitada */
+    const nota = det.querySelector("textarea.anotacao");
+    nota.addEventListener("blur", () => {
+      if((nota.value || "") !== (p.anotacao || "")) gravarPedido(p, { anotacao: nota.value });
+    });
+
+    const apagar = tr.querySelector("[data-apagar]");
+    if(apagar) apagar.addEventListener("click", async () => {
+      if(!confirm("Apagar este pedido? Não tem como desfazer.")) return;
+      try{
+        await deleteDoc(doc(db, "artsivos_orcamentos", p.id));
+        pedidos = pedidos.filter(x => x.id !== p.id);
+        pintarPedidos();
+        estadoOrc("Apagado.", "ok");
+      }catch(err){
+        estadoOrc("Não deu para apagar: " + (err.code || err.message), "ruim");
+      }
+    });
+
+    corpo.appendChild(tr);
+    corpo.appendChild(det);
+  });
+
+  $("orc-vazio").hidden = lista.length > 0;
+  $("orc-vazio").textContent = pedidos.length
+    ? "Nenhum pedido neste filtro."
+    : "Nenhum pedido ainda. Eles entram sozinhos quando alguém pede orçamento no site.";
+  estadoOrc(lista.length ? lista.length + (lista.length === 1 ? " pedido" : " pedidos") : "");
+}
+
+/* ---------------------------- equipe ---------------------------- */
+function estadoEq(txt, tipo){
+  const e = $("estado-eq");
+  e.textContent = txt || "";
+  e.className = "estado" + (tipo ? " " + tipo : "");
+}
+
+async function carregarEquipe(){
+  estadoEq("Carregando…");
+  try{
+    const r = await getDocs(EQUIPE);
+    equipe = r.docs.map(d => ({ email: d.id, ...d.data() }));
+    pintarEquipe();
+    estadoEq("");
+  }catch(err){
+    estadoEq("Não deu para carregar: " + (err.code || err.message), "ruim");
+  }
+}
+
+function pintarEquipe(){
+  const cx = $("lista-equipe");
+  cx.innerHTML = "";
+  $("eq-vazio").hidden = equipe.length > 0;
+
+  equipe.slice().sort((a,b) => String(a.nome||"").localeCompare(String(b.nome||""))).forEach(m => {
+    const el = document.createElement("div");
+    el.className = "membro" + (m.ativo === false ? " desligado" : "");
+    el.innerHTML = `
+      <span>
+        <span class="quem-nome">${esc(m.nome || "(sem nome)")}</span><br>
+        <span class="quem-mail">${esc(m.email)}</span>
+      </span>
+      <span class="papel${m.papel === "admin" ? " chefe" : ""}">${m.papel === "admin" ? "admin" : "equipe"}</span>
+      <span class="direita">
+        <button class="btn btn-ghost btn-sm" type="button" data-liga>${m.ativo === false ? "Religar acesso" : "Tirar acesso"}</button>
+        <button class="btn btn-ghost btn-sm" type="button" data-tira>Remover</button>
+      </span>`;
+
+    el.querySelector("[data-liga]").addEventListener("click", async () => {
+      const novo = m.ativo === false;
+      try{
+        await setDoc(doc(EQUIPE, m.email), { nome: m.nome, papel: m.papel, ativo: novo });
+        m.ativo = novo;
+        pintarEquipe();
+        estadoEq(novo ? "Acesso religado." : "Acesso cortado — vale na próxima tela que a pessoa abrir.", "ok");
+      }catch(err){ estadoEq("Não deu: " + (err.code || err.message), "ruim"); }
+    });
+
+    el.querySelector("[data-tira]").addEventListener("click", async () => {
+      if(!confirm("Remover " + (m.nome || m.email) + " da equipe? A pessoa perde o acesso ao painel.")) return;
+      try{
+        await deleteDoc(doc(EQUIPE, m.email));
+        equipe = equipe.filter(x => x.email !== m.email);
+        pintarEquipe();
+        estadoEq("Removido.", "ok");
+      }catch(err){ estadoEq("Não deu: " + (err.code || err.message), "ruim"); }
+    });
+
+    cx.appendChild(el);
+  });
+}
+
+$("btn-add-membro").addEventListener("click", async () => {
+  const nome  = $("eq-nome").value.trim();
+  const email = $("eq-email").value.trim().toLowerCase();
+  const papel = $("eq-papel").value;
+  if(nome.length < 2) return estadoEq("Falta o nome.", "ruim");
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return estadoEq("Confira o e-mail.", "ruim");
+  if(equipe.some(m => m.email === email)) return estadoEq("Esse e-mail já está na equipe.", "ruim");
+  try{
+    await setDoc(doc(EQUIPE, email), { nome, papel, ativo: true, criadoEm: serverTimestamp() });
+    equipe.push({ email, nome, papel, ativo: true });
+    $("eq-nome").value = ""; $("eq-email").value = "";
+    pintarEquipe();
+    estadoEq("Cadastrado. Falta criar a conta desse e-mail no Firebase para a pessoa conseguir entrar.", "ok");
+  }catch(err){ estadoEq("Não deu para cadastrar: " + (err.code || err.message), "ruim"); }
+});
 
 function esc(t){
   return String(t == null ? "" : t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
